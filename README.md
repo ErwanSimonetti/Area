@@ -1,4 +1,2 @@
-# Arena
-Epitech's Arena project
-
-delete this line
+# Area
+Epitech's Area project
