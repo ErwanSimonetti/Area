@@ -1,10 +1,27 @@
+import "./App.css"
 import { BasicCard } from "./Cards";
 
 const AppDisplay = (
   <div>
-    <article>
-      <h1>Gradient Text</h1>
-    </article>
+    <head>
+      <link rel="stylesheet" type="text/css" href="style.css"></link>
+      <link href='https://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'></link>
+    </head>
+    <body>
+      <div class="Iam">
+        <p>Bienvenue sur</p>
+        <b>
+          <div class="innerIam">
+            votre wallet<br/> 
+            vos actions<br/>
+            vos réactions<br/>
+            vos services<br/>
+            vos AREActions
+          </div>
+        </b>
+      </div>
+    </body>
+    <br/>
     <div>
       {BasicCard("Nouveau morceau de Mehro", "Spotify", "Liker la chason", "Spotify")}
     </div>
