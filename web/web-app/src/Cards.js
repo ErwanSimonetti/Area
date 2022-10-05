@@ -1,11 +1,11 @@
-import * as React from 'react';
-import Card from '@mui/material/Card';
-import CardActions from '@mui/material/CardActions';
-import CardContent from '@mui/material/CardContent';
-import Button from '@mui/material/Button';
-import Typography from '@mui/material/Typography';
+import * as React from 'react'
+import Card from '@mui/material/Card'
+import CardActions from '@mui/material/CardActions'
+import CardContent from '@mui/material/CardContent'
+import Button from '@mui/material/Button'
+import Typography from '@mui/material/Typography'
 
-export function BasicCard(ActionName, ActionPlatform, ReactionName, ReactionPlatform) {
+export function BasicCard (ActionName, ActionPlatform, ReactionName, ReactionPlatform) {
   return (
     <Card variant='outlined' sx={{ minWidth: 275 }}>
       <CardContent>
@@ -26,5 +26,5 @@ export function BasicCard(ActionName, ActionPlatform, ReactionName, ReactionPlat
         <Button size="big">Ajouter cette AREAction</Button>
       </CardActions>
     </Card>
-  );
+  )
 }
