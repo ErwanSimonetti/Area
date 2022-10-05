@@ -1,5 +1,4 @@
 import "./App.css"
-import { AREACard, BasicCard } from "./Cards";
 import Wallet from "./Wallet"
 import Grid from '@mui/material/Grid';
 
@@ -21,21 +20,6 @@ const AppDisplay = (
     <div>
       <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
         <Wallet />;
-        {/* <Grid item >
-          <Item>
-            <AREACard ActionName={"Nouveau morceau de Mehro"} ActionPlatform={"Spotify"} ReactionName={"Liker la chanson"} ReactionPlatform={"Spotify"} />
-          </Item>
-        </Grid>
-        <Grid item >
-          <Item>
-            <AREACard ActionName={"Tananai dépasse 4 000 000 écoutes"} ActionPlatform={"Spotify"} ReactionName={"Twitter un lien vers son profil Spotify"} ReactionPlatform={"Twitter"} />
-          </Item>
-        </Grid> */}
-        <Grid item >
-          {/* <Item> */}
-          <AREACard ActionName={"J'update une de mes playlists"} ActionPlatform={"Spotify"} ReactionName={"Un lien vers la playlist est envoyé"} ReactionPlatform={"Discord"} />
-          {/* </Item> */}
-        </Grid>
       </Grid>
     </div>
     {/* 
@@ -45,7 +29,7 @@ const AppDisplay = (
     <div>
       {BasicCard("Like d'une story avec une musique", "Instagram", "Ajout de la musique dans ma playlist", "Deezer")}
     </div> */}
-  </div>
+  </div >
 )
 
 export function App() {

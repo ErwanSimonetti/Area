@@ -2,35 +2,7 @@ import * as React from 'react';
 import Card from '@mui/material/Card';
 import CardMedia from '@mui/material/CardMedia';
 
-import CardActions from '@mui/material/CardActions';
-import CardContent from '@mui/material/CardContent';
-import Button from '@mui/material/Button';
-import Typography from '@mui/material/Typography';
-import Grid from '@mui/material/Grid';
-
-// export function BasicCard(ActionName, ActionPlatform, ReactionName, ReactionPlatform) {
-//   return (
-//     <Card variant='outlined' sx={{ minWidth: 275 }}>
-//       <CardContent>
-//         <Typography variant="h5" component="div">
-//           {ActionName}
-//         </Typography>
-//         <Typography sx={{ mb: 1.5 }} color="text.secondary">
-//           {ActionPlatform}
-//         </Typography>
-//         <Typography variant="h5" component="div">
-//           {ReactionName}
-//         </Typography>
-//         <Typography sx={{ mb: 1.5 }} color="text.secondary">
-//           {ReactionPlatform}
-//         </Typography>
-//       </CardContent>
-//       <CardActions>
-//         <Button size="big">Ajouter cette AREAction</Button>
-//       </CardActions>
-//     </Card>
-//   );
-// }
+import { CardActions, CardContent, Button, Typography, Grid } from '@mui/material';
 
 export function AREACard({ cards }) {
   return (
@@ -73,27 +45,3 @@ export function AREACard({ cards }) {
     </Grid>
   )
 }
-
-{/* <Grid container justifyContent="left" spacing={2}>
-        <Grid item> */}
-{/* <Paper elevation={16}>
-        <CardContent>
-          <Typography variant="h5" component="div">
-            {props.ActionName}
-          </Typography>
-          <Typography variant="body2"   >
-            {bull} {props.ReactionPlatform}
-          </Typography>
-          <Typography variant="h5" component="div">
-            {props.ReactionName}
-          </Typography>
-          <Typography variant="body2">
-            {bull} {props.ReactionPlatform}
-          </Typography>
-        </CardContent>
-        <CardActions>
-          <Button size="big">Ajouter cette AREAction</Button>
-        </CardActions>
-      </Paper> */}
-{/* </Grid>
-      </Grid> */}
