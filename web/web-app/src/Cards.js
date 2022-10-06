@@ -2,7 +2,7 @@ import * as React from 'react';
 import Card from '@mui/material/Card';
 import CardMedia from '@mui/material/CardMedia';
 
-import { CardActions, CardContent, Button, Typography, Grid } from '@mui/material';
+import { CardContent, Typography, Grid } from '@mui/material';
 
 export function AREACard({ cards }) {
   return (
@@ -25,20 +25,16 @@ export function AREACard({ cards }) {
               <Typography gutterBottom variant="h5" component="h2">
                 {card.actionName}
               </Typography>
-              <Typography gutterBottom variant="h5" component="h2">
+              <Typography>
                 {card.actionService}
               </Typography>
-              <Typography>
+              <Typography gutterBottom variant="h5" component="h2">
                 {card.reactionName}
               </Typography>
               <Typography>
                 {card.reactionService}
               </Typography>
             </CardContent>
-            <CardActions>
-              <Button size="small">View</Button>
-              <Button size="small">Edit</Button>
-            </CardActions>
           </Card>
         </Grid>
       ))}
