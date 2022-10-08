@@ -44,6 +44,10 @@ func CreateUser(w http.ResponseWriter, r *http.Request){
 	w.Write(res)
 }
 
+func Test(w http.ResponseWriter, r *http.Request) {
+	fmt.Println("hello")
+}
+
 // func CreateBook(w http.ResponseWriter, r *http.Request){
 // 	CreateBook := &models.Book{}
 // 	utils.ParseBody(r, CreateBook)
