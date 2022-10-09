@@ -1,5 +1,5 @@
 import { Button, Dialog, DialogTitle, List, ListItemText, ListItem } from '@mui/material';
-import { FormControl, FormControlLabel, FormGroup, Checkbox } from '@mui/material';
+import { FormControlLabel, FormGroup, Checkbox } from '@mui/material';
 import * as React from 'react';
 import { AREACard } from './Cards';
 
@@ -49,20 +49,25 @@ export function Wallet() {
       cards.push(newCard);
     setOpenDialog(false);
   };
-
+  const handleNewCard = () => {
+    setCards(cards.push(newCard));
+    setOpenDialog(false);
+  }
   return (
     <React.Fragment>
       <RollingCarousel />
       <Button size="small" onClick={() => { setOpenDialog(true); console.log("open") }}> nouvelle AREA </Button>
       <AREACard cards={cards} />
-      <NewCardDialog onClose={() => setOpenDialog(false)} open={openDialog} newCard={newCard} setNewCard={setNewCard} />
+      <NewCardDialog onClose={handleNewCard} open={openDialog} newCard={newCard} setNewCard={setNewCard}>
+        {console.log(newCard)}
+      </NewCardDialog>
     </React.Fragment >
   );
 }
 
 export function NewCardDialog(props) {
 
-  const [actionService, setActionService] = React.useState("Spotify");
+  const [actionService, setActionService] = React.useState(null);
   const [action, setAction] = React.useState(null);
   const [reactionService, setReactionService] = React.useState(null);
   const [reaction, setReaction] = React.useState(null);
@@ -72,15 +77,6 @@ export function NewCardDialog(props) {
   const [openReactionDialog, setOpenReactionDialog] = React.useState(false);
 
   let updatedValuetempCard = { action, actionService, reaction, reactionService };
-  // Trouver comment modifier l'objet newCard dans le component enfant ici
-  const handleNewCard = () => {
-    // props.setNewCard(props.newCard => ({
-    //   ...props.newCard,
-    //   ...tempCard
-    // });
-  }
-  // props.setOpenDialog(false);
-
   return (
     <React.Fragment>
       <Dialog onClose={props.onClose} open={props.open}>
@@ -90,7 +86,7 @@ export function NewCardDialog(props) {
           <FormControlLabel disabled control={<Checkbox checked={action != null} />} label={<Button onClick={() => setOpenActionDialog(true)}> {action ? action : "action"}</Button>} />
           <FormControlLabel disabled control={<Checkbox checked={reactionService != null} />} label={<Button onClick={() => setOpenServiceReactionDialog(true)}> {reactionService ? reactionService : "service de réaction"}</Button>} />
           <FormControlLabel disabled control={<Checkbox checked={reaction != null} />} label={<Button onClick={() => setOpenReactionDialog(true)}> {reaction ? reaction : "réaction"}</Button>} />
-          <Button variant="outlined" onClick={handleNewCard()}>Valider</Button>
+          <Button variant="outlined" onClick={() => { props.onClose(false); props.setNewCard(updatedValuetempCard) }}>Valider</Button>
         </FormGroup>
       </Dialog>
       {/* Service Action Pick */}
