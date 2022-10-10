@@ -79,13 +79,18 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
               child: Center(
                 child: Ink(
                   decoration: const ShapeDecoration(
-                    color: Colors.lightBlue,
+                    color: Colors.white,
                     shape: CircleBorder(),
                   ),
                   child: IconButton(
-                    icon: Icon(Icons.android),
-                    color: Colors.white,
-                    onPressed: () {},
+                    icon: ImageIcon(
+                      AssetImage('./assets/GitHub.png'),
+                    ),
+                    iconSize: 50,
+                    color: Colors.blueGrey.shade900,
+                    onPressed: () {
+                      print('github');
+                    },
                   ),
                 ),
               ),
