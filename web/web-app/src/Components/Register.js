@@ -1,25 +1,26 @@
 import * as React from 'react';
-import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
 import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import NavBar from './Navbar';
+import { Alert, Snackbar } from '@mui/material';
 
 
 const theme = createTheme();
 
 export default function Register() {
+    const [users, setUsers] = React.useState([]);
     const [password, setPassword] = React.useState('');
     const [passwordConf, setPasswordConf] = React.useState('');
+    const [wrongPassword, setWrongPassword] = React.useState(false);
+
+    useEffect
 
     const handleSubmit = (event) => {
         event.preventDefault();
@@ -28,17 +29,40 @@ export default function Register() {
         console.log({
             email: data.get('email'),
             password: data.get('password'),
+            firstName: data.get('firstName'),
+            lastName: data.get('lastname'),
         });
+
     };
 
     const checkPassword = (data) => {
         setPassword(data.password);
         setPasswordConf(data.passwordConf);
-        data.get('password') === data.get('passwordconf') ? console.log("yes") : console.log("no");
+        data.get('password') != data.get('passwordconf') ?? setWrongPassword(true);
     }
+
+    // const handleSubmit = (event) => {
+    //     alert('A form was submitted: ' + this.state);
+
+    //     fetch('http://localhost:3000/login/', {
+    //         method: 'POST',
+    //         // We convert the React state to JSON and send it as the POST body
+    //         body: JSON.stringify(this.state)
+    //     }).then(function (response) {
+    //         console.log(response)
+    //         return response.json();
+    //     });
+
+    //     event.preventDefault();
+    // }
 
     return (
         <React.Fragment>
+            <Snackbar open={wrongPassword} autoHideDuration={6000} onClose={() => setWrongPassword(false)}>
+                <Alert onClose={() => setWrongPassword(false)} severity="error" sx={{ width: '100%' }}>
+                    Les mots de passe ne vont pas.
+                </Alert>
+            </Snackbar>
             <NavBar />
             <ThemeProvider theme={theme}>
                 <Container component="main" maxWidth="xs">
@@ -129,6 +153,6 @@ export default function Register() {
                     </Box>
                 </Container>
             </ThemeProvider>
-        </React.Fragment>
+        </React.Fragment >
     );
 }
