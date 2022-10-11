@@ -20,20 +20,20 @@ export default function Register() {
     const [passwordConf, setPasswordConf] = React.useState('');
     const [wrongPassword, setWrongPassword] = React.useState(false);
 
-    useEffect
+    // useEffect
 
-    const handleSubmit = (event) => {
-        event.preventDefault();
-        const data = new FormData(event.currentTarget);
-        checkPassword(data);
-        console.log({
-            email: data.get('email'),
-            password: data.get('password'),
-            firstName: data.get('firstName'),
-            lastName: data.get('lastname'),
-        });
+    // const handleSubmit = (event) => {
+    //     event.preventDefault();
+    //     const data = new FormData(event.currentTarget);
+    //     checkPassword(data);
+    //     console.log({
+    //         email: data.get('email'),
+    //         password: data.get('password'),
+    //         firstName: data.get('firstName'),
+    //         lastName: data.get('lastname'),
+    //     });
 
-    };
+    // };
 
     const checkPassword = (data) => {
         setPassword(data.password);
@@ -41,20 +41,22 @@ export default function Register() {
         data.get('password') != data.get('passwordconf') ?? setWrongPassword(true);
     }
 
-    // const handleSubmit = (event) => {
-    //     alert('A form was submitted: ' + this.state);
+    const handleSubmit = (event) => {
+        alert('A form was submitted: ');
+        const data = new FormData(event.currentTarget);
+        const [firstname, lastname, email, password] = [data.get('firstName'), data.get('lastName'), data.get('email'), data.get('password')]
+        fetch('http://localhost:8080/login/', {
+            method: 'POST',
+            // We convert the React state to JSON and send it as the POST body
+            // body: JSON.stringify(this.state)
+            body: JSON.stringify({ firstname, lastname, email, password })
+        }).then(function (response) {
+            console.log(response)
+            return response.json();
+        });
 
-    //     fetch('http://localhost:3000/login/', {
-    //         method: 'POST',
-    //         // We convert the React state to JSON and send it as the POST body
-    //         body: JSON.stringify(this.state)
-    //     }).then(function (response) {
-    //         console.log(response)
-    //         return response.json();
-    //     });
-
-    //     event.preventDefault();
-    // }
+        event.preventDefault();
+    }
 
     return (
         <React.Fragment>

@@ -9,7 +9,7 @@ WORKDIR /react-app
 
 # Installing dependencies
 COPY ./package.json /react-app
-RUN npm install
+RUN npm i react-social-login-buttons react-google-login --f react-login-github --f  @mui/icons-material
 
 # Copying all the files in our project
 COPY . .

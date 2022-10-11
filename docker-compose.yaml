@@ -19,9 +19,9 @@ services:
     container_name: go
     build: # Use the Dockerfile from the current directory to build container.
       context: ./backend
-    restart: always
+    restart: on-failure
     ports: 
-      - "8080:8080"
+      - 8080:8080
     depends_on: 
       - "db"
 

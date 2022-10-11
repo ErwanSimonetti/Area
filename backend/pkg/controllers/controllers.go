@@ -12,7 +12,7 @@ import(
 
 var NewUser models.User
 
-func GetUser(w http.ResponseWriter, r *http.Request){
+func GetAllUsers(w http.ResponseWriter, r *http.Request){
 	newUsers:=models.GetAllUsers()
 	res, _ :=json.Marshal(newUsers)
 	w.Header().Set("Content-Type","pkglication/json")
@@ -38,7 +38,7 @@ func CreateUser(w http.ResponseWriter, r *http.Request){
 	CreateUser := &models.User{}
 	utils.ParseBody(r, CreateUser)
 	b := CreateUser.CreateUser()
-	// fmt.Println(b)
+	// fmt.Println("Created a User")
 	res, _ := json.Marshal(b)
 	w.WriteHeader(http.StatusOK)
 	w.Write(res)
