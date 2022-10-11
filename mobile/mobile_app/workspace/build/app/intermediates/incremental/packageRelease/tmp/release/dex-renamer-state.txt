@@ -1,0 +1,4 @@
+#Tue Oct 11 14:17:03 CEST 2022
+base.0=/home/mblancho/delivery/Area_Project/Area/mobile/mobile_app/workspace/build/app/intermediates/dex/release/minifyReleaseWithR8/classes.dex
+renamed.0=classes.dex
+path.0=classes.dex
