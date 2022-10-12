@@ -8,32 +8,20 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import GitHubLogin from 'react-login-github';
 import { GoogleLogin } from 'react-google-login';
-import { GoogleLoginButton, FacebookLoginButton, GithubLoginButton } from 'react-social-login-buttons';
+import { GoogleLoginButton } from 'react-social-login-buttons';
 
 const clientidGoogle = "78828642227-b3tlfon89t2j66b2a81c60mu8oe45ijb.apps.googleusercontent.com"
 // const clientidGithub = "ac56fad434a3a3c1561e"
 
 const theme = createTheme();
 
-async function loginUser(credentials) {
-    return fetch('http://localhost:8080/login', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(credentials)
-    })
-        .then(data => data.json())
-}
-
 export default function SignIn() {
 
     const handleSubmit = (event) => {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
-        
+
         console.log({
             email: data.get('email'),
             password: data.get('password'),

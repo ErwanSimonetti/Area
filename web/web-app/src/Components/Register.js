@@ -14,31 +14,7 @@ import { Alert, Snackbar } from '@mui/material';
 const theme = createTheme();
 
 export default function Register() {
-    const [users, setUsers] = React.useState([]);
-    const [password, setPassword] = React.useState('');
-    const [passwordConf, setPasswordConf] = React.useState('');
     const [wrongPassword, setWrongPassword] = React.useState(false);
-
-    // useEffect
-
-    // const handleSubmit = (event) => {
-    //     event.preventDefault();
-    //     const data = new FormData(event.currentTarget);
-    //     checkPassword(data);
-    //     console.log({
-    //         email: data.get('email'),
-    //         password: data.get('password'),
-    //         firstName: data.get('firstName'),
-    //         lastName: data.get('lastname'),
-    //     });
-
-    // };
-
-    const checkPassword = (data) => {
-        setPassword(data.password);
-        setPasswordConf(data.passwordConf);
-        data.get('password') != data.get('passwordconf') ?? setWrongPassword(true);
-    }
 
     const handleSubmit = (event) => {
         alert('A form was submitted: ');
