@@ -31,61 +31,54 @@ async function loginUser(credentials) {
 export default function SignIn() {
 
     const handleSubmit = (event) => {
+        console.log("INSIDE FUNCTION UWUUUUUUUUUUUu")
         event.preventDefault();
-        const data = new FormData(event.currentTarget);
-        
-        console.log({
-            email: data.get('email'),
-            password: data.get('password'),
-        });
+        console.log("email value :")
+        console.log(event.target.email.value)
+        console.log("password value :")
+        console.log(event.target.password.value)
     };
+
+    const [email, setEmail] = React.useState("");
+    const [password, setPassword] = React.useState("");
 
     return (
         <ThemeProvider theme={theme}>
-            <Container component="main" maxWidth="xs">
-                <CssBaseline />
-                <Box
-                    sx={{
-                        marginTop: 8,
-                        display: 'flex',
-                        flexDirection: 'column',
-                        alignItems: 'center',
-                    }}
-                >
-                    <Typography component="h1" variant="h5">
-                        Sign in
-                    </Typography>
-                    <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
-                        <TextField
-                            margin="normal"
-                            required
-                            fullWidth
-                            id="email"
-                            label="Email Address"
-                            name="email"
-                            autoComplete="email"
-                            autoFocus
-                        />
-                        <TextField
-                            margin="normal"
-                            required
-                            fullWidth
-                            name="password"
-                            label="Password"
-                            type="password"
-                            id="password"
-                            autoComplete="current-password"
-                        />
-                        <GoogleLogin
-                            clientId={clientidGoogle}
-                            render={renderProps => (
-                                <GoogleLoginButton onClick={renderProps.onClick} disabled={renderProps.disabled} />
-                            )}
-                            buttonText="Login"
-                            onSuccess={(e) => { console.log("LOGIN SUCCESS! Current user :", e.profileObj) }}
-                            onFailure={(e) => { console.log("LOGIN FAILED! ", e); }}
-                            cookiePolicy={'single_host_origin'}
-                        />
+            <form onSubmit={handleSubmit}>
+                <input
+                    autoComplete='email'
+                    autoFocus
+                    value={email}
+                    onChange={e => setEmail(e.target.value)}
+                    placeholder="Email Address"
+                    type="text"
+                    name="email"
+                    required
+                />
+                <input
+                    autoComplete="current-password"
+                    value={password}
+                    onChange={e => setPassword(e.target.value)}
+                    placeholder="Password"
+                    type="password"
+                    name="password"
+                    required
+                />
+                <button type="submit">Submit</button>
+            </form>
+            <GoogleLogin
+                clientId={clientidGoogle}
+                render={renderProps => (
+                    <GoogleLoginButton onClick={renderProps.onClick} disabled={renderProps.disabled} />
+                )}
+                buttonText="Login"
+                onSuccess={(e) => { console.log("LOGIN SUCCESS! Current user :", e.profileObj) }}
+                onFailure={(e) => { console.log("LOGIN FAILED! ", e); }}
+                cookiePolicy={'single_host_origin'}
+            />
+        </ThemeProvider>
+    );
+}
                         {/* <GitHubLogin
                             clientId={clientidGithub}
                             render={renderProps => (
@@ -94,22 +87,13 @@ export default function SignIn() {
                             onSuccess={(e) => { console.log("LOGIN SUCCESS! Current user :", e.profileObj) }}
                             onFailure={(e) => { console.log("LOGIN FAILED! ", e); }}
                         /> */}
-                        <Button
-                            onClick={handleSubmit}
-                            // type="submit"
-                            fullWidth
-                            variant="contained"
-                            sx={{ mt: 3, mb: 2 }}
-                        >
-                            Sign In
-                        </Button>
-                        <Grid container>
+                        {/* <Grid container> */}
                             {/* <Grid item xs>
                                 <Link href="#" variant="body2">
                                     Forgot password?
                                 </Link>
                             </Grid> */}
-                            <Grid item>
+                            {/* <Grid item>
                                 <Link href="/register" variant="body2">
                                     {"Don't have an account? Sign Up"}
                                 </Link>
@@ -119,6 +103,4 @@ export default function SignIn() {
                     </Box>
                 </Box>
             </Container>
-        </ThemeProvider >
-    );
-}
+); */}
