@@ -8,7 +8,6 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import NavBar from './Navbar';
 import { Alert, Snackbar } from '@mui/material';
 
 
@@ -45,7 +44,7 @@ export default function Register() {
         alert('A form was submitted: ');
         const data = new FormData(event.currentTarget);
         const [firstname, lastname, email, password] = [data.get('firstName'), data.get('lastName'), data.get('email'), data.get('password')]
-        fetch('http://localhost:8080/login/', {
+        fetch('http://localhost:8080/register/', {
             method: 'POST',
             // We convert the React state to JSON and send it as the POST body
             // body: JSON.stringify(this.state)
@@ -65,7 +64,6 @@ export default function Register() {
                     Les mots de passe ne vont pas.
                 </Alert>
             </Snackbar>
-            <NavBar />
             <ThemeProvider theme={theme}>
                 <Container component="main" maxWidth="xs">
                     <CssBaseline />
@@ -146,7 +144,7 @@ export default function Register() {
                             </Button>
                             <Grid container justifyContent="flex-end">
                                 <Grid item>
-                                    <Link href="#" variant="body2">
+                                    <Link href="/login" variant="body2">
                                         Already have an account? Sign in
                                     </Link>
                                 </Grid>

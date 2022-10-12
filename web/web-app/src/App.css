@@ -1,7 +1,7 @@
 .body {
     background: #ff0000;
 }
-  
+
 .Iam {
     display: flex;
     justify-content: center;
@@ -9,11 +9,13 @@
     font: normal 40px/50px Montserrat, sans-serif;
     color: rgb(117, 117, 117);
 }
+
 .Iam p {
     height: 50px;
     float: left;
     margin-right: 0.3em;
 }
+
 .Iam b {
     float: left;
     overflow: hidden;
@@ -21,67 +23,142 @@
     height: 50px;
     top: 40px;
 }
+
 .Iam .innerIam {
     display: inline-block;
     color: #3c8ce7;
-    position:relative;
+    position: relative;
     white-space: nowrap;
     top: 0;
     left: 0;
 
 
-/*animation*/
--webkit-animation:move 5s;
-    -moz-animation:move 5s;
-    -ms-animation:move 5s;
-    -o-animation:move 5s;
-        animation:move 5s;
-/*animation-iteration-count*/
--webkit-animation-iteration-count:infinite;
-    -moz-animation-iteration-count:infinite;
-    -ms-animation-iteration-count:infinite;
-    -o-animation-iteration-count:infinite;
-        animation-iteration-count:infinite;
-/*animation-delay*/
--webkit-animation-delay:3s;
-    -moz-animation-delay:3s;
-    -ms-animation-delay:3s;
-    -o-animation-delay:3s;
-        animation-delay:3s;
+    /*animation*/
+    -webkit-animation: move 5s;
+    -moz-animation: move 5s;
+    -ms-animation: move 5s;
+    -o-animation: move 5s;
+    animation: move 5s;
+    /*animation-iteration-count*/
+    -webkit-animation-iteration-count: infinite;
+    -moz-animation-iteration-count: infinite;
+    -ms-animation-iteration-count: infinite;
+    -o-animation-iteration-count: infinite;
+    animation-iteration-count: infinite;
+    /*animation-delay*/
+    -webkit-animation-delay: 3s;
+    -moz-animation-delay: 3s;
+    -ms-animation-delay: 3s;
+    -o-animation-delay: 3s;
+    animation-delay: 3s;
 }
-@keyframes move{
-    0%  { top: 0px; }
-    20% { top: -50px; }
-    40% { top: -100px; }
-    60% { top: -150px; }
-    80% { top: -200px; }
+
+@keyframes move {
+    0% {
+        top: 0px;
+    }
+
+    20% {
+        top: -50px;
+    }
+
+    40% {
+        top: -100px;
+    }
+
+    60% {
+        top: -150px;
+    }
+
+    80% {
+        top: -200px;
+    }
 }
 
 @-webkit-keyframes move {
-        0%  { top: 0px; }
-        20% { top: -50px; }
-        40% { top: -100px; }
-        60% { top: -150px; }
-        80% { top: -200px; }
+    0% {
+        top: 0px;
+    }
+
+    20% {
+        top: -50px;
+    }
+
+    40% {
+        top: -100px;
+    }
+
+    60% {
+        top: -150px;
+    }
+
+    80% {
+        top: -200px;
+    }
 }
+
 @-moz-keyframes move {
-        0%  { top: 0px; }
-        20% { top: -50px; }
-        40% { top: -100px; }
-        60% { top: -150px; }
-        80% { top: -200px; }
+    0% {
+        top: 0px;
+    }
+
+    20% {
+        top: -50px;
+    }
+
+    40% {
+        top: -100px;
+    }
+
+    60% {
+        top: -150px;
+    }
+
+    80% {
+        top: -200px;
+    }
 }
+
 @-o-keyframes move {
-        0%  { top: 0px; }
-        20% { top: -50px; }
-        40% { top: -100px; }
-        60% { top: -150px; }
-        80% { top: -200px; }
+    0% {
+        top: 0px;
+    }
+
+    20% {
+        top: -50px;
+    }
+
+    40% {
+        top: -100px;
+    }
+
+    60% {
+        top: -150px;
+    }
+
+    80% {
+        top: -200px;
+    }
 }
+
 @keyframes move {
-        0%  { top: 0px; }
-        20% { top: -50px; }
-        40% { top: -100px; }
-        60% { top: -150px; }
-        80% { top: -200px; }
+    0% {
+        top: 0px;
+    }
+
+    20% {
+        top: -50px;
+    }
+
+    40% {
+        top: -100px;
+    }
+
+    60% {
+        top: -150px;
+    }
+
+    80% {
+        top: -200px;
+    }
 }

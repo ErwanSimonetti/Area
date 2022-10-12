@@ -21,3 +21,4 @@ web/web-app/.env.production.local
 web/web-app/npm-debug.log*
 web/web-app/yarn-debug.log*
 web/web-app/yarn-error.log*
+package-lock.json
