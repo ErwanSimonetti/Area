@@ -11,7 +11,6 @@ const discordImg = "https://logo-marque.com/wp-content/uploads/2020/12/Discord-L
 const githubImg = "https://logos-marques.com/wp-content/uploads/2021/03/GitHub-Logo.png"
 
 export function AREACard({ cards }) {
-    let img = null;
     return (
         <Grid container spacing={4}>
             {cards.map((card, index) => (
