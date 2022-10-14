@@ -42,11 +42,10 @@ func GetUserById(w http.ResponseWriter, r *http.Request){
 
 
 func CreateUser(w http.ResponseWriter, r *http.Request){
-	var data map[string]string
 	NewUser := &models.User{}
 	utils.ParseBody(r, NewUser)
-	
-	password, _ := bcrypt.GenerateFromPassword([]byte(data["password"]), 14)
+	fmt.Println(NewUser.Password)
+	password, _ := bcrypt.GenerateFromPassword([]byte(NewUser.Password), 14)
 
 	NewUser.Password = password
 	b := NewUser.CreateUser()
@@ -56,23 +55,22 @@ func CreateUser(w http.ResponseWriter, r *http.Request){
 }
 
 func LoginUser(w http.ResponseWriter, r *http.Request) {
+	utils.EnableCors(&w)
 	LoginUser := &models.User{}
 	utils.ParseBody(r, LoginUser)
 
 	var user models.User
 	user = *models.FindUser(LoginUser.Email)
 
+
 	if (user.Email == "") {
 		res, _ := json.Marshal("bad email")
+		w.WriteHeader(http.StatusBadRequest)
 		w.Write(res)
 		return
 	}
 
-	if user.Id == 0 {
-		w.WriteHeader(http.StatusBadRequest)
-	}
-
-	err := bcrypt.CompareHashAndPassword(user.Password, LoginUser.Password)
+	err := bcrypt.CompareHashAndPassword(user.Password, []byte(LoginUser.Password))
 	if (err != nil) {
 		w.WriteHeader(http.StatusBadRequest)
 		res, _ := json.Marshal("bad password")
@@ -89,6 +87,7 @@ func LoginUser(w http.ResponseWriter, r *http.Request) {
 
 	if err != nil {
 		w.WriteHeader(http.StatusBadRequest)
+		return
 	}
 
 	cookie := &http.Cookie{
@@ -100,6 +99,8 @@ func LoginUser(w http.ResponseWriter, r *http.Request) {
 
 	http.SetCookie(w, cookie)
 	res, _ := json.Marshal("success")
+	w.Header().Set("Content-Type","pkglication/json")
+	w.WriteHeader(http.StatusOK)
 	w.Write(res)
 
 }

@@ -17,27 +17,25 @@ const clientidGoogle = "78828642227-b3tlfon89t2j66b2a81c60mu8oe45ijb.apps.google
 
 const theme = createTheme();
 
-async function loginUser(credentials) {
-    return fetch('http://localhost:8080/login', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(credentials)
-    })
-        .then(data => data.json())
-}
 
 export default function SignIn() {
 
     const handleSubmit = (event) => {
-        console.log("INSIDE FUNCTION UWUUUUUUUUUUUu")
+        alert('A form was submitted: ');
+        const data = new FormData(event.currentTarget);
+        const [email, password] = [data.get('email'), data.get('password')]
+        fetch('http://localhost:8080/login/', {
+            method: 'POST',
+            // We convert the React state to JSON and send it as the POST body
+            // body: JSON.stringify(this.state)
+            body: JSON.stringify({email, password })
+        }).then(function (response) {
+            console.log(response)
+            return response.json();
+        });
+
         event.preventDefault();
-        console.log("email value :")
-        console.log(event.target.email.value)
-        console.log("password value :")
-        console.log(event.target.password.value)
-    };
+    }
 
     const [email, setEmail] = React.useState("");
     const [password, setPassword] = React.useState("");
