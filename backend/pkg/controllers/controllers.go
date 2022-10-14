@@ -4,13 +4,19 @@ import(
 	"encoding/json"
 	"fmt"
 	"github.com/gorilla/mux"
+	"golang.org/x/crypto/bcrypt"
+	"github.com/dgrijalva/jwt-go"
 	"net/http"
 	"strconv"
 	"AREA/pkg/utils"
 	"AREA/pkg/models"
+	"github.com/jinzhu/gorm"
+	"time"
 )
 
+var db * gorm.DB
 var NewUser models.User
+const SecretKey = "secret"
 
 func GetAllUsers(w http.ResponseWriter, r *http.Request){
 	newUsers:=models.GetAllUsers()
@@ -34,28 +40,69 @@ func GetUserById(w http.ResponseWriter, r *http.Request){
 	w.Write(res)
 }
 
+
 func CreateUser(w http.ResponseWriter, r *http.Request){
-	CreateUser := &models.User{}
-	utils.ParseBody(r, CreateUser)
-	b := CreateUser.CreateUser()
-	// fmt.Println("Created a User")
+	var data map[string]string
+	NewUser := &models.User{}
+	utils.ParseBody(r, NewUser)
+	
+	password, _ := bcrypt.GenerateFromPassword([]byte(data["password"]), 14)
+
+	NewUser.Password = password
+	b := NewUser.CreateUser()
 	res, _ := json.Marshal(b)
 	w.WriteHeader(http.StatusOK)
 	w.Write(res)
 }
 
-func Test(w http.ResponseWriter, r *http.Request) {
-	fmt.Println("hello")
-}
+func LoginUser(w http.ResponseWriter, r *http.Request) {
+	LoginUser := &models.User{}
+	utils.ParseBody(r, LoginUser)
 
-// func CreateBook(w http.ResponseWriter, r *http.Request){
-// 	CreateBook := &models.Book{}
-// 	utils.ParseBody(r, CreateBook)
-// 	b:= CreateBook.CreateBook()
-// 	res, _ := json.Marshal(b)
-// 	w.WriteHeader(http.StatusOK)
-// 	w.Write(res)
-// }
+	var user models.User
+	user = *models.FindUser(LoginUser.Email)
+
+	if (user.Email == "") {
+		res, _ := json.Marshal("bad email")
+		w.Write(res)
+		return
+	}
+
+	if user.Id == 0 {
+		w.WriteHeader(http.StatusBadRequest)
+	}
+
+	err := bcrypt.CompareHashAndPassword(user.Password, LoginUser.Password)
+	if (err != nil) {
+		w.WriteHeader(http.StatusBadRequest)
+		res, _ := json.Marshal("bad password")
+		w.Write(res)
+		return
+	}
+
+	claims := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.StandardClaims{
+		Issuer:    strconv.Itoa(int(user.Id)),
+		ExpiresAt: time.Now().Add(time.Hour * 24).Unix(), //1 day
+	})
+
+	token, err := claims.SignedString([]byte(SecretKey))
+
+	if err != nil {
+		w.WriteHeader(http.StatusBadRequest)
+	}
+
+	cookie := &http.Cookie{
+		Name:     "jwt",
+		Value:    token,
+		Expires:  time.Now().Add(time.Hour * 24),
+		HttpOnly: true,
+	}
+
+	http.SetCookie(w, cookie)
+	res, _ := json.Marshal("success")
+	w.Write(res)
+
+}
 
 func DeleteUser(w http.ResponseWriter, r *http.Request){
 	vars := mux.Vars(r)
