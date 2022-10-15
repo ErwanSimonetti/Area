@@ -6,6 +6,7 @@ import(
 	"github.com/gorilla/mux"
 	"golang.org/x/crypto/bcrypt"
 	"github.com/dgrijalva/jwt-go"
+
 	"net/http"
 	"strconv"
 	"AREA/pkg/utils"
@@ -104,7 +105,6 @@ func LoginUser(w http.ResponseWriter, r *http.Request) {
 	w.Write(res)
 
 }
-
 func DeleteUser(w http.ResponseWriter, r *http.Request){
 	vars := mux.Vars(r)
 	userId := vars["userId"]

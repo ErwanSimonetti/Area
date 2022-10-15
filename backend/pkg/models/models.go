@@ -14,6 +14,7 @@ type User struct {
 	Lastname string `json:"lastname"`
 	Email string `json:"email"`
 	Password []byte `json:"password"`
+
 }
 
 func init() {
