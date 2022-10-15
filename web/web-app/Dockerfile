@@ -11,6 +11,7 @@ WORKDIR /react-app
 COPY ./package.json /react-app
 RUN npm i react-social-login-buttons react-google-login --f react-login-github --f  @mui/icons-material
 
+
 # Copying all the files in our project
 COPY . .
 

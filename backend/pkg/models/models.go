@@ -9,10 +9,12 @@ var db * gorm.DB
 
 type User struct {
 	gorm.Model
-	Firstname string `gorm:""json:"firstname"`
+	Firstname string `json:"firstname"`
+	Id int64 `json:"id"`
 	Lastname string `json:"lastname"`
 	Email string `json:"email"`
-	Password string `json:"password"`
+	Password []byte `json:"password"`
+
 }
 
 func init() {
@@ -25,6 +27,12 @@ func (b *User) CreateUser() *User{
 	db.NewRecord(b)
 	db.Create(&b)
 	return b
+}
+
+func FindUser(Email string) *User{
+	var getUser User
+	db.Where("email = ?", Email).Find(&getUser)
+	return &getUser
 }
 
 func GetAllUsers() []User{
