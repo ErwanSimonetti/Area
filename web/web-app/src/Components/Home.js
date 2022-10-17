@@ -1,17 +1,17 @@
-import * as React from 'react';
-import Box from '@mui/material/Box';
-import Link from '@mui/material/Link';
-import List from '@mui/material/List';
-import Avatar from '@mui/material/Avatar';
-import ListItem from '@mui/material/ListItem';
-import LoginIcon from '@mui/icons-material/Login';
-import ListItemText from '@mui/material/ListItemText';
-import ListItemAvatar from '@mui/material/ListItemAvatar';
-import AppRegistrationIcon from '@mui/icons-material/AppRegistration';
-import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet';
+import * as React from 'react'
+import Box from '@mui/material/Box'
+import Link from '@mui/material/Link'
+import List from '@mui/material/List'
+import Avatar from '@mui/material/Avatar'
+import ListItem from '@mui/material/ListItem'
+import LoginIcon from '@mui/icons-material/Login'
+import ListItemText from '@mui/material/ListItemText'
+import ListItemAvatar from '@mui/material/ListItemAvatar'
+import AppRegistrationIcon from '@mui/icons-material/AppRegistration'
+import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet'
 
-function RollingCarousel() {
-    return (
+function RollingCarousel () {
+  return (
         <div className="Iam">
             <p>Bienvenue sur</p>
             <b>
@@ -24,20 +24,20 @@ function RollingCarousel() {
                 </div>
             </b >
         </div >
-    )
+  )
 }
 
-export default function FolderList() {
-    return (
+export default function FolderList () {
+  return (
         <React.Fragment>
             <Box sx={{ display: 'flex', alignItems: 'center' }}>
                 <RollingCarousel />
             </Box>
             <Box sx={{
-                marginTop: 8,
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
+              marginTop: 8,
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center'
             }}>
                 <List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
                     <ListItem>
@@ -73,5 +73,5 @@ export default function FolderList() {
                 </List>
             </Box>
         </React.Fragment>
-    );
+  )
 }
