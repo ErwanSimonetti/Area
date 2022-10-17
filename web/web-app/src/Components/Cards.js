@@ -1,16 +1,16 @@
-import * as React from 'react';
-import Card from '@mui/material/Card';
-import Box from '@mui/material/Box';
-import CardMedia from '@mui/material/CardMedia';
+import * as React from 'react'
+import Card from '@mui/material/Card'
+import Box from '@mui/material/Box'
+import CardMedia from '@mui/material/CardMedia'
 
-import { CardContent, Typography, Grid } from '@mui/material';
+import { CardContent, Typography, Grid } from '@mui/material'
 
-const twitterImg = "https://www.1min30.com/wp-content/uploads/2017/05/Embl%C3%A8me-Twitter.jpg"
-const spotifyImg = "https://storage.googleapis.com/pr-newsroom-wp/1/2018/11/folder_920_201707260845-1.png"
-const discordImg = "https://logo-marque.com/wp-content/uploads/2020/12/Discord-Logo.png"
-const githubImg = "https://logos-marques.com/wp-content/uploads/2021/03/GitHub-Logo.png"
+const twitterImg = 'https://www.1min30.com/wp-content/uploads/2017/05/Embl%C3%A8me-Twitter.jpg'
+const spotifyImg = 'https://storage.googleapis.com/pr-newsroom-wp/1/2018/11/folder_920_201707260845-1.png'
+const discordImg = 'https://logo-marque.com/wp-content/uploads/2020/12/Discord-Logo.png'
+const githubImg = 'https://logos-marques.com/wp-content/uploads/2021/03/GitHub-Logo.png'
 
-export function AREACard({ cards }) {
+export function AREACard ({ cards }) {
     return (
         <Grid container spacing={4}>
             {cards.map((card, index) => (
@@ -32,17 +32,18 @@ export function AREACard({ cards }) {
                                 {card.reactionService}
                             </Typography>
                         </CardContent>
-                        <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+                        <Box sx={{ display: 'flex', flexDirection: 'row' }}>
                             <CardMedia
                                 component="img"
-                                image={(card.actionService === "Spotify") ? spotifyImg : (card.actionService === "Twitter") ? twitterImg : (card.actionService === "Discord") ? discordImg : (card.actionService === "Github") ? githubImg : null}
+                                image={(card.actionService === 'Spotify') ? spotifyImg : (card.actionService === 'Twitter') ? twitterImg : (card.actionService === 'Discord') ? discordImg : (card.actionService === 'Github') ? githubImg : null}
                                 alt="serviceImg"
                             />
+                            {card.reactionService !== card.actionService ??
                             <CardMedia
-                                component="img"
-                                image={(card.reactionService === "Spotify") ? spotifyImg : (card.reactionService === "Twitter") ? twitterImg : (card.reactionService === "Discord") ? discordImg : (card.reactionService === "Github") ? githubImg : null}
-                                alt="serviceImage"
-                            />
+                                    component="img"
+                                    image={(card.reactionService === 'Spotify') ? spotifyImg : (card.reactionService === 'Twitter') ? twitterImg : (card.reactionService === 'Discord') ? discordImg : (card.reactionService === 'Github') ? githubImg : null}
+                                    alt="serviceImage"
+                                />}
                         </Box>
                     </Card>
                 </Grid>

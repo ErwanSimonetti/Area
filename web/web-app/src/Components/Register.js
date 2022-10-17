@@ -1,39 +1,38 @@
-import * as React from 'react';
-import Button from '@mui/material/Button';
-import CssBaseline from '@mui/material/CssBaseline';
-import TextField from '@mui/material/TextField';
-import Link from '@mui/material/Link';
-import Grid from '@mui/material/Grid';
-import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
-import Container from '@mui/material/Container';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { Alert, Snackbar } from '@mui/material';
+import * as React from 'react'
+import Button from '@mui/material/Button'
+import CssBaseline from '@mui/material/CssBaseline'
+import TextField from '@mui/material/TextField'
+import Link from '@mui/material/Link'
+import Grid from '@mui/material/Grid'
+import Box from '@mui/material/Box'
+import Typography from '@mui/material/Typography'
+import Container from '@mui/material/Container'
+import { createTheme, ThemeProvider } from '@mui/material/styles'
+import { Alert, Snackbar } from '@mui/material'
 
+const theme = createTheme()
 
-const theme = createTheme();
+export default function Register () {
+  const [wrongPassword, setWrongPassword] = React.useState(false)
 
-export default function Register() {
-    const [wrongPassword, setWrongPassword] = React.useState(false);
+  const handleSubmit = (event) => {
+    alert('A form was submitted: ')
+    const data = new FormData(event.currentTarget)
+    const [firstname, lastname, email, password] = [data.get('firstName'), data.get('lastName'), data.get('email'), data.get('password')]
+    fetch('http://localhost:8080/register/', {
+      method: 'POST',
+      // We convert the React state to JSON and send it as the POST body
+      // body: JSON.stringify(this.state)
+      body: JSON.stringify({ firstname, lastname, email, password })
+    }).then(function (response) {
+      console.log(response)
+      return response.json()
+    })
 
-    const handleSubmit = (event) => {
-        alert('A form was submitted: ');
-        const data = new FormData(event.currentTarget);
-        const [firstname, lastname, email, password] = [data.get('firstName'), data.get('lastName'), data.get('email'), data.get('password')]
-        fetch('http://localhost:8080/register/', {
-            method: 'POST',
-            // We convert the React state to JSON and send it as the POST body
-            // body: JSON.stringify(this.state)
-            body: JSON.stringify({ firstname, lastname, email, password })
-        }).then(function (response) {
-            console.log(response)
-            return response.json();
-        });
+    event.preventDefault()
+  }
 
-        event.preventDefault();
-    }
-
-    return (
+  return (
         <React.Fragment>
             <Snackbar open={wrongPassword} autoHideDuration={6000} onClose={() => setWrongPassword(false)}>
                 <Alert onClose={() => setWrongPassword(false)} severity="error" sx={{ width: '100%' }}>
@@ -45,10 +44,10 @@ export default function Register() {
                     <CssBaseline />
                     <Box
                         sx={{
-                            marginTop: 8,
-                            display: 'flex',
-                            flexDirection: 'column',
-                            alignItems: 'center',
+                          marginTop: 8,
+                          display: 'flex',
+                          flexDirection: 'column',
+                          alignItems: 'center'
                         }}
                     >
                         <Typography component="h1" variant="h5">
@@ -130,5 +129,5 @@ export default function Register() {
                 </Container>
             </ThemeProvider>
         </React.Fragment >
-    );
+  )
 }
