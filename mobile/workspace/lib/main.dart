@@ -12,7 +12,6 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: _title,
       home: Scaffold(
-        appBar: AppBar(title: const Text(_title)),
         body: const MyStatefulWidget(),
       ),
     );
@@ -74,30 +73,83 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                 ),
               ),
             ),
-            Material(
-              color: Colors.white,
-              child: Center(
-                child: Ink(
-                  decoration: const ShapeDecoration(
-                    color: Colors.white,
-                    shape: CircleBorder(),
-                  ),
-                  child: IconButton(
-                    icon: ImageIcon(
-                      AssetImage('./assets/GitHub.png'),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                Material(
+                  color: Colors.white,
+                  child: Center(
+                    child: Ink(
+                      decoration: const ShapeDecoration(
+                        color: Colors.white,
+                        shape: CircleBorder(),
+                      ),
+                      child: IconButton(
+                        icon: ImageIcon(
+                          AssetImage('./assets/GitHub.png'),
+                        ),
+                        iconSize: 50,
+                        // color: Colors.transparent,/
+                        onPressed: () {
+                          print('github');
+                        },
+                      ),
                     ),
-                    iconSize: 50,
-                    color: Colors.blueGrey.shade900,
-                    onPressed: () {
-                      print('github');
-                    },
                   ),
                 ),
-              ),
+                Material(
+                  color: Colors.white,
+                  child: Center(
+                    child: Ink(
+                      decoration: const ShapeDecoration(
+                        color: Colors.white,
+                        shape: CircleBorder(),
+                      ),
+                      child: IconButton(
+                        icon: ImageIcon(
+                          AssetImage('./assets/Facebook.png'),
+                        ),
+                        iconSize: 50,
+                        // color: Colors.blueGrey.shade900,
+                        onPressed: () {
+                          print('Facebook');
+                        },
+                      ),
+                    ),
+                  ),
+                ),
+                Material(
+                  color: Colors.white,
+                  child: Center(
+                    child: Ink(
+                      decoration: const ShapeDecoration(
+                        color: Colors.white,
+                        shape: CircleBorder(),
+                      ),
+                      child: IconButton(
+                        icon: ImageIcon(
+                          AssetImage('./assets/Google.png'),
+                        ),
+                        iconSize: 50,
+                        color: Colors.blueGrey.shade900,
+                        onPressed: () {
+                          print('Google');
+                        },
+                      ),
+                    ),
+                  ),
+                ),
+                OutlinedButton.icon( // <-- OutlinedButton
+                  onPressed: () {},
+                  icon: ImageIcon(AssetImage('./assets/Google.png'), color: Colors.black),
+                  label: Text('Google'),
+                  // color:Colors.white
+                ),
+              ],
             ),
             TextButton(
               onPressed: () {
-                //forgot password screen
+                //forgot password scree
               },
               child: const Text('Forgot Password',),
             ),
@@ -109,6 +161,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                   onPressed: () {
                     print(nameController.text);
                     print(passwordController.text);
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => const SecondRoute()));
                   },
                 )
             ),
@@ -128,5 +181,27 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
             ),
           ],
         ));
+  }
+}
+
+
+class SecondRoute extends StatelessWidget {
+  const SecondRoute({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Second Route'),
+      ),
+      body: Center(
+        child: ElevatedButton(
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          child: const Text('Go back!'),
+        ),
+      ),
+    );
   }
 }

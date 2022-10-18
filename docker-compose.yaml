@@ -42,7 +42,7 @@ services:
   mobile:
     container_name: mobile
     build: # Use the Dockerfile from the current directory to build container.
-      context: ./mobile/mobile_app
+      context: ./mobile/
     devices:
       - /dev/tty
     depends_on:
