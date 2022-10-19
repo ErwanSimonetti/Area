@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import './colors.dart';
+import './widgets.dart';
 
 void main() => runApp(const MyApp());
 
@@ -73,78 +77,24 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                 ),
               ),
             ),
-            Row(
+            Column(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                Material(
-                  color: Colors.white,
-                  child: Center(
-                    child: Ink(
-                      decoration: const ShapeDecoration(
-                        color: Colors.white,
-                        shape: CircleBorder(),
-                      ),
-                      child: IconButton(
-                        icon: ImageIcon(
-                          AssetImage('./assets/GitHub.png'),
-                        ),
-                        iconSize: 50,
-                        // color: Colors.transparent,/
-                        onPressed: () {
-                          print('github');
-                        },
-                      ),
-                    ),
-                  ),
-                ),
-                Material(
-                  color: Colors.white,
-                  child: Center(
-                    child: Ink(
-                      decoration: const ShapeDecoration(
-                        color: Colors.white,
-                        shape: CircleBorder(),
-                      ),
-                      child: IconButton(
-                        icon: ImageIcon(
-                          AssetImage('./assets/Facebook.png'),
-                        ),
-                        iconSize: 50,
-                        // color: Colors.blueGrey.shade900,
-                        onPressed: () {
-                          print('Facebook');
-                        },
-                      ),
-                    ),
-                  ),
-                ),
-                Material(
-                  color: Colors.white,
-                  child: Center(
-                    child: Ink(
-                      decoration: const ShapeDecoration(
-                        color: Colors.white,
-                        shape: CircleBorder(),
-                      ),
-                      child: IconButton(
-                        icon: ImageIcon(
-                          AssetImage('./assets/Google.png'),
-                        ),
-                        iconSize: 50,
-                        color: Colors.blueGrey.shade900,
-                        onPressed: () {
-                          print('Google');
-                        },
-                      ),
-                    ),
-                  ),
-                ),
-                OutlinedButton.icon( // <-- OutlinedButton
-                  onPressed: () {},
-                  icon: ImageIcon(AssetImage('./assets/Google.png'), color: Colors.black),
-                  label: Text('Google'),
-                  // color:Colors.white
-                ),
+                CustomWidgets.socialButtonRect(
+                    'Login with Google', googleColor, FontAwesomeIcons.googlePlusG,
+                    onTap: () {
+                  Fluttertoast.showToast(msg: 'I am google');
+                }),
+                CustomWidgets.socialButtonRect(
+                    'Login with Facebook', facebookColor, FontAwesomeIcons.facebookF,
+                    onTap: () {
+                  Fluttertoast.showToast(msg: 'I am Facebook');
+                }),
+                CustomWidgets.socialButtonRect(
+                    'Login with GitHub', githubColor, FontAwesomeIcons.github,
+                    onTap: () {
+                  Fluttertoast.showToast(msg: 'I am guy teub');
+                }),
               ],
             ),
             TextButton(
