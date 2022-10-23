@@ -1,9 +1,11 @@
+/* eslint-disable */
 // import "./App.css"
 import React from 'react';
 import Home from './Components/Home'
 import Login from './Components/Login'
 import Wallet from './Components/Wallet'
 import NavBar from './Components/Navbar';
+import Discord from './Components/Discord';
 import { Route, Routes } from 'react-router-dom';
 
 import Register from './Components/Register';
@@ -19,6 +21,7 @@ export default function App() {
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
         <Route path="/wallet" element={<Wallet />} />
+        <Route path="/discord" element={<Discord />} />
       </Routes>
     </div>
   )

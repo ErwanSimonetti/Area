@@ -1,3 +1,4 @@
+/* eslint-disable */
 // import "./App.css"
 import MenuIcon from '@mui/icons-material/Menu'
 import { Toolbar, Typography, AppBar } from "@mui/material";

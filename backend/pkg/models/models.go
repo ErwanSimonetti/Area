@@ -2,7 +2,7 @@ package models
 
 import (
 	"github.com/jinzhu/gorm"
-	"AREA/pkg/config"
+	// "AREA/pkg/config"
 )
 
 var db * gorm.DB
@@ -17,11 +17,11 @@ type User struct {
 
 }
 
-func init() {
-	config.Connect()
-	db = config.GetDb()
-	db.AutoMigrate(&User{})
-}
+// func init() {
+// 	config.Connect()
+// 	db = config.GetDb()
+// 	db.AutoMigrate(&User{})
+// }
 
 func (b *User) CreateUser() *User{
 	db.NewRecord(b)

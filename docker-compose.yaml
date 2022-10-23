@@ -37,7 +37,7 @@ services:
     build: # Use the Dockerfile from the current directory to build container.
       context: ./web/web-app
     ports: 
-      - "8081:8081"
+      - "3000:3000"
     volumes:
       - common:/apk
     depends_on: 
