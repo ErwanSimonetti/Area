@@ -13,7 +13,4 @@ parserOptions:
   sourceType: module
 plugins:
   - react
-rules: {
-    "react/prop-types": 0,
-    "indent": "off"
-   }
+rules: { "react/prop-types": 0, "indent": "off", "no-unused-vars": "off" }
