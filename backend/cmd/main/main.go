@@ -36,3 +36,8 @@ func main() {
 	// gocron.Every(5).Second().Do(jobs.ExecAllJob)
 	// <-gocron.Start()
 }
+
+// func main()  {
+// 	controllers.TriggerEachSecondes()
+// }
+

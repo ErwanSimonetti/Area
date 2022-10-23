@@ -1,20 +1,16 @@
-/*eslint-disable*/
-import * as React from 'react'
-import Avatar from '@mui/material/Avatar'
-import Button from '@mui/material/Button'
-import CssBaseline from '@mui/material/CssBaseline'
-import TextField from '@mui/material/TextField'
-import Link from '@mui/material/Link'
-import Grid from '@mui/material/Grid'
-import Box from '@mui/material/Box'
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined'
-import Typography from '@mui/material/Typography'
-import Container from '@mui/material/Container'
-import { createTheme, ThemeProvider } from '@mui/material/styles'
-import { GoogleLogin } from 'react-google-login'
-import { GoogleLoginButton } from 'react-social-login-buttons'
-import { gapi } from 'gapi-script'
-import axios from 'axios'
+/* eslint-disable */
+import * as React from 'react';
+import Button from '@mui/material/Button';
+import CssBaseline from '@mui/material/CssBaseline';
+import TextField from '@mui/material/TextField';
+import Link from '@mui/material/Link';
+import Grid from '@mui/material/Grid';
+import Box from '@mui/material/Box';
+import Typography from '@mui/material/Typography';
+import Container from '@mui/material/Container';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { GoogleLogin } from 'react-google-login';
+import { GoogleLoginButton } from 'react-social-login-buttons';
 
 const theme = createTheme()
 const clientId = '78828642227-b3tlfon89t2j66b2a81c60mu8oe45ijb.apps.googleusercontent.com'

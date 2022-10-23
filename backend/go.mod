@@ -8,6 +8,7 @@ require (
 	github.com/go-co-op/gocron v1.17.1
 	github.com/go-sql-driver/mysql v1.6.0
 	github.com/gorilla/mux v1.8.0
+	github.com/jasonlvhit/gocron v0.0.1 // indirect
 	github.com/jinzhu/gorm v1.9.16
 	github.com/joho/godotenv v1.4.0
 	github.com/tidwall/gjson v1.14.3

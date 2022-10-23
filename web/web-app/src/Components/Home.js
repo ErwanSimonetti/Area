@@ -1,14 +1,15 @@
-import * as React from 'react'
-import Box from '@mui/material/Box'
-import Link from '@mui/material/Link'
-import List from '@mui/material/List'
-import Avatar from '@mui/material/Avatar'
-import ListItem from '@mui/material/ListItem'
-import LoginIcon from '@mui/icons-material/Login'
-import ListItemText from '@mui/material/ListItemText'
-import ListItemAvatar from '@mui/material/ListItemAvatar'
-import AppRegistrationIcon from '@mui/icons-material/AppRegistration'
-import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet'
+/* eslint-disable */
+import * as React from 'react';
+import Box from '@mui/material/Box';
+import Link from '@mui/material/Link';
+import List from '@mui/material/List';
+import Avatar from '@mui/material/Avatar';
+import ListItem from '@mui/material/ListItem';
+import LoginIcon from '@mui/icons-material/Login';
+import ListItemText from '@mui/material/ListItemText';
+import ListItemAvatar from '@mui/material/ListItemAvatar';
+import AppRegistrationIcon from '@mui/icons-material/AppRegistration';
+import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet';
 
 function RollingCarousel () {
   return (

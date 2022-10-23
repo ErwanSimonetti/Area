@@ -2,7 +2,7 @@ package models
 
 import (
 	"github.com/jinzhu/gorm"
-	"AREA/pkg/config"
+	// "AREA/pkg/config"
 )
 
 var db * gorm.DB
