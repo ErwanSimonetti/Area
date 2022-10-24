@@ -31,7 +31,6 @@ func AuthDiscord(w http.ResponseWriter, r *http.Request){
 	data.Set("scope", "webhook.incoming")
 	data.Set("code", r.FormValue("code"))
 	encodedData := data.Encode()
-
 	req, err := http.NewRequest("POST", authUrl, strings.NewReader(encodedData))
 	if err != nil {
 		w.WriteHeader(http.StatusBadRequest)
