@@ -35,7 +35,7 @@ func ConnectionSpotify() {
 	accessToken, err := authConfig.Token(context.Background())
 
 	if err != nil {
-		log.Fatalf("error retrieve access token: %v", err)
+		log.Fatalf("error retrieving access token: %v", err)
 	}
 
 	client := spotify.Authenticator{}.NewClient(accessToken)
@@ -43,7 +43,7 @@ func ConnectionSpotify() {
 	playlistID := spotify.ID("37i9dQZF1DXcBWIGoYBM5M")
 	playlist, err := client.GetPlaylist(playlistID)
 	if err != nil {
-		log.Fatalf("error retrieve playlist data: %v", err)
+		log.Fatalf("error retrieving playlist data: %v", err)
 	}
 
 	log.Println("playlist id:", playlist.ID)
@@ -59,7 +59,7 @@ func ConnectionSpotify() {
 // func handle(int) {
 // }
 
-// func TriggerEachSecondes() {
+// func TriggerEachSecond() {
 // 	select {
 // 	// case m := <-c:
 // 	// 	handle(m)
@@ -83,7 +83,7 @@ func task() {
 	log.Printf(sb)
 }
 
-func TriggerEachSecondes() {
+func TriggerEachSecond() {
     s := gocron.NewScheduler()
     s.Every(2).Second().Do(task)
     <- s.Start()
@@ -103,7 +103,7 @@ func HelloDiscord(w http.ResponseWriter, r *http.Request){
 	// // token, _ := conf.Exchange(context.Background(), r.FormValue("code"))
 	// // fmt.Println(token)
 	// toekn = token
-	myurl := "https://discordapp.com/api/v6/oauth2/token";
+	authUrl := "https://discordapp.com/api/v6/oauth2/token";
 
 	client := &http.Client{
 		Timeout: time.Second * 10,
@@ -118,7 +118,7 @@ func HelloDiscord(w http.ResponseWriter, r *http.Request){
 	data.Set("code", r.FormValue("code"))
 	encodedData := data.Encode()
 	fmt.Println(encodedData)
-	req, err := http.NewRequest("POST", myurl, strings.NewReader(encodedData))
+	req, err := http.NewRequest("POST", authUrl, strings.NewReader(encodedData))
 	if err != nil {
 		// return fmt.Errorf("Got error %s", err.Error())
 	}
@@ -129,16 +129,16 @@ func HelloDiscord(w http.ResponseWriter, r *http.Request){
 	body, _ := ioutil.ReadAll(response.Body)
 	  
 	m := make(map[string]interface{})
-	jajerr := json.Unmarshal(body, &m)
-	if jajerr != nil {
-	    log.Fatal(jajerr)
+	errorUnmarshal := json.Unmarshal(body, &m)
+	if errorUnmarshal != nil {
+	    log.Fatal(errorUnmarshal)
 	}
 	address := m["webhook"].(map[string]interface{})
 	messageUrl := fmt.Sprintf("%s/%s", address["id"], address["token"])
 	webhook, err := disgohook.NewWebhookClientByToken(nil, nil, messageUrl)
+	msg := "test of Dana's tribe"
 
-	Imessage, err := webhook.SendContent("premiere action bande de SCHLAGUE QUI A LA PLUS GROSSE BITE MAINTENANT HEEEEEIN @everyone\nDe la part du bot: Timothée et JUliette on des grosses quequetes")
-	webhook.SendContent("premiere action bande de SCHLAGUE QUI A LA PLUS GROSSE BITE MAINTENANT HEEEEEIN @everyone\nDe la part du bot: Timothée et JUliette on des grosses quequetes")
+	Imessage, err := webhook.SendContent(msg)
 
 	Imessage = Imessage
 	// Imessage, err := webhook.SendEmbeds(api.NewEmbedBuilder().
