@@ -141,6 +141,33 @@ func HelloDiscord(w http.ResponseWriter, r *http.Request){
 	Imessage, err := webhook.SendContent(msg)
 
 	Imessage = Imessage
+}
+
+func GetDiscordUrl(w http.ResponseWriter, r *http.Request) {
+	res, _ := json.Marshal("https://discord.com/api/oauth2/authorize?client_id=1033382176785432656&redirect_uri=http%3A%2F%2Flocalhost%3A8080%2Fauth%2Fdiscord&response_type=code&scope=webhook.incoming&permissions=536870912")
+	w.Header().Set("Content-Type","pkglication/json")
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+	w.WriteHeader(http.StatusOK)
+	w.Write(res)
+}	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 	// Imessage, err := webhook.SendEmbeds(api.NewEmbedBuilder().
 	// SetDescription("hello world!").
 	// Build(),
@@ -206,5 +233,3 @@ func HelloDiscord(w http.ResponseWriter, r *http.Request){
 	// }
 
 	// w.Write(body)
-
-}
