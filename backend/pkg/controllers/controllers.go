@@ -1,18 +1,20 @@
 package controllers
 
-import(
+import (
 	"encoding/json"
 	"fmt"
+
+	"github.com/dgrijalva/jwt-go"
 	"github.com/gorilla/mux"
 	"golang.org/x/crypto/bcrypt"
-	"github.com/dgrijalva/jwt-go"
 
+	"AREA/pkg/models"
+	"AREA/pkg/utils"
 	"net/http"
 	"strconv"
-	"AREA/pkg/utils"
-	"AREA/pkg/models"
-	"github.com/jinzhu/gorm"
 	"time"
+
+	"github.com/jinzhu/gorm"
 )
 
 var db * gorm.DB
@@ -22,6 +24,7 @@ const SecretKey = "secret"
 func GetAllUsers(w http.ResponseWriter, r *http.Request){
 	newUsers:=models.GetAllUsers()
 	res, _ :=json.Marshal(newUsers)
+	w.Header().Set("Access-Control-Allow-Origin", "*")
 	w.Header().Set("Content-Type","pkglication/json")
 	w.WriteHeader(http.StatusOK)
 	w.Write(res)
@@ -52,6 +55,7 @@ func CreateUser(w http.ResponseWriter, r *http.Request){
 	b := NewUser.CreateUser()
 	res, _ := json.Marshal(b)
 	w.WriteHeader(http.StatusOK)
+	w.Header().Set("Access-Control-Allow-Origin", "*")
 	w.Write(res)
 }
 
