@@ -1,7 +1,7 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
 # dependencies
-web/web-app/node_modules
+*/node_modules
 web/web-app/.pnp
 web/web-app/.pnp.js
 
@@ -26,3 +26,4 @@ package-lock.json
 */package-lock.json
 node_modules/*
 main
+
