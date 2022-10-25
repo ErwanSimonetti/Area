@@ -9,6 +9,7 @@ import Typography from '@mui/material/Typography'
 import Container from '@mui/material/Container'
 import { createTheme, ThemeProvider } from '@mui/material/styles'
 import { Alert, Snackbar } from '@mui/material'
+import axios from 'axios'
 
 const theme = createTheme()
 
@@ -16,20 +17,25 @@ export default function Register () {
   const [wrongPassword, setWrongPassword] = React.useState(false)
 
   const handleSubmit = (event) => {
-    alert('A form was submitted: ')
+    event.preventDefault()
+    const headers = {
+        'Content-Type': 'text/plain'
+    }
+
     const data = new FormData(event.currentTarget)
     const [firstname, lastname, email, password] = [data.get('firstName'), data.get('lastName'), data.get('email'), data.get('password')]
-    fetch('http://localhost:8080/register/', {
-      method: 'POST',
-      // We convert the React state to JSON and send it as the POST body
-      // body: JSON.stringify(this.state)
-      body: JSON.stringify({ firstname, lastname, email, password })
-    }).then(function (response) {
-      console.log(response)
-      return response.json()
+    axios.post('http://localhost:8080/register/', {
+        firstname,
+        lastname,
+        email,
+        password
+    }, { headers })
+    .then(function (response) {
+        console.log(response)
     })
-
-    event.preventDefault()
+    .catch(function (error) {
+        console.log(error)
+    })
   }
 
   return (
