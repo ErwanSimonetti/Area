@@ -39,6 +39,7 @@ func GetUserById(w http.ResponseWriter, r *http.Request){
 	}
 	userDetails, _:= models.GetUserById(ID)
 	res, _ := json.Marshal(userDetails)
+	w.Header().Set("Access-Control-Allow-Origin", "*")
 	w.Header().Set("Content-Type","pkglication/json")
 	w.WriteHeader(http.StatusOK)
 	w.Write(res)
@@ -104,6 +105,7 @@ func LoginUser(w http.ResponseWriter, r *http.Request) {
 
 	http.SetCookie(w, cookie)
 	res, _ := json.Marshal("success")
+	w.Header().Set("Access-Control-Allow-Origin", "*")
 	w.Header().Set("Content-Type","pkglication/json")
 	w.WriteHeader(http.StatusOK)
 	w.Write(res)
@@ -118,6 +120,7 @@ func DeleteUser(w http.ResponseWriter, r *http.Request){
 	}
 	user := models.DeleteUser(ID)
 	res, _ := json.Marshal(user)
+	w.Header().Set("Access-Control-Allow-Origin", "*")
 	w.Header().Set("Content-Type", "pkglication/json")
 	w.WriteHeader(http.StatusOK)
 	w.Write(res)
@@ -144,6 +147,7 @@ func UpdateUser(w http.ResponseWriter, r *http.Request){
 	}
 	db.Save(&userDetails)
 	res, _ := json.Marshal(userDetails)
+	w.Header().Set("Access-Control-Allow-Origin", "*")
 	w.Header().Set("Content-Type", "pkglication/json")
 	w.WriteHeader(http.StatusOK)
 	w.Write(res)
