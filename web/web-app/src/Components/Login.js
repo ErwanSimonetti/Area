@@ -13,6 +13,7 @@ import { createTheme, ThemeProvider } from '@mui/material/styles'
 import { GoogleLogin } from 'react-google-login'
 import { GoogleLoginButton } from 'react-social-login-buttons'
 import { gapi } from 'gapi-script'
+import axios from 'axios'
 
 // const clientidGithub = "ac56fad434a3a3c1561e"
 
@@ -26,26 +27,28 @@ export default function SignIn () {
 
   React.useEffect(() => {
     gapi.load('client:auth2', () => {
-      gapi.auth2.init({ clientId: clientId })
+      gapi.auth2.init({ clientId })
     })
   }, [])
 
   const handleSubmit = (event) => {
+    event.preventDefault()
+    console.log(event)
+    const headers = { 'Content-Type': 'text/plain' }
     const data = new FormData(event.currentTarget)
     console.log(data)
 
     const [email, password] = [data.get('email'), data.get('password')]
-    fetch('http://localhost:8080/login/', {
-      method: 'POST',
-      // We convert the React state to JSON and send it as the POST body
-      // body: JSON.stringify(this.state)
-      body: JSON.stringify({ email, password })
-    }).then(function (response) {
+    axios.post('http://localhost:8080/login/', {
+      email,
+      password
+    }, { headers })
+    .then(function (response) {
       console.log(response)
-      return response.json()
     })
-
-    event.preventDefault()
+    .catch(function (error) {
+      console.log(error)
+    })
   }
 
   const googleResponse = (e) => {
@@ -55,6 +58,7 @@ export default function SignIn () {
   return (
     <ThemeProvider theme={theme}>
       <Container component="main" maxWidth="xs">
+
         <CssBaseline />
         <Box
           sx={{
@@ -70,35 +74,40 @@ export default function SignIn () {
           <Typography component="h1" variant="h5">
             Sign in
           </Typography>
+          <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
+            <Grid container spacing={2}>
+                <Grid item xs={12}>
+                    <TextField
+                        required
+                        fullWidth
+                        id="email"
+                        label="Email Address"
+                        name="email"
+                        autoComplete="email"
+                    />
+                </Grid>
+                <Grid item xs={12}>
+                    <TextField
+                        required
+                        fullWidth
+                        name="password"
+                        label="Password"
+                        type="password"
+                        id="password"
+                        autoComplete="new-password"
+                    />
+                </Grid>
+              </Grid>
+            <Button
+                type="submit"
+                fullWidth
+                variant="contained"
+                sx={{ mt: 3, mb: 2 }}
+            >
+                Sign In
+            </Button>
+          </Box>
           {/* <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}> */}
-          <TextField
-            autoComplete='email'
-            autoFocus
-            value={email}
-            onChange={e => setEmail(e.target.value)}
-            placeholder="Email Address"
-            type="text"
-            name="email"
-            required
-          />
-          <TextField
-            autoComplete="current-password"
-            value={password}
-            onChange={e => setPassword(e.target.value)}
-            placeholder="Password"
-            type="password"
-            name="password"
-            required
-          />
-          <Button
-            type="submit"
-            onClick={handleSubmit}
-            fullWidth
-            variant="contained"
-            sx={{ mt: 3, mb: 2 }}
-          >
-            Sign In
-          </Button>
           <GoogleLogin
             clientId={clientId}
             render={renderProps => (

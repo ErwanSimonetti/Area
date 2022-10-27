@@ -24,7 +24,7 @@ const SecretKey = "secret"
 func GetAllUsers(w http.ResponseWriter, r *http.Request){
 	newUsers:=models.GetAllUsers()
 	res, _ :=json.Marshal(newUsers)
-	w.Header().Set("Access-Control-Allow-Origin", "*")
+	utils.EnableCors(&w)
 	w.Header().Set("Content-Type","pkglication/json")
 	w.WriteHeader(http.StatusOK)
 	w.Write(res)
@@ -39,6 +39,7 @@ func GetUserById(w http.ResponseWriter, r *http.Request){
 	}
 	userDetails, _:= models.GetUserById(ID)
 	res, _ := json.Marshal(userDetails)
+	utils.EnableCors(&w)
 	w.Header().Set("Content-Type","pkglication/json")
 	w.WriteHeader(http.StatusOK)
 	w.Write(res)
@@ -55,7 +56,7 @@ func CreateUser(w http.ResponseWriter, r *http.Request){
 	b := NewUser.CreateUser()
 	res, _ := json.Marshal(b)
 	w.WriteHeader(http.StatusOK)
-	w.Header().Set("Access-Control-Allow-Origin", "*")
+	utils.EnableCors(&w)
 	w.Write(res)
 }
 
@@ -104,6 +105,7 @@ func LoginUser(w http.ResponseWriter, r *http.Request) {
 
 	http.SetCookie(w, cookie)
 	res, _ := json.Marshal("success")
+	utils.EnableCors(&w)
 	w.Header().Set("Content-Type","pkglication/json")
 	w.WriteHeader(http.StatusOK)
 	w.Write(res)
@@ -118,6 +120,7 @@ func DeleteUser(w http.ResponseWriter, r *http.Request){
 	}
 	user := models.DeleteUser(ID)
 	res, _ := json.Marshal(user)
+	utils.EnableCors(&w)
 	w.Header().Set("Content-Type", "pkglication/json")
 	w.WriteHeader(http.StatusOK)
 	w.Write(res)
@@ -144,6 +147,7 @@ func UpdateUser(w http.ResponseWriter, r *http.Request){
 	}
 	db.Save(&userDetails)
 	res, _ := json.Marshal(userDetails)
+	utils.EnableCors(&w)
 	w.Header().Set("Content-Type", "pkglication/json")
 	w.WriteHeader(http.StatusOK)
 	w.Write(res)
