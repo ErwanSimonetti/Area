@@ -34,5 +34,8 @@ services:
     depends_on: 
       - "go"
 
+  client_mobile:
+    build: './mobile'
+
 volumes: # add volume to persist data.
   my-db:
