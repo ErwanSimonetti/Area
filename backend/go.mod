@@ -11,6 +11,7 @@ require (
 	github.com/gorilla/mux v1.8.0
 	github.com/jasonlvhit/gocron v0.0.1 // indirect
 	github.com/jinzhu/gorm v1.9.16
+	github.com/joho/godotenv v1.4.0 // indirect
 	github.com/ravener/discord-oauth2 v0.0.0-20220615092331-f6a9839c223e // indirect
 	github.com/rodkranz/fetch v1.2.0 // indirect
 	github.com/zmb3/spotify v1.3.0

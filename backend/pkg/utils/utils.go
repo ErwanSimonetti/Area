@@ -4,6 +4,9 @@ import(
 	"encoding/json"
 	"io/ioutil"
 	"net/http"
+	"github.com/joho/godotenv"
+	"os"
+	"log"
 )
 
 func ParseBody(r *http.Request, x interface{}){
@@ -17,3 +20,13 @@ func ParseBody(r *http.Request, x interface{}){
 func EnableCors(w *http.ResponseWriter) {
 	(*w).Header().Set("Access-Control-Allow-Origin", "http://localhost:3000")
 }
+
+func GetEnv(key string) string {
+	err := godotenv.Load(".env")
+  
+	if err != nil {
+	  log.Fatal("Error loading .env file")
+	}
+  
+	return os.Getenv(key)
+  }

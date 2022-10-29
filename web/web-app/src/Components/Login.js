@@ -11,6 +11,8 @@ import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { GoogleLogin } from 'react-google-login';
 import { GoogleLoginButton } from 'react-social-login-buttons';
+import Cookies from 'universal-cookie';
+import axios from 'axios';
 
 const clientidGoogle = "78828642227-b3tlfon89t2j66b2a81c60mu8oe45ijb.apps.googleusercontent.com"
 // const clientidGithub = "ac56fad434a3a3c1561e"
@@ -21,20 +23,37 @@ export default function SignIn() {
 
     const handleSubmit = (event) => {
         alert('A form was submitted: ');
+        event.preventDefault();
+
         const data = new FormData(event.currentTarget);
 
         const [email, password] = [data.get('email'), data.get('password')]
+
         fetch('http://localhost:8080/login/', {
             method: 'POST',
-            // We convert the React state to JSON and send it as the POST body
-            // body: JSON.stringify(this.state)
             body: JSON.stringify({email, password })
-        }).then(function (response) {
+        }).then(response => response.json()).then(function (data) {
+            const cookies = new Cookies();
+            cookies.set('userID', data, { path:'/' }); 
+        });
+        
+
+        
+        const headers = {
+            'Content-Type': 'text/plain'
+        };
+
+        axios.post('http://localhost:8080/login/', {
+            headers, 
+            body: JSON.stringify({email, password })})
+        .then(function (response) {
+            // console.log("ca marche")
             console.log(response)
             return response.json();
-        });
-
-        event.preventDefault();
+        }).catch(function (error) {
+            console.log("ca marche pas")
+            console.log(error)
+        })
     }
 
     const [email, setEmail] = React.useState("");

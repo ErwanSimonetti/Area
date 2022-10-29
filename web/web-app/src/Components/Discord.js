@@ -13,13 +13,14 @@ const discordAuth = (event) => {
     };
     axios.get('http://localhost:8080/discord/auth/url', {headers})
     .then(function (response) {
-        console.log("ca marche")
-        console.log(response)
+        // console.log("ca marche")
+        console.log(response.data)
+        location.href = response.data
     }).catch(function (error) {
         console.log("ca marche pas")
         console.log(error)
     })
-    // location.href = "https://discord.com/api/oauth2/authorize?client_id=1033382176785432656&redirect_uri=http%3A%2F%2Flocalhost%3A8080%2Fauth%2Fdiscord&response_type=code&scope=webhook.incoming&permissions=536870912"
+    //location.href = "https://discord.com/api/oauth2/authorize?client_id=1033382176785432656&redirect_uri=http%3A%2F%2Flocalhost%3A8080%2Fauth%2Fdiscord&response_type=code&scope=webhook.incoming&permissions=536870912"
 }
 return (
     <Button variant='outlined' onClick={discordAuth}>BJR</Button>
