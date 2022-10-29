@@ -1,18 +1,20 @@
 package controllers
 
-import(
+import (
 	"encoding/json"
 	"fmt"
+
+	"github.com/dgrijalva/jwt-go"
 	"github.com/gorilla/mux"
 	"golang.org/x/crypto/bcrypt"
-	"github.com/dgrijalva/jwt-go"
 
+	"AREA/pkg/models"
+	"AREA/pkg/utils"
 	"net/http"
 	"strconv"
-	"AREA/pkg/utils"
-	"AREA/pkg/models"
-	"github.com/jinzhu/gorm"
 	"time"
+
+	"github.com/jinzhu/gorm"
 )
 
 var db * gorm.DB
@@ -22,6 +24,7 @@ const SecretKey = "secret"
 func GetAllUsers(w http.ResponseWriter, r *http.Request){
 	newUsers:=models.GetAllUsers()
 	res, _ :=json.Marshal(newUsers)
+	utils.EnableCors(&w)
 	w.Header().Set("Content-Type","pkglication/json")
 	w.WriteHeader(http.StatusOK)
 	w.Write(res)
@@ -36,6 +39,7 @@ func GetUserById(w http.ResponseWriter, r *http.Request){
 	}
 	userDetails, _:= models.GetUserById(ID)
 	res, _ := json.Marshal(userDetails)
+	utils.EnableCors(&w)
 	w.Header().Set("Content-Type","pkglication/json")
 	w.WriteHeader(http.StatusOK)
 	w.Write(res)
@@ -53,6 +57,7 @@ func CreateUser(w http.ResponseWriter, r *http.Request){
 	NewUserToken.CreateTokenUser()
 	res, _ := json.Marshal(b)
 	w.WriteHeader(http.StatusOK)
+	utils.EnableCors(&w)
 	w.Write(res)
 }
 
@@ -115,6 +120,7 @@ func DeleteUser(w http.ResponseWriter, r *http.Request){
 	}
 	user := models.DeleteUser(ID)
 	res, _ := json.Marshal(user)
+	utils.EnableCors(&w)
 	w.Header().Set("Content-Type", "pkglication/json")
 	w.WriteHeader(http.StatusOK)
 	w.Write(res)
@@ -141,6 +147,7 @@ func UpdateUser(w http.ResponseWriter, r *http.Request){
 	}
 	db.Save(&userDetails)
 	res, _ := json.Marshal(userDetails)
+	utils.EnableCors(&w)
 	w.Header().Set("Content-Type", "pkglication/json")
 	w.WriteHeader(http.StatusOK)
 	w.Write(res)

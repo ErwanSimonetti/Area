@@ -1,123 +1,133 @@
-/* eslint-disable */
-import * as React from 'react';
-import Button from '@mui/material/Button';
-import CssBaseline from '@mui/material/CssBaseline';
-import TextField from '@mui/material/TextField';
-import Link from '@mui/material/Link';
-import Grid from '@mui/material/Grid';
-import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
-import Container from '@mui/material/Container';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { GoogleLogin } from 'react-google-login';
-import { GoogleLoginButton } from 'react-social-login-buttons';
-import Cookies from 'universal-cookie';
-import axios from 'axios';
+import * as React from 'react'
+import Avatar from '@mui/material/Avatar'
+import Button from '@mui/material/Button'
+import CssBaseline from '@mui/material/CssBaseline'
+import TextField from '@mui/material/TextField'
+import Link from '@mui/material/Link'
+import Grid from '@mui/material/Grid'
+import Box from '@mui/material/Box'
+import LockOutlinedIcon from '@mui/icons-material/LockOutlined'
+import Typography from '@mui/material/Typography'
+import Container from '@mui/material/Container'
+import { createTheme, ThemeProvider } from '@mui/material/styles'
+import { GoogleLogin } from 'react-google-login'
+import { GoogleLoginButton } from 'react-social-login-buttons'
+import { gapi } from 'gapi-script'
+import axios from 'axios'
 
-const clientidGoogle = "78828642227-b3tlfon89t2j66b2a81c60mu8oe45ijb.apps.googleusercontent.com"
 // const clientidGithub = "ac56fad434a3a3c1561e"
 
-const theme = createTheme();
+const theme = createTheme()
+// const navigate = useNavigate()
+const clientId = '78828642227-b3tlfon89t2j66b2a81c60mu8oe45ijb.apps.googleusercontent.com'
 
-export default function SignIn() {
+export default function SignIn () {
+  const [email, setEmail] = React.useState('')
+  const [password, setPassword] = React.useState('')
 
-    const handleSubmit = (event) => {
-        alert('A form was submitted: ');
-        event.preventDefault();
+  React.useEffect(() => {
+    gapi.load('client:auth2', () => {
+      gapi.auth2.init({ clientId })
+    })
+  }, [])
 
-        const data = new FormData(event.currentTarget);
+  const handleSubmit = (event) => {
+    event.preventDefault()
+    console.log(event)
+    const headers = { 'Content-Type': 'text/plain' }
+    const data = new FormData(event.currentTarget)
+    console.log(data)
 
-        const [email, password] = [data.get('email'), data.get('password')]
+    const [email, password] = [data.get('email'), data.get('password')]
+    axios.post('http://localhost:8080/login/', {
+      email,
+      password
+    }, { headers })
+    .then(function (response) {
+      console.log(response)
+    })
+    .catch(function (error) {
+      console.log(error)
+    })
+  }
 
-        fetch('http://localhost:8080/login/', {
-            method: 'POST',
-            body: JSON.stringify({email, password })
-        }).then(response => response.json()).then(function (data) {
-            const cookies = new Cookies();
-            cookies.set('userID', data, { path:'/' }); 
-        });
-        
+  const googleResponse = (e) => {
+    console.log('LOGIN SUCCESS! Current user :', e.profileObj)
+  }
 
-        
-        const headers = {
-            'Content-Type': 'text/plain'
-        };
+  return (
+    <ThemeProvider theme={theme}>
+      <Container component="main" maxWidth="xs">
 
-        axios.post('http://localhost:8080/login/', {
-            headers, 
-            body: JSON.stringify({email, password })})
-        .then(function (response) {
-            // console.log("ca marche")
-            console.log(response)
-            return response.json();
-        }).catch(function (error) {
-            console.log("ca marche pas")
-            console.log(error)
-        })
-    }
-
-    const [email, setEmail] = React.useState("");
-    const [password, setPassword] = React.useState("");
-
-    return (
-        <ThemeProvider theme={theme}>
-            <form onSubmit={handleSubmit}>
-                <input
-                    autoComplete='email'
-                    autoFocus
-                    value={email}
-                    onChange={e => setEmail(e.target.value)}
-                    placeholder="Email Address"
-                    type="text"
-                    name="email"
-                    required
-                />
-                <input
-                    autoComplete="current-password"
-                    value={password}
-                    onChange={e => setPassword(e.target.value)}
-                    placeholder="Password"
-                    type="password"
-                    name="password"
-                    required
-                />
-                <button type="submit">Submit</button>
-            </form>
-            <GoogleLogin
-                clientId={clientidGoogle}
-                render={renderProps => (
-                    <GoogleLoginButton onClick={renderProps.onClick} disabled={renderProps.disabled} />
-                )}
-                buttonText="Login"
-                onSuccess={(e) => { console.log("LOGIN SUCCESS! Current user :", e.profileObj) }}
-                onFailure={(e) => { console.log("LOGIN FAILED! ", e); }}
-                cookiePolicy={'single_host_origin'}
-            />
-        </ThemeProvider>
-    );
+        <CssBaseline />
+        <Box
+          sx={{
+            marginTop: 8,
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center'
+          }}
+        >
+          <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
+            <LockOutlinedIcon />
+          </Avatar>
+          <Typography component="h1" variant="h5">
+            Sign in
+          </Typography>
+          <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
+            <Grid container spacing={2}>
+                <Grid item xs={12}>
+                    <TextField
+                        required
+                        fullWidth
+                        id="email"
+                        label="Email Address"
+                        name="email"
+                        autoComplete="email"
+                    />
+                </Grid>
+                <Grid item xs={12}>
+                    <TextField
+                        required
+                        fullWidth
+                        name="password"
+                        label="Password"
+                        type="password"
+                        id="password"
+                        autoComplete="new-password"
+                    />
+                </Grid>
+              </Grid>
+            <Button
+                type="submit"
+                fullWidth
+                variant="contained"
+                sx={{ mt: 3, mb: 2 }}
+            >
+                Sign In
+            </Button>
+          </Box>
+          {/* <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}> */}
+          <GoogleLogin
+            clientId={clientId}
+            render={renderProps => (
+              <GoogleLoginButton onClick={renderProps.onClick} disabled={renderProps.disabled} />
+            )}
+            buttonText="Login"
+            onSuccess={googleResponse}
+            onFailure={googleResponse}
+            cookiePolicy={'single_host_origin'}
+          />
+          <Grid container>
+            <Grid item>
+              <Link href="/register" variant="body2">
+                {"Don't have an account? Sign Up"}
+              </Link>
+            </Grid>
+          </Grid>
+          {/* </Box> */}
+        </Box>
+      </Container>
+    </ThemeProvider>
+  )
 }
-                        {/* <GitHubLogin
-                            clientId={clientidGithub}
-                            render={renderProps => (
-                                <GithubLoginButton onClick={renderProps.onClick} disabled={renderProps.disabled} />
-                            )}
-                            onSuccess={(e) => { console.log("LOGIN SUCCESS! Current user :", e.profileObj) }}
-                            onFailure={(e) => { console.log("LOGIN FAILED! ", e); }}
-                        /> */}
-                        {/* <Grid container> */}
-                            {/* <Grid item xs>
-                                <Link href="#" variant="body2">
-                                    Forgot password?
-                                </Link>
-                            </Grid> */}
-                            {/* <Grid item>
-                                <Link href="/register" variant="body2">
-                                    {"Don't have an account? Sign Up"}
-                                </Link>
-                            </Grid>
-
-                        </Grid>
-                    </Box>
-                </Box>
-            </Container>
-); */}
