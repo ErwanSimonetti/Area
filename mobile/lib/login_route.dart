@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import './colors.dart';
 import './widgets.dart';
 import './home_route.dart';
+import './home_page.dart';
 
 class MyStatefulWidget extends StatefulWidget {
   const MyStatefulWidget({Key? key}) : super(key: key);
@@ -15,6 +17,10 @@ class MyStatefulWidget extends StatefulWidget {
 class _MyStatefulWidgetState extends State<MyStatefulWidget> {
   TextEditingController nameController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
+
+  bool _isLoggedIn = false;
+  GoogleSignInAccount? _userObj;
+  GoogleSignIn _googleSignIn = GoogleSignIn();
 
   @override
   Widget build(BuildContext context) {
@@ -66,8 +72,15 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                 CustomWidgets.socialButtonRect(
                     'Login with Google', googleColor, FontAwesomeIcons.googlePlusG,
                     onTap: () {
-                  Fluttertoast.showToast(msg: 'I am google');
-                }),
+                      _googleSignIn.signIn().then((userData) {
+                      setState(() {
+                        _isLoggedIn = true;
+                        _userObj = userData;
+                      });
+                      }).catchError((e) {
+                        print(e);
+                      });
+                    }),
                 CustomWidgets.socialButtonRect(
                     'Login with Facebook', facebookColor, FontAwesomeIcons.facebookF,
                     onTap: () {
@@ -92,9 +105,11 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                 child: ElevatedButton(
                   child: const Text('Login'),
                   onPressed: () {
-                    print(nameController.text);
-                    print(passwordController.text);
-                    Navigator.push(context, MaterialPageRoute(builder: (context) => const SecondRoute()));
+                    if(nameController.text.isEmpty || passwordController.text.isEmpty) {
+                      Fluttertoast.showToast(msg: 'Error: Invalid login');
+                    } else {
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => MyHomePage()));
+                    }
                   },
                 )
             ),

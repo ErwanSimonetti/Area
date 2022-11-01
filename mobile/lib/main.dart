@@ -4,6 +4,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import './colors.dart';
 import './widgets.dart';
 import './login_route.dart';
+import './home_route.dart';
 
 void main() => runApp(const MyApp());
 
