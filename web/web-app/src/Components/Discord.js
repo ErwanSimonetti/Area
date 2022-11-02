@@ -6,7 +6,6 @@ import axios from 'axios';
 
 export default function Discord () {
 const discordAuth = (event) => {
-    console.log("bonsoir")
     event.preventDefault()
     const headers = {
         'Content-Type': 'text/plain'

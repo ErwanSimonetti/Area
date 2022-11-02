@@ -1,31 +1,50 @@
 package jobs
 
 import (
-	"fmt"
-	// "time"
-	"github.com/jasonlvhit/gocron"
 	"AREA/pkg/controllers"
+	"fmt"
 )
 
+type Job struct {
+	ActionFunc func(string) bool
+	ActionFuncParams string
+	ReactionFunc func(uint)
+	ReactionFuncParams uint
+}
 
-func ExecJob(action func() (bool, error), reaction func(string), react_value string) {
-	newAction, _ := action()
-	if (newAction == true) {
-		reaction(react_value)
+var currentJob []Job
+
+var ActionMap = map[string]func(string)bool{
+	"weather": test,
+}
+
+var ReactionMap = map[string]func(uint){
+	"discord": controllers.SendMessage, 
+}
+
+func CreateNewJob( action string, reaction string, paramA string, paramR uint ) {
+	var newJob Job
+
+	newJob.ActionFunc = ActionMap[action]
+	newJob.ReactionFunc = ReactionMap[reaction]
+	newJob.ActionFuncParams = paramA
+	newJob.ReactionFuncParams = paramR
+
+	currentJob = append(currentJob, newJob)
+}
+
+func test(ok string) bool {
+	fmt.Println("action")
+	return true
+}
+
+func ExecAllJob() {
+	fmt.Println(currentJob)
+
+	for _, job := range currentJob {
+
+		if job.ActionFunc(job.ActionFuncParams) {
+			job.ReactionFunc(job.ReactionFuncParams)
+		}
 	}
-}
-
-func task() {
-	
-}
-// // func DeleteJob() {
-// // 	gocron.Remove(task)
-// // }
-
-func NewScheduler() {
-	fmt.Println("newmachin lol")
-	s := gocron.NewScheduler()
-	s.Every(3).Seconds().Do(ExecJob, controllers.TemperatureIsUnder24, controllers.SendMessage, "13")
-	// s.Every(3).Seconds().Do(task)
-	<- s.Start()
 }
