@@ -38,16 +38,17 @@ func main()  {
 	routes.AreaRouter(r)
 	http.Handle("/", r)
 
-	storedJobs := []jobs.Job{{
-		ActionFunc: action,
-		ActionFuncParams: "7\n3",
-		ReactionFunc: reaction,
-		ReactionFuncParams: "mon caca est plus gros",
+	// storedJobs := []jobs.Job{{
+	// 	ActionFunc: action,
+	// 	ActionFuncParams: "7\n3",
+	// 	ReactionFunc: reaction,
+	// 	ReactionFuncParams: "mon caca est plus gros",
 		
-	}}
-	jobs.ExecAllJob(storedJobs)
+	// }}
+	jobs.CreateNewJob("weather", "discord", "ok", 13)
+	jobs.ExecAllJob()
 	fmt.Println("wait 4 secs")
-	gocron.Every(4).Second().Do(jobs.ExecAllJob, storedJobs)
+	gocron.Every(4).Second().Do(jobs.ExecAllJob)
 	<- gocron.Start()
 	log.Fatal(http.ListenAndServe("0.0.0.0:8080", r))
 
