@@ -1,3 +1,9 @@
+/** @file login-routes.go
+ * @brief Connects routes with go functions
+ *
+ * Detailed description of the file
+ */
+
 package routes
 
 import (
