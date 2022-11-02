@@ -19,7 +19,8 @@ import (
 var state = "random"
 
 func AuthDiscord(w http.ResponseWriter, r *http.Request){
-
+	cookie, _ := r.Cookie("jwt")
+	fmt.Println(cookie)
 	authUrl := "https://discordapp.com/api/v6/oauth2/token";
 
 	client := &http.Client{
@@ -68,13 +69,6 @@ func AuthDiscord(w http.ResponseWriter, r *http.Request){
 	models.SetUserToken("13", "discord_id", webhookId)
 	models.SetUserToken("13", "discord_token", webhookToken)
 
-
-	// webhook, err := disgohook.NewWebhookClientByToken(nil, nil, messageUrl)
-	// msg := "test of Dana's tribe"
-
-	// Imessage, err := webhook.SendContent(msg)
-
-	// Imessage = Imessage
 }
 
 func SendMessage(userID uint) {

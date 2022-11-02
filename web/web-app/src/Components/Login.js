@@ -1,3 +1,4 @@
+/*eslint-disable*/
 import * as React from 'react'
 import Avatar from '@mui/material/Avatar'
 import Button from '@mui/material/Button'
@@ -14,6 +15,7 @@ import { GoogleLogin } from 'react-google-login'
 import { GoogleLoginButton } from 'react-social-login-buttons'
 import { gapi } from 'gapi-script'
 import axios from 'axios'
+import Cookies from 'universal-cookie'
 
 // const clientidGithub = "ac56fad434a3a3c1561e"
 
@@ -34,17 +36,19 @@ export default function SignIn () {
   const handleSubmit = (event) => {
     event.preventDefault()
     console.log(event)
-    const headers = { 'Content-Type': 'text/plain' }
+    // axios.defaults.withCredentials = true
+    const headers = { 'Content-Type': 'application/x-www-form-urlencoded'}
     const data = new FormData(event.currentTarget)
-    console.log(data)
+    // console.log(data)
 
     const [email, password] = [data.get('email'), data.get('password')]
     axios.post('http://localhost:8080/login/', {
       email,
-      password
-    }, { headers })
+      password,
+    }, {headers: {'Content-Type': 'text/plain'}, withCredentials: true} ) 
     .then(function (response) {
       console.log(response)
+      Cookies.setCookie()
     })
     .catch(function (error) {
       console.log(error)

@@ -10,6 +10,7 @@ import (
 
 	"AREA/pkg/models"
 	"AREA/pkg/utils"
+	"AREA/pkg/config"
 	"net/http"
 	"strconv"
 	"time"
@@ -19,7 +20,7 @@ import (
 
 var db * gorm.DB
 // var NewUser models.User
-const SecretKey = "secret"
+var SecretKey = utils.GetEnv("RAPID_API_KEY")
 
 func GetAllUsers(w http.ResponseWriter, r *http.Request){
 	newUsers:=models.GetAllUsers()
@@ -46,9 +47,12 @@ func GetUserById(w http.ResponseWriter, r *http.Request){
 }
 
 func CreateUser(w http.ResponseWriter, r *http.Request){
+	utils.EnableCors(&w)
+	
 	NewUser := &models.User{}
 	utils.ParseBody(r, NewUser)
 	password, _ := bcrypt.GenerateFromPassword([]byte(NewUser.Password), 14)
+
 
 	NewUser.Password = password
 	b := NewUser.CreateUser()
@@ -57,28 +61,26 @@ func CreateUser(w http.ResponseWriter, r *http.Request){
 	NewUserToken.CreateTokenUser()
 	res, _ := json.Marshal(b)
 	w.WriteHeader(http.StatusOK)
-	utils.EnableCors(&w)
 	w.Write(res)
 }
 
 func LoginUser(w http.ResponseWriter, r *http.Request) {
-	utils.EnableCors(&w)
 	LoginUser := &models.User{}
 	utils.ParseBody(r, LoginUser)
 
 	var user models.User
 	user = *models.FindUser(LoginUser.Email)
-	userID := *models.FindUserID(LoginUser.Email)
-	fmt.Println(userID)
+
 	if (user.Email == "") {
+		fmt.Println("bad email")
 		res, _ := json.Marshal("bad email")
 		w.WriteHeader(http.StatusBadRequest)
 		w.Write(res)
 		return
 	}
-
 	err := bcrypt.CompareHashAndPassword(user.Password, []byte(LoginUser.Password))
 	if (err != nil) {
+		fmt.Println("not hash")
 		w.WriteHeader(http.StatusBadRequest)
 		res, _ := json.Marshal("bad password")
 		w.Write(res)
@@ -87,12 +89,13 @@ func LoginUser(w http.ResponseWriter, r *http.Request) {
 
 	claims := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.StandardClaims{
 		Issuer:    strconv.Itoa(int(user.ID)),
-		ExpiresAt: time.Now().Add(time.Hour * 24).Unix(), //1 day
+		ExpiresAt: time.Now().Add(time.Hour * 24).Unix(),
 	})
 
 	token, err := claims.SignedString([]byte(SecretKey))
 
 	if err != nil {
+		fmt.Println("jwt")
 		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
@@ -101,12 +104,13 @@ func LoginUser(w http.ResponseWriter, r *http.Request) {
 		Name:     "jwt",
 		Value:    token,
 		Expires:  time.Now().Add(time.Hour * 24),
-		HttpOnly: true,
+		Path:     "/",
+		HttpOnly: false,
+
 	}
 
-	w.Header().Set("Content-Type","pkglication/json")
 	http.SetCookie(w, cookie)
-	res, _ := json.Marshal(userID)
+	res, _ := json.Marshal("sucess")
 	w.WriteHeader(http.StatusOK)
 	w.Write(res)
 }
@@ -152,3 +156,69 @@ func UpdateUser(w http.ResponseWriter, r *http.Request){
 	w.WriteHeader(http.StatusOK)
 	w.Write(res)
 }
+
+func Logout(w http.ResponseWriter, r *http.Request) {
+	cookie := &http.Cookie{
+		Name:     "jwt",
+		Value:    "",
+		Expires:  time.Now().Add(-time.Hour),
+		HttpOnly: true,
+		Domain: "localhost:3000",
+	}
+
+	http.SetCookie(w , cookie)
+	res, _ := json.Marshal("sucess")
+	w.WriteHeader(http.StatusOK)
+	w.Write(res)
+}
+
+func GetUser(w http.ResponseWriter, r *http.Request) (models.User, error) {
+	cookie, _ := r.Cookie("jwt")
+	var user models.User
+	fmt.Println(cookie)
+	token, err := jwt.ParseWithClaims(cookie.Value, &jwt.StandardClaims{}, func(token *jwt.Token) (interface{}, error) {
+		return []byte(SecretKey), nil
+	})
+	fmt.Println("ok")
+
+	if err != nil {
+		w.WriteHeader(http.StatusBadRequest)
+		return user, err
+	}
+	fmt.Println("jaj")
+
+	claims := token.Claims.(*jwt.StandardClaims)
+
+	fmt.Println("moi")
+
+	config.GetDb().Where("id = ?", claims.Issuer).First(&user)
+
+	return user, nil
+}
+
+
+func DoEvery(d time.Duration, f func(time.Time)) {
+	for x := range time.Tick(d) {
+		f(x)
+	}
+}
+
+func Helloworld(t time.Time) {
+	fmt.Printf("%v: Hello, World!\n", t)
+}
+
+func CORS(next http.HandlerFunc) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+	  w.Header().Add("Access-Control-Allow-Origin", "http://localhost:3000")
+	  w.Header().Add("Access-Control-Allow-Credentials", "true")
+	//   w.Header().Add("Access-Control-Allow-Headers", "")
+	//   w.Header().Add("Access-Control-Allow-Methods", "Content-Type")
+	 // w.Header().Add("Origin", "")
+	//   if r.Method == "OPTIONS" {
+	// 	fmt.Println("YES OPTIONS")
+	// 	w.WriteHeader(http.StatusOK)
+	//   }
+  
+	  next(w, r)
+	}
+  }

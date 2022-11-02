@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"log"
+	// "time"
 	"net/http"
 
 	"github.com/gorilla/mux"
@@ -10,11 +11,13 @@ import (
 
 	// "github.com/gofiber/fiber/middleware/cors"
 	"AREA/pkg/jobs"
-	"AREA/pkg/routes"
 	"strconv"
 	"strings"
 	"github.com/jasonlvhit/gocron"
+	"AREA/pkg/routes"
+	// "github.com/gorilla/handlers"
 	// "AREA/pkg/controllers"
+	// "AREA/pkg/jobs"
 )
 
 func action(paramStr string) bool {
@@ -51,10 +54,8 @@ func main()  {
 	gocron.Every(4).Second().Do(jobs.ExecAllJob)
 	<- gocron.Start()
 	log.Fatal(http.ListenAndServe("0.0.0.0:8080", r))
-
 }
 
 // func main()  {
 // 	controllers.TriggerEachSecondes()
 // }
-
