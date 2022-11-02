@@ -3,11 +3,11 @@ package main
 import (
 	"fmt"
 	"log"
+	// "time"
 	"net/http"
 
 	"github.com/gorilla/mux"
 	_ "github.com/jinzhu/gorm/dialects/mysql"
-
 	// "github.com/gofiber/fiber/middleware/cors"
 	"AREA/pkg/jobs"
 	"AREA/pkg/routes"
@@ -15,6 +15,7 @@ import (
 	"strings"
 	"github.com/jasonlvhit/gocron"
 	// "AREA/pkg/controllers"
+	// "AREA/pkg/jobs"
 )
 
 func action(paramStr string) bool {
@@ -38,23 +39,15 @@ func main()  {
 	routes.AreaRouter(r)
 	http.Handle("/", r)
 
-	// storedJobs := []jobs.Job{{
-	// 	ActionFunc: action,
-	// 	ActionFuncParams: "7\n3",
-	// 	ReactionFunc: reaction,
-	// 	ReactionFuncParams: "mon caca est plus gros",
-		
-	// }}
 	jobs.CreateNewJob("weather", "discord", "ok", 13)
 	jobs.ExecAllJob()
 	fmt.Println("wait 4 secs")
 	gocron.Every(4).Second().Do(jobs.ExecAllJob)
 	<- gocron.Start()
-	log.Fatal(http.ListenAndServe("0.0.0.0:8080", r))
 
+	log.Fatal(http.ListenAndServe("0.0.0.0:8080", (r)))
 }
 
 // func main()  {
 // 	controllers.TriggerEachSecondes()
 // }
-

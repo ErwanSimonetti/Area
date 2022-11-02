@@ -19,7 +19,8 @@ import (
 var state = "random"
 
 func AuthDiscord(w http.ResponseWriter, r *http.Request){
-
+	cookie, _ := r.Cookie("jwt")
+	fmt.Println(cookie)
 	authUrl := "https://discordapp.com/api/v6/oauth2/token";
 
 	client := &http.Client{
@@ -53,11 +54,14 @@ func AuthDiscord(w http.ResponseWriter, r *http.Request){
 	if errorUnmarshal != nil {
 	    log.Fatal(errorUnmarshal)
 	}
-	fmt.Println(jsonWebhook)
-	// cookieValue, cookieErr := r.Cookie("userID")
-	// if cookieErr != nil {
-	// 	panic(err.Error())
-	// }
+
+	requestUser, err := GetUser(w, r)
+
+	if err != nil {
+		w.WriteHeader(http.StatusBadRequest)
+		res, _ := json.Marshal("bad request")
+		w.Write(res)
+	}
 
 	fmt.Println(jsonWebhook["webhook"])
 	address := jsonWebhook["webhook"].(map[string]interface{})
@@ -65,32 +69,23 @@ func AuthDiscord(w http.ResponseWriter, r *http.Request){
 	webhookId := fmt.Sprintf("%s", address["id"])
 	webhookToken := fmt.Sprintf("%s", address["token"])
 
-	models.SetUserToken("13", "discord_id", webhookId)
-	models.SetUserToken("13", "discord_token", webhookToken)
+	models.SetUserToken(strconv.FormatUint(uint64(requestUser.ID), 10), "discord_id", webhookId)
+	models.SetUserToken(strconv.FormatUint(uint64(requestUser.ID), 10), "discord_token", webhookToken)
 
-
-	// webhook, err := disgohook.NewWebhookClientByToken(nil, nil, messageUrl)
-	// msg := "test of Dana's tribe"
-
-	// Imessage, err := webhook.SendContent(msg)
-
-	// Imessage = Imessage
 }
 
-func SendMessage(userID uint) {
+func SendMessage(userID string) {
 
 	userToken := *models.FindUserToken(userID)
-	fmt.Println(userToken.DiscordId)
-	fmt.Println(userToken.DiscordToken)
 
-    messageUrl := fmt.Sprintf("%s/%s", userToken.DiscordId, userToken.DiscordToken)
+	messageUrl := fmt.Sprintf("%s/%s", userToken.DiscordId, userToken.DiscordToken)
 
-    webhook, _ := disgohook.NewWebhookClientByToken(nil, nil, messageUrl)
-    msg := "reaction  @everyone"
+	webhook, _ := disgohook.NewWebhookClientByToken(nil, nil, messageUrl)
+	msg := "test of Dana's tribe"
 
-    Imessage, _ := webhook.SendContent(msg)
+	Imessage, _ := webhook.SendContent(msg)
+
 	Imessage = Imessage
-	fmt.Println("reaction @everyone")
 }
 
 func GetDiscordUrl(w http.ResponseWriter, r *http.Request) {
