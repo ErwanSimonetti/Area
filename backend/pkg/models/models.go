@@ -42,6 +42,12 @@ func (b *Token) CreateTokenUser() *Token{
 	return b
 }
 
+func FindUserToken(userID string) *Token{
+	var getUser Token
+	db.Where("user_id = ?", userID).Find(&getUser)
+	return &getUser
+}
+
 func FindUser(Email string) *User{
 	var getUser User
 	db.Where("email = ?", Email).Find(&getUser)
