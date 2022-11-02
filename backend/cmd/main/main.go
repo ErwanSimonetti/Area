@@ -8,7 +8,6 @@ import (
 
 	"github.com/gorilla/mux"
 	_ "github.com/jinzhu/gorm/dialects/mysql"
-
 	// "github.com/gofiber/fiber/middleware/cors"
 	"AREA/pkg/jobs"
 	"strconv"
