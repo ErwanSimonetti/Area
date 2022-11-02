@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:google_sign_in/google_sign_in.dart';
 import './colors.dart';
 import './widgets.dart';
 import './home_route.dart';
@@ -17,10 +16,6 @@ class MyStatefulWidget extends StatefulWidget {
 class _MyStatefulWidgetState extends State<MyStatefulWidget> {
   TextEditingController nameController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
-
-  bool _isLoggedIn = false;
-  GoogleSignInAccount? _userObj;
-  GoogleSignIn _googleSignIn = GoogleSignIn();
 
   @override
   Widget build(BuildContext context) {
@@ -72,15 +67,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                 CustomWidgets.socialButtonRect(
                     'Login with Google', googleColor, FontAwesomeIcons.googlePlusG,
                     onTap: () {
-                      _googleSignIn.signIn().then((userData) {
-                      setState(() {
-                        _isLoggedIn = true;
-                        _userObj = userData;
-                      });
-                      }).catchError((e) {
-                        print(e);
-                      });
-                    }),
+                }),
                 CustomWidgets.socialButtonRect(
                     'Login with Facebook', facebookColor, FontAwesomeIcons.facebookF,
                     onTap: () {
