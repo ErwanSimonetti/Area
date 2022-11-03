@@ -1,24 +1,38 @@
 /* eslint-disable */
-// import "./App.css"
 import * as React from 'react'
+import { styled } from '@mui/material/styles'
 import MenuIcon from '@mui/icons-material/Menu'
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import { Toolbar, Typography, AppBar, Button, Link } from '@mui/material'
+import { Box } from '@mui/system'
+
+const StyledAppBar = styled(AppBar)(({theme}) => ({
+    backgroundColor:'#3A3A3A',
+    height:'190px'
+}))
 
 export default function NavBar () {
   return (
-        <div>
-            <AppBar position='relative'>
-                <Toolbar>
-                    <MenuIcon sx={{ mr: 2 }} />
-                        <Link href="/">
+        <StyledAppBar position='relative'>
+            <Toolbar>
+                <Link href="/">
+                    <Box style={{display:'flex', alignItems:'center'}}>
+                        <Box>
+                            <MenuIcon fontSize='large' color='white'/>
+                        </Box>
+                        <Box>
                             <Button >
-                                <Typography variant='h6' color='white' noWrap>
+                                <Typography variant='h2' color='white' noWrap>
                                     AREA
                                 </Typography>
                             </Button>
-                        </Link>
-                </Toolbar>
-            </AppBar>
-        </div>
-  )
+                        </Box>
+                        <Box>
+                            <AccountCircleIcon fontSize='large' color='white'/>
+                        </Box>
+                    </Box>
+                </Link>
+            </Toolbar>
+        </StyledAppBar>
+    )
 }
