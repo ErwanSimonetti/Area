@@ -5,6 +5,7 @@ import Wallet from './Components/Wallet'
 import NavBar from './Components/Navbar'
 import { Route, Routes } from 'react-router-dom'
 import Register from './Components/Register'
+import Discord from './Components/Discord'
 
 export default function App () {
   return (
