@@ -15,7 +15,6 @@ export default function App () {
         <Route path='/register' element={<Register />} />
         <Route path='/login' element={<Login />} />
         <Route path='/wallet' element={<Wallet />} />
-        <Route path="/discord" element={<Discord />} />
       </Routes>
     </div>
   )
