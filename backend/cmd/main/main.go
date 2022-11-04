@@ -10,32 +10,32 @@ import (
 	_ "github.com/jinzhu/gorm/dialects/mysql"
 	// "github.com/gofiber/fiber/middleware/cors"
 	"AREA/pkg/jobs"
-	"strconv"
-	"strings"
-	"github.com/jasonlvhit/gocron"
 	"AREA/pkg/routes"
+	"github.com/jasonlvhit/gocron"
+	// "strconv"
+	// "strings"
 	// "github.com/gorilla/handlers"
 	// "AREA/pkg/controllers"
 	// "AREA/pkg/jobs"
 )
 
-func action(paramStr string) bool {
-	params := strings.Split(paramStr, "\n")
-	a, _ := strconv.Atoi(params[0])
-	b, _ := strconv.Atoi(params[1])
-	fmt.Println("checking", a, " >",  b, "?")
-	if a > b {
-		return true
-	} else {
-		return false
-	}
-}
+// func action(paramStr string) bool {
+// 	params := strings.Split(paramStr, "\n")
+// 	a, _ := strconv.Atoi(params[0])
+// 	b, _ := strconv.Atoi(params[1])
+// 	fmt.Println("checking", a, " >", b, "?")
+// 	if a > b {
+// 		return true
+// 	} else {
+// 		return false
+// 	}
+// }
 
-func reaction(message string) {
-	fmt.Println(message)
-}
+// func reaction(message string) {
+// 	fmt.Println(message)
+// }
 
-func main()  {
+func main() {
 	r := mux.NewRouter()
 	routes.AreaRouter(r)
 	http.Handle("/", r)
@@ -45,13 +45,12 @@ func main()  {
 	// 	ActionFuncParams: "7\n3",
 	// 	ReactionFunc: reaction,
 	// 	ReactionFuncParams: "mon caca est plus gros",
-		
+
 	// }}
-	jobs.CreateNewJob("weather", "discord", "ok", 13)
-	jobs.ExecAllJob()
+	// jobs.CreateNewJob("weather", "discord", "ok", 13)
 	fmt.Println("wait 4 secs")
-	gocron.Every(4).Second().Do(jobs.ExecAllJob)
-	<- gocron.Start()
+	gocron.Every(5).Second().Do(jobs.ExecAllJob)
+	<-gocron.Start()
 	log.Fatal(http.ListenAndServe("0.0.0.0:8080", r))
 }
 

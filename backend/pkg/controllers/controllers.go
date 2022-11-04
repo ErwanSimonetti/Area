@@ -1,25 +1,25 @@
 package controllers
 
 import (
-	"encoding/json"
 	"fmt"
-
-	"github.com/dgrijalva/jwt-go"
-	"github.com/gorilla/mux"
-	"golang.org/x/crypto/bcrypt"
-
-	"AREA/pkg/models"
-	"AREA/pkg/utils"
-	"AREA/pkg/config"
+	"encoding/json"
 	"net/http"
 	"strconv"
 	"time"
 
-	"github.com/jinzhu/gorm"
+	"github.com/dgrijalva/jwt-go"
+	"github.com/gorilla/mux"
+	"golang.org/x/crypto/bcrypt"
+	// "github.com/jinzhu/gorm"
+
+	"AREA/pkg/models"
+	"AREA/pkg/utils"
+	"AREA/pkg/config"
 )
 
-var db * gorm.DB
+// var db * gorm.DB
 // var NewUser models.User
+
 var SecretKey = utils.GetEnv("RAPID_API_KEY")
 
 func GetAllUsers(w http.ResponseWriter, r *http.Request){
@@ -46,13 +46,11 @@ func GetUserById(w http.ResponseWriter, r *http.Request){
 	w.Write(res)
 }
 
-func CreateUser(w http.ResponseWriter, r *http.Request){
-	utils.EnableCors(&w)
-	
+func CreateUser(w http.ResponseWriter, r *http.Request) {
+	fmt.Println("caca")
 	NewUser := &models.User{}
 	utils.ParseBody(r, NewUser)
 	password, _ := bcrypt.GenerateFromPassword([]byte(NewUser.Password), 14)
-
 
 	NewUser.Password = password
 	b := NewUser.CreateUser()
@@ -163,7 +161,7 @@ func Logout(w http.ResponseWriter, r *http.Request) {
 		Value:    "",
 		Expires:  time.Now().Add(-time.Hour),
 		HttpOnly: true,
-		Domain: "localhost:3000",
+		Domain: "localhost:8081",
 	}
 
 	http.SetCookie(w , cookie)
@@ -208,6 +206,7 @@ func Helloworld(t time.Time) {
 }
 
 func CORS(next http.HandlerFunc) http.HandlerFunc {
+	fmt.Println("passed in cors")
 	return func(w http.ResponseWriter, r *http.Request) {
 	  w.Header().Add("Access-Control-Allow-Origin", "http://localhost:3000")
 	  w.Header().Add("Access-Control-Allow-Credentials", "true")

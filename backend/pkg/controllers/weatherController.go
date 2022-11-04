@@ -6,8 +6,9 @@ import (
 	"net/http"
 	"io/ioutil"
 	"encoding/json"
-	"AREA/pkg/utils"
 	"errors"
+
+	"AREA/pkg/utils"
 )
 
 func GetWeather() (float64, error){
@@ -21,7 +22,7 @@ func GetWeather() (float64, error){
 
 	res, err := http.DefaultClient.Do(req)
 	if err != nil {
-		myErr := errors.New("Weather api is down")
+		myErr := errors.New("weather api is down")
 		return 0, myErr
 	}
 
