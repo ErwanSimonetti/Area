@@ -19,8 +19,7 @@ import (
 var state = "random"
 
 func AuthDiscord(w http.ResponseWriter, r *http.Request){
-	cookie, _ := r.Cookie("jwt")
-	fmt.Println(cookie)
+
 	authUrl := "https://discordapp.com/api/v6/oauth2/token";
 
 	client := &http.Client{
@@ -71,10 +70,9 @@ func AuthDiscord(w http.ResponseWriter, r *http.Request){
 
 	models.SetUserToken(strconv.FormatUint(uint64(requestUser.ID), 10), "discord_id", webhookId)
 	models.SetUserToken(strconv.FormatUint(uint64(requestUser.ID), 10), "discord_token", webhookToken)
-
 }
 
-func SendMessage(userID string) {
+func SendMessage(userID uint) {
 
 	userToken := *models.FindUserToken(userID)
 

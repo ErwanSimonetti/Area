@@ -10,14 +10,15 @@ import (
 	"errors"
 )
 
-func GetWeather() (float64, error){
 
-	url := "https://open-weather13.p.rapidapi.com/city/paris"
+func GetWeather() (float64 ,error){
+
+	url := "https://weather-by-api-ninjas.p.rapidapi.com/v1/weather?city=Paris"
 
 	req, _ := http.NewRequest("GET", url, nil)
 
-	req.Header.Add("X-RapidAPI-Key", utils.GetEnv("RAPID_API_KEY"))
-	req.Header.Add("X-RapidAPI-Host", "open-weather13.p.rapidapi.com")
+	req.Header.Add("X-RapidAPI-Key", utils.GetEnv("WEATHER_API_KEY"))
+	req.Header.Add("X-RapidAPI-Host", "weather-by-api-ninjas.p.rapidapi.com")
 
 	res, err := http.DefaultClient.Do(req)
 	if err != nil {
@@ -33,14 +34,37 @@ func GetWeather() (float64, error){
 	if errorUnmarshal != nil {
 	    log.Fatal(errorUnmarshal)
 	}
-	fmt.Println(weatherData)
-	// address := weatherData["main"].(map[string]interface{})
 
-	// newTemperature, _ := address["temp"].(float64)
+	temperature := weatherData["temp"]
+ 	fmt.Println(string(body))
 
-	// temperature := (newTemperature - 32) * 5/9
+	// fmt.Println(weatherData)
 
-	return 8, nil
+	return temperature.(float64), nil
+}
+
+
+
+func main() {
+
+	url := "https://weather-by-api-ninjas.p.rapidapi.com/v1/weather?city=Seattle"
+
+	req, _ := http.NewRequest("GET", url, nil)
+
+	req.Header.Add("X-RapidAPI-Key", "54fb216729msh1db59bd41d901b7p12938ajsn6b6525d7a1c2")
+	req.Header.Add("X-RapidAPI-Host", "weather-by-api-ninjas.p.rapidapi.com")
+
+	res, err := http.DefaultClient.Do(req)
+	if (err != nil) {
+		log.Fatal("error when getting weather")
+	}
+
+	defer res.Body.Close()
+	body, _ := ioutil.ReadAll(res.Body)
+
+	fmt.Println(res)
+	fmt.Println(string(body))
+
 }
 
 func TemperatureIsUnder24() (bool, error) {

@@ -11,9 +11,10 @@ import (
 	// "github.com/gofiber/fiber/middleware/cors"
 	"AREA/pkg/jobs"
 	"AREA/pkg/routes"
+	// "AREA/pkg/controllers"
 	"strconv"
 	"strings"
-	"github.com/jasonlvhit/gocron"
+	// "github.com/jasonlvhit/gocron"
 	// "AREA/pkg/controllers"
 	// "AREA/pkg/jobs"
 )
@@ -40,10 +41,10 @@ func main()  {
 	http.Handle("/", r)
 
 	jobs.CreateNewJob("weather", "discord", "ok", 13)
-	jobs.ExecAllJob()
+	// jobs.ExecAllJob()
 	fmt.Println("wait 4 secs")
-	gocron.Every(4).Second().Do(jobs.ExecAllJob)
-	<- gocron.Start()
+	// gocron.Every(4).Second().Do(jobs.ExecAllJob)
+	// <- gocron.Start()
 
 	log.Fatal(http.ListenAndServe("0.0.0.0:8080", (r)))
 }

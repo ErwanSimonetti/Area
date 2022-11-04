@@ -175,21 +175,17 @@ func Logout(w http.ResponseWriter, r *http.Request) {
 func GetUser(w http.ResponseWriter, r *http.Request) (models.User, error) {
 	cookie, _ := r.Cookie("jwt")
 	var user models.User
-	fmt.Println(cookie)
 	token, err := jwt.ParseWithClaims(cookie.Value, &jwt.StandardClaims{}, func(token *jwt.Token) (interface{}, error) {
 		return []byte(SecretKey), nil
 	})
-	fmt.Println("ok")
 
 	if err != nil {
 		w.WriteHeader(http.StatusBadRequest)
 		return user, err
 	}
-	fmt.Println("jaj")
 
 	claims := token.Claims.(*jwt.StandardClaims)
 
-	fmt.Println("moi")
 
 	config.GetDb().Where("id = ?", claims.Issuer).First(&user)
 
@@ -209,15 +205,8 @@ func Helloworld(t time.Time) {
 
 func CORS(next http.HandlerFunc) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-	  w.Header().Add("Access-Control-Allow-Origin", "http://localhost:3000")
+	  w.Header().Add("Access-Control-Allow-Origin", "http://localhost:8081")
 	  w.Header().Add("Access-Control-Allow-Credentials", "true")
-	//   w.Header().Add("Access-Control-Allow-Headers", "")
-	//   w.Header().Add("Access-Control-Allow-Methods", "Content-Type")
-	 // w.Header().Add("Origin", "")
-	//   if r.Method == "OPTIONS" {
-	// 	fmt.Println("YES OPTIONS")
-	// 	w.WriteHeader(http.StatusOK)
-	//   }
   
 	  next(w, r)
 	}
