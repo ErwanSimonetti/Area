@@ -2,7 +2,9 @@ package routes
 
 import (
 	"github.com/gorilla/mux"
+
 	"AREA/pkg/controllers"
+
 )
 
 var AreaRouter = func(router *mux.Router) {

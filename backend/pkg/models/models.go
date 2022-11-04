@@ -20,6 +20,7 @@ func init() {
 	db = config.GetDb()
 	db.AutoMigrate(&User{})
 	db.AutoMigrate(&Token{})
+	db.AutoMigrate(&Job{})
 }
 
 func (newUser *User) CreateUser() *User{

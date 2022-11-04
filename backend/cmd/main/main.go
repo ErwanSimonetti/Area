@@ -1,44 +1,28 @@
 package main
 
 import (
-	"fmt"
 	"log"
-	// "time"
 	"net/http"
+	"time"
 
 	"github.com/gorilla/mux"
 	_ "github.com/jinzhu/gorm/dialects/mysql"
+	"github.com/go-co-op/gocron"
 	// "github.com/gofiber/fiber/middleware/cors"
-	"AREA/pkg/jobs"
+
 	"AREA/pkg/routes"
-	"github.com/jasonlvhit/gocron"
-	// "strconv"
-	// "strings"
-	// "github.com/gorilla/handlers"
-	// "AREA/pkg/controllers"
-	// "AREA/pkg/jobs"
+	"AREA/pkg/jobs"
 )
-
-// func action(paramStr string) bool {
-// 	params := strings.Split(paramStr, "\n")
-// 	a, _ := strconv.Atoi(params[0])
-// 	b, _ := strconv.Atoi(params[1])
-// 	fmt.Println("checking", a, " >", b, "?")
-// 	if a > b {
-// 		return true
-// 	} else {
-// 		return false
-// 	}
-// }
-
-// func reaction(message string) {
-// 	fmt.Println(message)
-// }
 
 func main() {
 	r := mux.NewRouter()
 	routes.AreaRouter(r)
 	http.Handle("/", r)
+	
+	s := gocron.NewScheduler(time.UTC)
+	s.Every(5).Seconds().Do(jobs.ExecAllJob)
+	s.StartAsync()
+	log.Fatal(http.ListenAndServe("0.0.0.0:8080", r))
 
 	// storedJobs := []jobs.Job{{
 	// 	ActionFunc: action,
@@ -48,12 +32,7 @@ func main() {
 
 	// }}
 	// jobs.CreateNewJob("weather", "discord", "ok", 13)
-	fmt.Println("wait 4 secs")
-	gocron.Every(5).Second().Do(jobs.ExecAllJob)
-	<-gocron.Start()
-	log.Fatal(http.ListenAndServe("0.0.0.0:8080", r))
+	// fmt.Println("wait 4 secs")
+	// gocron.Every(5).Second().Do(jobs.ExecAllJob)
+	// <-gocron.Start()
 }
-
-// func main()  {
-// 	controllers.TriggerEachSecondes()
-// }

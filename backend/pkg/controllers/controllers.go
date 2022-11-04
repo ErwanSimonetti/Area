@@ -1,8 +1,8 @@
 package controllers
 
 import (
-	"fmt"
 	"encoding/json"
+	"fmt"
 	"net/http"
 	"strconv"
 	"time"
@@ -10,11 +10,11 @@ import (
 	"github.com/dgrijalva/jwt-go"
 	"github.com/gorilla/mux"
 	"golang.org/x/crypto/bcrypt"
-	// "github.com/jinzhu/gorm"
 
+	"AREA/pkg/config"
+	"AREA/pkg/jobs"
 	"AREA/pkg/models"
 	"AREA/pkg/utils"
-	"AREA/pkg/config"
 )
 
 // var db * gorm.DB
@@ -47,7 +47,6 @@ func GetUserById(w http.ResponseWriter, r *http.Request){
 }
 
 func CreateUser(w http.ResponseWriter, r *http.Request) {
-	fmt.Println("caca")
 	NewUser := &models.User{}
 	utils.ParseBody(r, NewUser)
 	password, _ := bcrypt.GenerateFromPassword([]byte(NewUser.Password), 14)
@@ -107,6 +106,7 @@ func LoginUser(w http.ResponseWriter, r *http.Request) {
 
 	}
 
+	jobs.AddUserJobsOnLogin(user.ID)
 	http.SetCookie(w, cookie)
 	res, _ := json.Marshal("sucess")
 	w.WriteHeader(http.StatusOK)
@@ -165,6 +165,8 @@ func Logout(w http.ResponseWriter, r *http.Request) {
 	}
 
 	http.SetCookie(w , cookie)
+	requestUser, _ := GetUser(w, r)
+	jobs.SuprUserJobsOnLogout(requestUser.ID)
 	res, _ := json.Marshal("sucess")
 	w.WriteHeader(http.StatusOK)
 	w.Write(res)
@@ -206,9 +208,8 @@ func Helloworld(t time.Time) {
 }
 
 func CORS(next http.HandlerFunc) http.HandlerFunc {
-	fmt.Println("passed in cors")
 	return func(w http.ResponseWriter, r *http.Request) {
-	  w.Header().Add("Access-Control-Allow-Origin", "http://localhost:3000")
+	  w.Header().Add("Access-Control-Allow-Origin", "http://localhost:8081")
 	  w.Header().Add("Access-Control-Allow-Credentials", "true")
 	//   w.Header().Add("Access-Control-Allow-Headers", "")
 	//   w.Header().Add("Access-Control-Allow-Methods", "Content-Type")
