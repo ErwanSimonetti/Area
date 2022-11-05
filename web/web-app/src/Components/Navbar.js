@@ -1,37 +1,33 @@
 /* eslint-disable */
 import * as React from 'react'
 import { styled } from '@mui/material/styles'
-import MenuIcon from '@mui/icons-material/Menu'
+import AREALogo from './Icons/AREALogo';
+import NewAreaButton from './Icons/NewAreaButton';
+import AccountIcon from './Icons/AccountIcon'
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-import { Toolbar, Typography, AppBar, Button, Link } from '@mui/material'
+import { Toolbar, Typography, AppBar, Button, Link, Grid } from '@mui/material'
 import { Box } from '@mui/system'
 
 const StyledAppBar = styled(AppBar)(({theme}) => ({
-    backgroundColor:'#3A3A3A',
-    height:'190px'
-}))
+    backgroundColor:'#262626',
+}));
+
+
 
 export default function NavBar () {
-  return (
-        <StyledAppBar position='relative'>
+    return (
+        <StyledAppBar position='sticky'>
             <Toolbar>
-                <Link href="/">
-                    <Box style={{display:'flex', alignItems:'center'}}>
-                        <Box>
-                            <MenuIcon fontSize='large' color='white'/>
+                <Box className="navItem">
+                    <Link href="/">
+                        <Box >
+                            <AREALogo/>
                         </Box>
-                        <Box>
-                            <Button >
-                                <Typography variant='h2' color='white' noWrap>
-                                    AREA
-                                </Typography>
-                            </Button>
-                        </Box>
-                        <Box>
-                            <AccountCircleIcon fontSize='large' color='white'/>
-                        </Box>
+                    </Link> 
+                    <Box >
+                        <AccountIcon/>
                     </Box>
-                </Link>
+                </Box>
             </Toolbar>
         </StyledAppBar>
     )

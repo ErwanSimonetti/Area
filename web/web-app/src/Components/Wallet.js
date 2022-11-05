@@ -1,8 +1,10 @@
 import * as React from 'react'
 import propTypes from 'prop-types'
-import { Button, Box, Dialog, DialogTitle, List, ListItemText, ListItem, Typography, FormControlLabel, FormGroup, Checkbox } from '@mui/material'
+import { Button, Box, Dialog, DialogTitle, List, ListItemText, ListItem, FormControlLabel, FormGroup, Checkbox } from '@mui/material'
 import { AREACard } from './Cards'
 import './../App.css'
+import NewAreaButton from './Icons/NewAreaButton'
+import { createTheme, ThemeProvider, Typography } from '@material-ui/core'
 
 const services = ['Spotify', 'Twitter', 'Discord', 'Github']
 const actions = ['Un artiste poste un nouveau son', "J'ai ajouté une chanson à une playlist", "Un autre option pour laquelle j'ai pas d'idée"]
@@ -11,6 +13,36 @@ export function Wallet () {
     const [openDialog, setOpenDialog] = React.useState(false)
     const [singleCard, setSingleCard] = React.useState(false)
     const [cards, setCards] = React.useState([{
+        action: "J'update une de mes playlists",
+        actionService: 'Spotify',
+        reaction: 'Un lien vers la playlist est envoyé',
+        reactionService: 'Spotify'
+    }, {
+        action: "J'update une de mes playlists",
+        actionService: 'Spotify',
+        reaction: 'Un lien vers la playlist est envoyé',
+        reactionService: 'Spotify'
+    }, {
+        action: "J'update une de mes playlists",
+        actionService: 'Spotify',
+        reaction: 'Un lien vers la playlist est envoyé',
+        reactionService: 'Spotify'
+    }, {
+        action: "J'update une de mes playlists",
+        actionService: 'Spotify',
+        reaction: 'Un lien vers la playlist est envoyé',
+        reactionService: 'Spotify'
+    }, {
+        action: "J'update une de mes playlists",
+        actionService: 'Spotify',
+        reaction: 'Un lien vers la playlist est envoyé',
+        reactionService: 'Spotify'
+    }, {
+        action: "J'update une de mes playlists",
+        actionService: 'Spotify',
+        reaction: 'Un lien vers la playlist est envoyé',
+        reactionService: 'Spotify'
+    }, {
         action: "J'update une de mes playlists",
         actionService: 'Spotify',
         reaction: 'Un lien vers la playlist est envoyé',
@@ -46,20 +78,28 @@ export function Wallet () {
     const handleOpenDialog = () => {
         setOpenDialog(true)
     }
-
+    const theme = createTheme({
+        typography: {
+          fontFamily: ['Titan One', 'cursive'].join(',')
+        }
+      })
     return (
         <React.Fragment>
-            <Box sx={{
-                marginTop: 8,
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center'
-            }}>
-                <Typography variant='h2' gutterBottom>Wallet</Typography>
-            </Box>
-            <Button size="small" onClick={ handleOpenDialog }> nouvelle AREA </Button>
-            <AREACard cards={cards} />
-            <NewCardDialog onClose={handleNewCard} setSingleCard={setSingleCard} singleCard={singleCard} open={openDialog} newCard={newCard} setNewCard={setNewCard} />
+                <Box sx={{
+                    marginTop: 8,
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center'
+                }}>
+                    <ThemeProvider theme={theme}>
+                        <Typography variant='h2' gutterBottom> Mon Wallet</Typography>
+                    </ThemeProvider>
+                <Button size="small" onClick={ handleOpenDialog } className="newAreaButton">
+                    <NewAreaButton/>
+                </Button>
+                </Box>
+                <AREACard cards={cards} />
+                <NewCardDialog onClose={handleNewCard} setSingleCard={setSingleCard} singleCard={singleCard} open={openDialog} newCard={newCard} setNewCard={setNewCard} />
         </React.Fragment >
     )
 }
