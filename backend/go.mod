@@ -21,6 +21,7 @@ require (
 	github.com/tidwall/gjson v1.14.3 // indirect
 	github.com/tidwall/pretty v1.2.1 // indirect
 	github.com/zmb3/spotify v1.3.0
+	github.com/zmb3/spotify/v2 v2.3.0 // indirect
 	golang.org/x/crypto v0.0.0-20210921155107-089bfa567519
 	golang.org/x/oauth2 v0.1.0
 )

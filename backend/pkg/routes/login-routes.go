@@ -19,6 +19,6 @@ var AreaRouter = func(router *mux.Router) {
 	router.HandleFunc("/discord/auth", controllers.AuthDiscord).Methods("GET")
 	router.HandleFunc("/discord/auth/url", controllers.GetDiscordUrl).Methods("GET")
 
-	router.HandleFunc("/spotify/auth/url", controllers.GetSpotifyUrl).Methods("GET")
+	router.HandleFunc("/spotify/auth/url", controllers.CORS(controllers.GetSpotifyUrl)).Methods("GET")
 	router.HandleFunc("/spotify/auth", controllers.AuthSpotify).Methods("GET")
 }

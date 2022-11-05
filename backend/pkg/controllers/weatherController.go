@@ -44,43 +44,6 @@ func GetWeather() (float64 ,error){
 }
 
 
-
-func main() {
-
-	url := "https://weather-by-api-ninjas.p.rapidapi.com/v1/weather?city=Seattle"
-
-	req, _ := http.NewRequest("GET", url, nil)
-
-	req.Header.Add("X-RapidAPI-Key", "54fb216729msh1db59bd41d901b7p12938ajsn6b6525d7a1c2")
-	req.Header.Add("X-RapidAPI-Host", "weather-by-api-ninjas.p.rapidapi.com")
-
-	res, err := http.DefaultClient.Do(req)
-	if (err != nil) {
-		log.Fatal("error when getting weather")
-	}
-
-	defer res.Body.Close()
-	body, _ := ioutil.ReadAll(res.Body)
-
-	fmt.Println(res)
-	fmt.Println(string(body))
-
-}
-
-func TemperatureIsUnder24() (bool, error) {
-	temperature, weatherErr := GetWeather()
-	if (weatherErr != nil) {
-		fmt.Println(weatherErr)
-		return false, weatherErr
-	}
-
-	if (temperature < 24.0 && temperature != 0) {
-		return true, nil
-	} else { 
-		return false, nil
-	}
-}
-
 func TemperatureIsOver24() (bool, error) {
 	temperature, weatherErr := GetWeather()
 	if (weatherErr != nil) {
