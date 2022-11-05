@@ -18,7 +18,7 @@ func ParseBody(r *http.Request, x interface{}){
 }
 
 func EnableCors(w *http.ResponseWriter) {
-	(*w).Header().Set("Access-Control-Allow-Origin", "http://localhost:3000")
+	(*w).Header().Set("Access-Control-Allow-Origin", "http://localhost:8081")
 }
 
 func GetEnv(key string) string {

@@ -69,6 +69,15 @@ export default function FolderList () {
                         <Link href="/register">
                             <ListItemText primary="Register" />
                         </Link>
+                    </ListItem><ListItem>
+                        <ListItemAvatar>
+                            <Avatar>
+                                <AppRegistrationIcon />
+                            </Avatar>
+                        </ListItemAvatar>
+                        <Link href="/user/services">
+                            <ListItemText primary="Services" />
+                        </Link>
                     </ListItem>
                 </List>
             </Box>

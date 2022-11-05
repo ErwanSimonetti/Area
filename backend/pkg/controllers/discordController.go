@@ -10,7 +10,7 @@ import (
 	"strings"
 	"time"
 	"encoding/json"
-	// "github.com/DisgoOrg/disgohook"
+	
 	"AREA/pkg/utils"
 	"AREA/pkg/models"
 )
@@ -19,7 +19,8 @@ import (
 var state = "random"
 
 func AuthDiscord(w http.ResponseWriter, r *http.Request){
-
+	cookie, _ := r.Cookie("jwt")
+	fmt.Println(cookie)
 	authUrl := "https://discordapp.com/api/v6/oauth2/token";
 
 	client := &http.Client{
@@ -34,7 +35,7 @@ func AuthDiscord(w http.ResponseWriter, r *http.Request){
 	data.Set("scope", "webhook.incoming")
 	data.Set("code", r.FormValue("code"))
 	encodedData := data.Encode()
-	fmt.Println(encodedData)
+
 	req, err := http.NewRequest("POST", authUrl, strings.NewReader(encodedData))
 	if err != nil {
 		w.WriteHeader(http.StatusBadRequest)
@@ -44,18 +45,20 @@ func AuthDiscord(w http.ResponseWriter, r *http.Request){
 	req.Header.Add("Content-Type", "application/x-www-form-urlencoded")
 	req.Header.Add("Content-Length", strconv.Itoa(len(data.Encode())))
 	response, _ := client.Do(req)
+	fmt.Println("ici")
 
 	body, _ := ioutil.ReadAll(response.Body)
 	jsonWebhook := make(map[string]interface{})
+	fmt.Println(body)
 	errorUnmarshal := json.Unmarshal(body, &jsonWebhook)
 	if errorUnmarshal != nil {
 	    log.Fatal(errorUnmarshal)
 	}
-
-	cookieValue, cookieErr := r.Cookie("userID")
-	if cookieErr != nil {
-		panic(err.Error())
-	}
+	fmt.Println(jsonWebhook)
+	// cookieValue, cookieErr := r.Cookie("userID")
+	// if cookieErr != nil {
+	// 	panic(err.Error())
+	// }
 
 	fmt.Println(jsonWebhook["webhook"])
 	address := jsonWebhook["webhook"].(map[string]interface{})
@@ -63,28 +66,9 @@ func AuthDiscord(w http.ResponseWriter, r *http.Request){
 	webhookId := fmt.Sprintf("%s", address["id"])
 	webhookToken := fmt.Sprintf("%s", address["token"])
 
-	models.SetUserToken(cookieValue.Value, "discord_id", webhookId)
-	models.SetUserToken(cookieValue.Value, "discord_token", webhookToken)
+	models.SetUserToken("13", "discord_id", webhookId)
+	models.SetUserToken("13", "discord_token", webhookToken)
 
-
-	// webhook, err := disgohook.NewWebhookClientByToken(nil, nil, messageUrl)
-	// msg := "test of Dana's tribe"
-
-	// Imessage, err := webhook.SendContent(msg)
-
-	// Imessage = Imessage
-}
-
-func SendMessage() {
-
-	// messageUrl := fmt.Sprintf("%s/%s", address["id"], address["token"])
-
-	// webhook, _ := disgohook.NewWebhookClientByToken(nil, nil, messageUrl)
-	// msg := "test of Dana's tribe"
-
-	// Imessage, err := webhook.SendContent(msg)
-
-	// Imessage = Imessage
 }
 
 func GetDiscordUrl(w http.ResponseWriter, r *http.Request) {

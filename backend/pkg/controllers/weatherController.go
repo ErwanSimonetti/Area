@@ -2,15 +2,16 @@ package controllers
 
 import (
 	"log"
+	"fmt"
 	"net/http"
 	"io/ioutil"
 	"encoding/json"
+	"errors"
+
 	"AREA/pkg/utils"
 )
 
-var temperature float64 = 0
-
-func GetWeather(w http.ResponseWriter, r *http.Request) {
+func GetWeather() (float64, error){
 
 	url := "https://open-weather13.p.rapidapi.com/city/paris"
 
@@ -21,9 +22,8 @@ func GetWeather(w http.ResponseWriter, r *http.Request) {
 
 	res, err := http.DefaultClient.Do(req)
 	if err != nil {
-		w.WriteHeader(http.StatusBadRequest)
-		res, _ := json.Marshal("bad request")
-		w.Write(res)
+		myErr := errors.New("weather api is down")
+		return 0, myErr
 	}
 
 	defer res.Body.Close()
@@ -34,25 +34,40 @@ func GetWeather(w http.ResponseWriter, r *http.Request) {
 	if errorUnmarshal != nil {
 	    log.Fatal(errorUnmarshal)
 	}
+	fmt.Println(weatherData)
+	// address := weatherData["main"].(map[string]interface{})
 
-	address := weatherData["main"].(map[string]interface{})
+	// newTemperature, _ := address["temp"].(float64)
 
-	temperature, _ = address["temp"].(float64)
+	// temperature := (newTemperature - 32) * 5/9
 
+	return 8, nil
 }
 
-func TemperatureIsUnder24() bool {
+func TemperatureIsUnder24() (bool, error) {
+	temperature, weatherErr := GetWeather()
+	if (weatherErr != nil) {
+		fmt.Println(weatherErr)
+		return false, weatherErr
+	}
+
 	if (temperature < 24.0 && temperature != 0) {
-		return true
+		return true, nil
 	} else { 
-		return false
+		return false, nil
 	}
 }
 
-func TemperatureIsOver24() bool {
+func TemperatureIsOver24() (bool, error) {
+	temperature, weatherErr := GetWeather()
+	if (weatherErr != nil) {
+		fmt.Println(weatherErr)
+		return false, weatherErr
+	}
+
 	if (temperature > 24.0 && temperature != 0) {
-		return true
+		return true, nil
 	} else { 
-		return false
+		return false, nil
 	}
 }
