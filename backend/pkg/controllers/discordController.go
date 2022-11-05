@@ -10,7 +10,7 @@ import (
 	"strings"
 	"time"
 	"encoding/json"
-	"github.com/DisgoOrg/disgohook"
+	
 	"AREA/pkg/utils"
 	"AREA/pkg/models"
 )
@@ -54,14 +54,11 @@ func AuthDiscord(w http.ResponseWriter, r *http.Request){
 	if errorUnmarshal != nil {
 	    log.Fatal(errorUnmarshal)
 	}
-
-	requestUser, err := GetUser(w, r)
-
-	if err != nil {
-		w.WriteHeader(http.StatusBadRequest)
-		res, _ := json.Marshal("bad request")
-		w.Write(res)
-	}
+	fmt.Println(jsonWebhook)
+	// cookieValue, cookieErr := r.Cookie("userID")
+	// if cookieErr != nil {
+	// 	panic(err.Error())
+	// }
 
 	fmt.Println(jsonWebhook["webhook"])
 	address := jsonWebhook["webhook"].(map[string]interface{})
@@ -69,23 +66,9 @@ func AuthDiscord(w http.ResponseWriter, r *http.Request){
 	webhookId := fmt.Sprintf("%s", address["id"])
 	webhookToken := fmt.Sprintf("%s", address["token"])
 
-	models.SetUserToken(strconv.FormatUint(uint64(requestUser.ID), 10), "discord_id", webhookId)
-	models.SetUserToken(strconv.FormatUint(uint64(requestUser.ID), 10), "discord_token", webhookToken)
+	models.SetUserToken("13", "discord_id", webhookId)
+	models.SetUserToken("13", "discord_token", webhookToken)
 
-}
-
-func SendMessage(userID string) {
-
-	userToken := *models.FindUserToken(userID)
-
-	messageUrl := fmt.Sprintf("%s/%s", userToken.DiscordId, userToken.DiscordToken)
-
-	webhook, _ := disgohook.NewWebhookClientByToken(nil, nil, messageUrl)
-	msg := "test of Dana's tribe"
-
-	Imessage, _ := webhook.SendContent(msg)
-
-	Imessage = Imessage
 }
 
 func GetDiscordUrl(w http.ResponseWriter, r *http.Request) {
