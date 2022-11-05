@@ -1,14 +1,48 @@
 import * as React from 'react'
-import { Button, Box, Dialog, DialogTitle, List, ListItemText, ListItem, Typography, FormControlLabel, FormGroup, Checkbox } from '@mui/material'
+import propTypes from 'prop-types'
+import { Button, Box, Dialog, DialogTitle, List, ListItemText, ListItem, FormControlLabel, FormGroup, Checkbox } from '@mui/material'
 import { AREACard } from './Cards'
 import './../App.css'
+import NewAreaButton from './Icons/NewAreaButton'
+import { createTheme, ThemeProvider, Typography } from '@material-ui/core'
 
 const services = ['Spotify', 'Twitter', 'Discord', 'Github']
 const actions = ['Un artiste poste un nouveau son', "J'ai ajouté une chanson à une playlist", "Un autre option pour laquelle j'ai pas d'idée"]
 
 export function Wallet () {
     const [openDialog, setOpenDialog] = React.useState(false)
+    const [singleCard, setSingleCard] = React.useState(false)
     const [cards, setCards] = React.useState([{
+        action: "J'update une de mes playlists",
+        actionService: 'Spotify',
+        reaction: 'Un lien vers la playlist est envoyé',
+        reactionService: 'Spotify'
+    }, {
+        action: "J'update une de mes playlists",
+        actionService: 'Spotify',
+        reaction: 'Un lien vers la playlist est envoyé',
+        reactionService: 'Spotify'
+    }, {
+        action: "J'update une de mes playlists",
+        actionService: 'Spotify',
+        reaction: 'Un lien vers la playlist est envoyé',
+        reactionService: 'Spotify'
+    }, {
+        action: "J'update une de mes playlists",
+        actionService: 'Spotify',
+        reaction: 'Un lien vers la playlist est envoyé',
+        reactionService: 'Spotify'
+    }, {
+        action: "J'update une de mes playlists",
+        actionService: 'Spotify',
+        reaction: 'Un lien vers la playlist est envoyé',
+        reactionService: 'Spotify'
+    }, {
+        action: "J'update une de mes playlists",
+        actionService: 'Spotify',
+        reaction: 'Un lien vers la playlist est envoyé',
+        reactionService: 'Spotify'
+    }, {
         action: "J'update une de mes playlists",
         actionService: 'Spotify',
         reaction: 'Un lien vers la playlist est envoyé',
@@ -22,36 +56,50 @@ export function Wallet () {
     })
 
     const handleNewCard = () => {
-        setCards([...cards, {
-            action: newCard.action,
-            actionService: newCard.actionService,
-            reaction: newCard.reaction,
-            reactionService: newCard.reactionService
-        }])
-        setNewCard({
-            action: null,
-            actionService: null,
-            reaction: null,
-            reactionService: null
-        })
-
+        console.log(singleCard)
+        if (singleCard) {
+            setCards([...cards, {
+                action: newCard.action,
+                actionService: newCard.actionService,
+                reaction: newCard.reaction,
+                reactionService: newCard.reactionService
+            }])
+            setNewCard({
+                action: null,
+                actionService: null,
+                reaction: null,
+                reactionService: null
+            })
+            setSingleCard(false)
+        }
         setOpenDialog(false)
     }
 
+    const handleOpenDialog = () => {
+        setOpenDialog(true)
+    }
+    const theme = createTheme({
+        typography: {
+          fontFamily: ['Titan One', 'cursive'].join(',')
+        }
+      })
     return (
         <React.Fragment>
-            <Box sx={{
-                marginTop: 8,
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center'
-            }}>
-                <Typography variant='h2' gutterBottom>Wallet</Typography>
-            </Box>
-            <Button size="small" onClick={() => { setOpenDialog(true) }}> nouvelle AREA </Button>
-            <AREACard cards={cards} />
-            <NewCardDialog onClose={handleNewCard} open={openDialog} newCard={newCard} setNewCard={setNewCard}>
-            </NewCardDialog>
+                <Box sx={{
+                    marginTop: 8,
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center'
+                }}>
+                    <ThemeProvider theme={theme}>
+                        <Typography variant='h2' gutterBottom> Mon Wallet</Typography>
+                    </ThemeProvider>
+                <Button size="small" onClick={ handleOpenDialog } className="newAreaButton">
+                    <NewAreaButton/>
+                </Button>
+                </Box>
+                <AREACard cards={cards} />
+                <NewCardDialog onClose={handleNewCard} setSingleCard={setSingleCard} singleCard={singleCard} open={openDialog} newCard={newCard} setNewCard={setNewCard} />
         </React.Fragment >
     )
 }
@@ -61,17 +109,24 @@ export function NewCardDialog ({ setNewCard, newCard, ...props }) {
     const [openActionDialog, setOpenActionDialog] = React.useState(false)
     const [openServiceReactionDialog, setOpenServiceReactionDialog] = React.useState(false)
     const [openReactionDialog, setOpenReactionDialog] = React.useState(false)
+    // const [isCompleted, setIsCompleted] = React.useState(false)
+
+    React.useEffect(() => {
+        if (newCard.action != null && newCard.actionService != null && newCard.reaction != null && newCard.reactionService != null) {
+            props.setSingleCard(true)
+        }
+    })
 
     return (
         <React.Fragment>
             <Dialog onClose={props.onClose} open={props.open}>
                 <DialogTitle>Créer une nouvelle AREA :</DialogTitle>
                 <FormGroup>
-                    <FormControlLabel disabled control={<Checkbox checked={!!newCard.actionService} />} label={<Button onClick={() => setOpenServiceActionDialog(true)}> {newCard.actionService ? newCard.actionService : "service d'action"}</Button>} />
-                    <FormControlLabel disabled control={<Checkbox checked={newCard.action != null} />} label={<Button onClick={() => setOpenActionDialog(true)}> {newCard.action ? newCard.action : 'action'}</Button>} />
-                    <FormControlLabel disabled control={<Checkbox checked={newCard.reactionService != null} />} label={<Button onClick={() => setOpenServiceReactionDialog(true)}> {newCard.reactionService ? newCard.reactionService : 'service de réaction'}</Button>} />
-                    <FormControlLabel disabled control={<Checkbox checked={newCard.reaction != null} />} label={<Button onClick={() => setOpenReactionDialog(true)}> {newCard.reaction ? newCard.reaction : 'réaction'}</Button>} />
-                    <Button variant="outlined" onClick={() => { props.onClose(false) }}>Valider</Button>
+                    <FormControlLabel disabled control={<Checkbox checked={newCard.actionService !== null} />} label={<Button onClick={() => setOpenServiceActionDialog(true)}> {newCard.actionService ? newCard.actionService : "service d'action"}</Button>} />
+                    <FormControlLabel disabled control={<Checkbox checked={newCard.action !== null} />} label={<Button onClick={() => setOpenActionDialog(true)}> {newCard.action ? newCard.action : 'action'}</Button>} />
+                    <FormControlLabel disabled control={<Checkbox checked={newCard.reactionService !== null} />} label={<Button onClick={() => setOpenServiceReactionDialog(true)}> {newCard.reactionService ? newCard.reactionService : 'service de réaction'}</Button>} />
+                    <FormControlLabel disabled control={<Checkbox checked={newCard.reaction !== null} />} label={<Button onClick={() => setOpenReactionDialog(true)}> {newCard.reaction ? newCard.reaction : 'réaction'}</Button>} />
+                    <Button variant="outlined" disabled={!props.singleCard} onClick={() => { props.onClose(false); console.log('ici') }}>Valider</Button>
                 </FormGroup>
             </Dialog>
             {/* Service Action Pick */}
@@ -122,4 +177,7 @@ export function NewCardDialog ({ setNewCard, newCard, ...props }) {
     )
 }
 
+Wallet.propTypes = {
+    newCard: propTypes.object
+}
 export default Wallet
