@@ -4,7 +4,6 @@ import (
 	"github.com/gorilla/mux"
 
 	"AREA/pkg/controllers"
-
 )
 
 var AreaRouter = func(router *mux.Router) {
@@ -13,7 +12,7 @@ var AreaRouter = func(router *mux.Router) {
 	// router.HandleFunc("/register/token", controllers.CreateTokenUser).Methods("POST")
 	router.HandleFunc("/login/", controllers.CORS(controllers.LoginUser)).Methods("POST")
 	router.HandleFunc("/login/", controllers.GetAllUsers).Methods("GET")
-	router.HandleFunc("/logout/", controllers.Logout).Methods("GET")
+	router.HandleFunc("/logout/", controllers.CORS(controllers.Logout)).Methods("GET")
 	router.HandleFunc("/login/{userID}", controllers.GetUserById).Methods("GET")
 	router.HandleFunc("/login/{userID}", controllers.DeleteUser).Methods("DELETE")
 
