@@ -3,7 +3,7 @@ import Card from '@mui/material/Card'
 import Box from '@mui/material/Box'
 import CardMedia from '@mui/material/CardMedia'
 import './style.css'
-import { CardContent, Typography, Grid } from '@mui/material'
+import { Typography, Grid } from '@mui/material'
 
 const commonStyles = {
     bgcolor: 'background.paper',
@@ -15,8 +15,7 @@ const commonStyles = {
 
 export function AREACard ({ cards }) {
     return (
-        <Box sx={{ display: 'flex', alignItems: 'center' }} className="cardContainer">
-            <Grid container spacing={{ xs: 2, sm: 2, md: 2 }} className="cardContainer" sx={{ marginTop: '5px', margin: '10px' }}>
+            <Grid container spacing={ 2 } >
                 {cards.map((card, index) => (
                     <Grid item key={index} xs={12} sm={3} md={2.5} sx={{ ...commonStyles }}>
                         <Typography gutterBottom variant="h5">
@@ -29,6 +28,5 @@ export function AREACard ({ cards }) {
                 ))
             }
         </Grid>
-        </Box>
     )
 }
