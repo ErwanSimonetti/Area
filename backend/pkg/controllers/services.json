@@ -1,0 +1,28 @@
+[
+    {
+        "name": "weather",
+        "actions": [
+            {
+                "name": "temperature_over_N_degrees",
+                "description": "The temperature is over N degrees"
+            },
+            {
+                "name": "temperature_under_N_degrees",
+                "description": "The temperature is under N degrees"
+            }
+        ],
+        "reactions": [
+        ]
+    },
+    {
+        "name": "spotify",
+        "actions": [
+        ],
+        "reactions": [
+            {
+                "name": "add_song_to_queue",
+                "description": "Adds a given song to the user's queue"
+            }
+        ]
+    }
+]

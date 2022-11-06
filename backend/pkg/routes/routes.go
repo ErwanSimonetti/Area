@@ -8,6 +8,8 @@ import (
 )
 
 var AreaRouter = func(router *mux.Router) {
+	router.HandleFunc("/about.json", controllers.CORS(controllers.GetAboutJson)).Methods("GET")
+
 	// router.HandleFunc("/test/", controllers.Test).Methods("POST")
 	router.HandleFunc("/register/", controllers.CORS(controllers.CreateUser)).Methods("POST")
 	// router.HandleFunc("/register/token", controllers.CreateTokenUser).Methods("POST")
