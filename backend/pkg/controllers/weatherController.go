@@ -17,8 +17,8 @@ func GetWeather() (float64 ,error){
 
 	req, _ := http.NewRequest("GET", url, nil)
 
-	req.Header.Add("X-RapidAPI-Key", utils.GetEnv("WEATHER_API_KEY"))
-	req.Header.Add("X-RapidAPI-Host", "weather-by-api-ninjas.p.rapidapi.com")
+	req.Header.Add("X-RapidAPI-Key", utils.GetEnv("RAPID_API_KEY"))
+	req.Header.Add("X-RapidAPI-Host", utils.GetEnv("WEATHER_API_TOKEN"))
 
 	res, err := http.DefaultClient.Do(req)
 	if err != nil {
@@ -36,7 +36,7 @@ func GetWeather() (float64 ,error){
 	}
 
 	temperature := weatherData["temp"]
- 	fmt.Println(string(body))
+ 	// fmt.Println(string(body))
 
 	// fmt.Println(weatherData)
 
@@ -44,16 +44,30 @@ func GetWeather() (float64 ,error){
 }
 
 
-func TemperatureIsOver24() (bool, error) {
+func TemperatureIsOver24() (bool) {
 	temperature, weatherErr := GetWeather()
 	if (weatherErr != nil) {
 		fmt.Println(weatherErr)
-		return false, weatherErr
+		return false
 	}
 
 	if (temperature > 24.0 && temperature != 0) {
-		return true, nil
+		return true
 	} else { 
-		return false, nil
+		return false
+	}
+}
+
+func TemperatureIsUnderr24() (bool) {
+	temperature, weatherErr := GetWeather()
+	if (weatherErr != nil) {
+		fmt.Println(weatherErr)
+		return false
+	}
+
+	if (temperature < 24.0 && temperature != 0) {
+		return true
+	} else { 
+		return false
 	}
 }

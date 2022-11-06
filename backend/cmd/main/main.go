@@ -9,9 +9,9 @@ import (
 	"github.com/gorilla/mux"
 	_ "github.com/jinzhu/gorm/dialects/mysql"
 	// "github.com/gofiber/fiber/middleware/cors"
-	"AREA/pkg/jobs"
+	// "AREA/pkg/jobs"
 	"AREA/pkg/routes"
-	// "AREA/pkg/controllers"
+	"AREA/pkg/controllers"
 	"strconv"
 	"strings"
 	// "github.com/jasonlvhit/gocron"
@@ -40,9 +40,10 @@ func main()  {
 	routes.AreaRouter(r)
 	http.Handle("/", r)
 
-	jobs.CreateNewJob("weather", "discord", "ok", 13)
+	controllers.SendEmail()
+	// jobs.CreateNewJob("weather", "discord", "ok", 13)
 	// jobs.ExecAllJob()
-	fmt.Println("wait 4 secs")
+	// fmt.Println("wait 4 secs")
 	// gocron.Every(4).Second().Do(jobs.ExecAllJob)
 	// <- gocron.Start()
 

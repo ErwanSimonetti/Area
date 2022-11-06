@@ -21,6 +21,10 @@ type Token struct {
 	UserId uint `json:"userId"`
 	DiscordId string `json:"discordId"`
 	DiscordToken string `json:"discordToken"`
+	SpotifyToken string `json:"spotifyToken"`
+	SpotifyRefreshToken string `json:"spotifyRefreshToken"`
+	Email string `json:"email"`
+	EmailPassword string `json:"emailPassword"`
 }
 
 func init() {
