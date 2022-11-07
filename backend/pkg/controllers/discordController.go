@@ -58,6 +58,8 @@ func AuthDiscord(w http.ResponseWriter, r *http.Request){
 	// 	panic(err.Error())
 	// }
 
+	requestUser, _ := GetUser(w, r)
+
 	fmt.Println(jsonWebhook["webhook"])
 	address := jsonWebhook["webhook"].(map[string]interface{})
 
@@ -66,20 +68,6 @@ func AuthDiscord(w http.ResponseWriter, r *http.Request){
 
 	models.SetUserToken(strconv.FormatUint(uint64(requestUser.ID), 10), "discord_id", webhookId)
 	models.SetUserToken(strconv.FormatUint(uint64(requestUser.ID), 10), "discord_token", webhookToken)
-}
-
-func SendMessage(userID uint) {
-
-	userToken := *models.FindUserToken(userID)
-
-	messageUrl := fmt.Sprintf("%s/%s", userToken.DiscordId, userToken.DiscordToken)
-
-	webhook, _ := disgohook.NewWebhookClientByToken(nil, nil, messageUrl)
-	msg := "test of Dana's tribe"
-
-	Imessage, _ := webhook.SendContent(msg)
-
-	Imessage = Imessage
 }
 
 func GetDiscordUrl(w http.ResponseWriter, r *http.Request) {

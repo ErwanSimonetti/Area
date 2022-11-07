@@ -62,7 +62,6 @@ func CreateWebhook(userID uint, username string, repository string) {
 	client := &http.Client{
 		Timeout: time.Second * 10,
 	}
-	// userToken := *models.FindUserToken(userID)
 	fmt.Println(userToken.GithubToken)
 
 
