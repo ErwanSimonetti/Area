@@ -102,7 +102,6 @@ func LoginUser(w http.ResponseWriter, r *http.Request) {
 		Expires:  time.Now().Add(time.Hour * 24),
 		Path:     "/",
 		HttpOnly: false,
-
 	}
 
 	jobs.AddUserJobsOnLogin(user.ID)
@@ -159,12 +158,11 @@ func Logout(w http.ResponseWriter, r *http.Request) {
 		Name:     "jwt",
 		Value:    "",
 		Expires:  time.Now().Add(-time.Hour),
-		HttpOnly: true,
-		Domain: "localhost:8081",
+		Path:     "/",
+		HttpOnly: false,
 	}
-
-	http.SetCookie(w , cookie)
 	requestUser, _ := GetUser(w, r)
+	http.SetCookie(w , cookie)
 	fmt.Println(requestUser.ID, requestUser.Firstname)
 	jobs.SuprUserJobsOnLogout(requestUser.ID)
 	res, _ := json.Marshal("sucess")
@@ -173,12 +171,17 @@ func Logout(w http.ResponseWriter, r *http.Request) {
 }
 
 func GetUser(w http.ResponseWriter, r *http.Request) (models.User, error) {
-	cookie, _ := r.Cookie("jwt")
+	cookie, cookieErr := r.Cookie("jwt")
 	var user models.User
+	if (cookieErr != nil) {
+		w.WriteHeader(http.StatusBadRequest)
+		return user, nil
+	}
 	token, err := jwt.ParseWithClaims(cookie.Value, &jwt.StandardClaims{}, func(token *jwt.Token) (interface{}, error) {
 		return []byte(SecretKey), nil
 	})
 	if err != nil {
+		fmt.Println("ici ?")
 		w.WriteHeader(http.StatusBadRequest)
 		return user, err
 	}
