@@ -20,7 +20,7 @@ export default function Services () {
             }}>
                 <Typography variant='h2' gutterBottom>Services</Typography>
             </Box>
-                <ServicesCard services={ services }/>
+            <ServicesCard services={ services }/>
         </React.Fragment >
     )
 }
@@ -51,12 +51,12 @@ function ServicesCard ({ services }) {
         }
     }
     return (
-        <Grid container spacing={4}>
+        <Grid container spacing={4} sx={{ padding: '0 10%', width: '100%', marginLeft: '0px' }}>
             {services.map((service, index) => (
-                < Grid item key={index} xs={12} sm={6} md={4} >
-                    <ButtonBase onClick={e => handleClick(service)}>
+                < Grid item key={index} xs={12} sm={6} md={4} style={{ paddingRight: '32px' }}>
+                    <ButtonBase onClick={e => handleClick(service)} style={{ width: '100%' }}>
                     <Card
-                        sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}
+                        sx={{ display: 'flex', flexDirection: 'column' }}
                     >
                         <CardContent
                         sx={{ flexGrow: 1 }}
