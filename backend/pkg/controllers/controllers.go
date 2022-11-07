@@ -3,23 +3,23 @@ package controllers
 import (
 	"encoding/json"
 	"fmt"
+	"net/http"
+	"strconv"
+	"time"
 
 	"github.com/dgrijalva/jwt-go"
 	"github.com/gorilla/mux"
 	"golang.org/x/crypto/bcrypt"
 
+	"AREA/pkg/config"
+	"AREA/pkg/jobs"
 	"AREA/pkg/models"
 	"AREA/pkg/utils"
-	"AREA/pkg/config"
-	"net/http"
-	"strconv"
-	"time"
-
-	"github.com/jinzhu/gorm"
 )
 
-var db * gorm.DB
+// var db * gorm.DB
 // var NewUser models.User
+
 var SecretKey = utils.GetEnv("RAPID_API_KEY")
 
 func GetAllUsers(w http.ResponseWriter, r *http.Request){
@@ -46,13 +46,10 @@ func GetUserById(w http.ResponseWriter, r *http.Request){
 	w.Write(res)
 }
 
-func CreateUser(w http.ResponseWriter, r *http.Request){
-	utils.EnableCors(&w)
-	
+func CreateUser(w http.ResponseWriter, r *http.Request) {
 	NewUser := &models.User{}
 	utils.ParseBody(r, NewUser)
 	password, _ := bcrypt.GenerateFromPassword([]byte(NewUser.Password), 14)
-
 
 	NewUser.Password = password
 	b := NewUser.CreateUser()
@@ -109,6 +106,7 @@ func LoginUser(w http.ResponseWriter, r *http.Request) {
 
 	}
 
+	jobs.AddUserJobsOnLogin(user.ID)
 	http.SetCookie(w, cookie)
 	res, _ := json.Marshal("sucess")
 	w.WriteHeader(http.StatusOK)
@@ -163,10 +161,13 @@ func Logout(w http.ResponseWriter, r *http.Request) {
 		Value:    "",
 		Expires:  time.Now().Add(-time.Hour),
 		HttpOnly: true,
-		Domain: "localhost:3000",
+		Domain: "localhost:8081",
 	}
 
 	http.SetCookie(w , cookie)
+	requestUser, _ := GetUser(w, r)
+	fmt.Println(requestUser.ID, requestUser.Firstname)
+	jobs.SuprUserJobsOnLogout(requestUser.ID)
 	res, _ := json.Marshal("sucess")
 	w.WriteHeader(http.StatusOK)
 	w.Write(res)
@@ -178,7 +179,6 @@ func GetUser(w http.ResponseWriter, r *http.Request) (models.User, error) {
 	token, err := jwt.ParseWithClaims(cookie.Value, &jwt.StandardClaims{}, func(token *jwt.Token) (interface{}, error) {
 		return []byte(SecretKey), nil
 	})
-
 	if err != nil {
 		w.WriteHeader(http.StatusBadRequest)
 		return user, err
@@ -188,7 +188,6 @@ func GetUser(w http.ResponseWriter, r *http.Request) (models.User, error) {
 
 
 	config.GetDb().Where("id = ?", claims.Issuer).First(&user)
-
 	return user, nil
 }
 

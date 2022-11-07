@@ -1,7 +1,6 @@
 package models
 
 import (
-	// "fmt"
 	"github.com/jinzhu/gorm"
 	"AREA/pkg/config"
 )
@@ -16,41 +15,18 @@ type User struct {
 	Password []byte `json:"password"`
 }
 
-type Token struct {
-	gorm.Model
-	UserId uint `json:"userId"`
-	DiscordId string `json:"discordId"`
-	DiscordToken string `json:"discordToken"`
-	SpotifyToken string `json:"spotifyToken"`
-	SpotifyRefreshToken string `json:"spotifyRefreshToken"`
-	Email string `json:"email"`
-	EmailPassword string `json:"emailPassword"`
-	GithubToken string `json:"githubToken"`
-}
-
 func init() {
 	config.Connect()
 	db = config.GetDb()
 	db.AutoMigrate(&User{})
 	db.AutoMigrate(&Token{})
+	db.AutoMigrate(&Job{})
 }
 
-func (b *User) CreateUser() *User{
-	db.NewRecord(b)
-	db.Create(&b)
-	return b
-}
-
-func (b *Token) CreateTokenUser() *Token{
-	db.NewRecord(b)
-	db.Create(&b)
-	return b
-}
-
-func FindUserToken(id uint) *Token {
-	var getToken Token
-	db.Where("user_id = ?", id).Find(&getToken)
-	return &getToken
+func (newUser *User) CreateUser() *User{
+	db.NewRecord(newUser)
+	db.Create(&newUser)
+	return newUser
 }
 
 func FindUser(Email string) *User{
@@ -63,10 +39,6 @@ func FindUserID(Email string) *uint{
 	var getUser User
 	db.Where("email = ?", Email).Find(&getUser)
 	return &getUser.ID
-}
-
-func SetUserToken(cookie string, column string, token string) {
-	db.Model(&Token{}).Where("user_id = ?", cookie).Update(column, token)
 }
 
 func GetAllUsers() []User{

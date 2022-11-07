@@ -5,8 +5,7 @@ import Wallet from './Components/Wallet'
 import NavBar from './Components/Navbar'
 import { Route, Routes } from 'react-router-dom'
 import Register from './Components/Register'
-import Discord from './Components/Discord'
-import Spotify from './Components/Spotify'
+import Services from './Components/Services'
 
 export default function App () {
   return (
@@ -17,8 +16,7 @@ export default function App () {
         <Route path='/register' element={<Register />} />
         <Route path='/login' element={<Login />} />
         <Route path='/wallet' element={<Wallet />} />
-        <Route path="/discord" element={<Discord />} />
-        <Route path="/spotify" element={<Spotify />} />
+        <Route path='/user/services' element={<Services />} />
       </Routes>
     </div>
   )
