@@ -34,29 +34,23 @@ export default function NavBar () {
 
     return (
         <StyledAppBar position='sticky'>
-            <Toolbar>
-                <Box style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                    <Box className="navItem">
-                        {/* <Button component={Link} to="/wallet" > */}
-                            <Link href='/wallet'>
-                                <Box >
-                                    <AccountIcon/>
-                                </Box>
-                            </Link>
-                        {/* </Button> */}
-                        <Link href="/">
-                            <Box >
-                                <AREALogo/>
-                            </Box>
-                        </Link>
-                        <Button onClick={handleLogout}>
-                            <Box >
-                                <LogoutIcon/>
-                            </Box>
-                        </Button>
-                    </Box>
+            <Box style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <Box >
+                    <Link href='/wallet'>
+                        <AccountIcon/>
+                    </Link>
                 </Box>
-            </Toolbar>
+                <Box >
+                    <Link href="/">
+                        <AREALogo/>
+                    </Link>
+                </Box>
+                <Box >
+                    <Button onClick={handleLogout}>
+                        <LogoutIcon/>
+                    </Button>
+                </Box>
+            </Box>
         </StyledAppBar>
     )
 }

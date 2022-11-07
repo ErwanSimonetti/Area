@@ -1,6 +1,6 @@
 import * as React from 'react'
 import propTypes from 'prop-types'
-import { Button, Box, Dialog, DialogTitle, List, ListItemText, ListItem, FormControlLabel, FormGroup, Checkbox } from '@mui/material'
+import { Button, Box, Dialog, Grid, DialogTitle, List, ListItemText, ListItem, FormControlLabel, FormGroup, Checkbox } from '@mui/material'
 import { AREACard } from './Cards'
 import './../App.css'
 import NewAreaButton from './Icons/NewAreaButton'
@@ -98,8 +98,8 @@ export function Wallet () {
                         <NewAreaButton/>
                     </Button>
                 </Box>
-                    <AREACard cards={cards} />
-                    <NewCardDialog onClose={handleNewCard} setSingleCard={setSingleCard} singleCard={singleCard} open={openDialog} newCard={newCard} setNewCard={setNewCard} />
+                <AREACard cards={cards} />
+                <NewCardDialog onClose={handleNewCard} setSingleCard={setSingleCard} singleCard={singleCard} open={openDialog} newCard={newCard} setNewCard={setNewCard} />
         </React.Fragment >
     )
 }
@@ -109,7 +109,6 @@ export function NewCardDialog ({ setNewCard, newCard, ...props }) {
     const [openActionDialog, setOpenActionDialog] = React.useState(false)
     const [openServiceReactionDialog, setOpenServiceReactionDialog] = React.useState(false)
     const [openReactionDialog, setOpenReactionDialog] = React.useState(false)
-    // const [isCompleted, setIsCompleted] = React.useState(false)
 
     React.useEffect(() => {
         if (newCard.action != null && newCard.actionService != null && newCard.reaction != null && newCard.reactionService != null) {
