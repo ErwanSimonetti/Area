@@ -37,13 +37,13 @@ export default function NavBar () {
             <Toolbar>
                 <Box style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                     <Box className="navItem">
-                        <Button component={Link} to="/wallet" >
+                        {/* <Button component={Link} to="/wallet" > */}
                             <Link href='/wallet'>
                                 <Box >
                                     <AccountIcon/>
                                 </Box>
                             </Link>
-                        </Button>
+                        {/* </Button> */}
                         <Link href="/">
                             <Box >
                                 <AREALogo/>
