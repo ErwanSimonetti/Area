@@ -81,5 +81,6 @@ func ExecAllJob() {
 			ReactionMap[job.ReactionFunc](job.ReactionFuncParams)
 		}
 	}
-	fmt.Println("\n")
+	fmt.Println()
+	fmt.Println()
 }

@@ -15,9 +15,6 @@ import (
 	"AREA/pkg/models"
 )
 
-
-var state = "random"
-
 func AuthDiscord(w http.ResponseWriter, r *http.Request){
 
 	authUrl := "https://discordapp.com/api/v6/oauth2/token";

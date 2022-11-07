@@ -24,7 +24,7 @@ func GetLeagueStat()([]byte ,error) {
 
 	res, err := http.DefaultClient.Do(req)
 	if err != nil {
-		myErr := errors.New("League API")
+		myErr := errors.New("league api")
 		return nil, myErr
 	}
 
@@ -42,7 +42,7 @@ func IsPlayingTeemo() (bool) {
 		return false
 	}
 	maybeTeemo := gjson.GetBytes(leagueData, "mostPlayedChamps.0.champName")
-	if (fmt.Sprintf("%s", maybeTeemo) == "Teemo") {
+	if (maybeTeemo.String() == "Teemo") {
 		return true
 	} else {
 		return false
@@ -56,7 +56,7 @@ func WinrateIsOver50() (bool) {
 		return false
 	}
 	winrate := gjson.GetBytes(leagueData, "mostPlayedChamps.0.winrate")
-	cleanWinrate := strings.TrimSuffix(fmt.Sprintf("%s", winrate), "%")
+	cleanWinrate := strings.TrimSuffix(winrate.String(), "%")
 	floatWinrate, _ := strconv.ParseFloat(cleanWinrate, 64)
 	if (floatWinrate > 50) {
 		return true
@@ -72,7 +72,7 @@ func KDAIsOver3() (bool) {
 		return false
 	}
 	KDA := gjson.GetBytes(leagueData, "mostPlayedChamps.0.kda")
-	floatKDA, _ := strconv.ParseFloat(fmt.Sprintf("%s", KDA), 64)
+	floatKDA, _ := strconv.ParseFloat(KDA.String(), 64)
 	if (floatKDA > 3.0) {
 		return true
 	} else {

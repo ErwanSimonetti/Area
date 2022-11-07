@@ -64,9 +64,8 @@ func CreateUser(w http.ResponseWriter, r *http.Request) {
 func LoginUser(w http.ResponseWriter, r *http.Request) {
 	LoginUser := &models.User{}
 	utils.ParseBody(r, LoginUser)
-
-	var user models.User
-	user = *models.FindUser(LoginUser.Email)
+	
+	user := *models.FindUser(LoginUser.Email)
 
 	if (user.Email == "") {
 		fmt.Println("bad email")

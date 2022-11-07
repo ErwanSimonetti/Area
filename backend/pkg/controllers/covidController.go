@@ -40,7 +40,7 @@ func CovidCaseIsOver700000() (bool){
 		return false
 	}
 	data := gjson.GetBytes(covidData, "response.0.cases.active")
-	floatCase, _ := strconv.ParseFloat(fmt.Sprintf("%s", data), 64)
+	floatCase, _ := strconv.ParseFloat(data.String(), 64)
 	fmt.Println(floatCase)
 	if (floatCase > 700000) {
 		return true
@@ -56,7 +56,7 @@ func CovidCriticalCaseIsOver1000() (bool){
 		return false
 	}
 	data := gjson.GetBytes(covidData, "response.0.cases.critical")
-	floatCase, _ := strconv.ParseFloat(fmt.Sprintf("%s", data), 64)
+	floatCase, _ := strconv.ParseFloat(data.String(), 64)
 	fmt.Println(floatCase)
 	if (floatCase > 1000) {
 		return true

@@ -42,13 +42,13 @@ func AuthGithub(w http.ResponseWriter, r *http.Request) {
 
 	body, _ := ioutil.ReadAll(response.Body)
 
-	requestUser, err := GetUser(w, r)
+	requestUser, _ := GetUser(w, r)
 
 	fmt.Println(requestUser.ID)
 
 	accessToken := gjson.GetBytes(body, "access_token")
 
-	models.SetUserToken(strconv.FormatUint(uint64(requestUser.ID), 10), "github_token", fmt.Sprintf("%s", accessToken))
+	models.SetUserToken(strconv.FormatUint(uint64(requestUser.ID), 10), "github_token", accessToken.String())
 	CreateWebhook(requestUser.ID ,"JulietteDestang", "test-webhook")
 }
 

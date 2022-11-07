@@ -5,6 +5,7 @@ import "github.com/jinzhu/gorm"
 type Job struct {
 	gorm.Model
 	UserId uint `json:"user_id"`
+	Service string `json:"service"`
 	ActionFunc string `json:"action_func"`
 	ActionFuncParams string `json:"action_func_params"`
 	ReactionFunc string `json:"reaction_func"`

@@ -36,3 +36,12 @@ func RemoveJob(w http.ResponseWriter, r *http.Request) {
     }
 	models.DeleteUserJob(uint(jobId))
 }
+
+func GetUserJobs(w http.ResponseWriter, r *http.Request) {
+	requestUser, _ := GetUser(w, r)
+	jobs := models.GetJobsByUserId(requestUser.ID)
+
+	res, _ := json.Marshal(jobs)
+	w.WriteHeader(http.StatusOK)
+	w.Write(res)
+}

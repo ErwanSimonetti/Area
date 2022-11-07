@@ -17,6 +17,6 @@ func SendMessage(userID uint) {
     webhook, _ := disgohook.NewWebhookClientByToken(nil, nil, messageUrl)
     msg := "reaction  @everyone"
 
-    Imessage, _ := webhook.SendContent(msg)
-	Imessage = Imessage
+    webhook.SendContent(msg)
+	// Imessage = Imessage
 }

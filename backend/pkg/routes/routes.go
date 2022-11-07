@@ -18,17 +18,19 @@ var AreaRouter = func(router *mux.Router) {
 	router.HandleFunc("/login/{userID}", controllers.GetUserById).Methods("GET")
 	router.HandleFunc("/login/{userID}", controllers.DeleteUser).Methods("DELETE")
 
+	router.HandleFunc("/webhook/", controllers.Webhook).Methods("POST")
+
 	router.HandleFunc("/discord/auth", controllers.AuthDiscord).Methods("GET")
 	router.HandleFunc("/discord/auth/url", controllers.GetDiscordUrl).Methods("GET")
 
 	router.HandleFunc("/github/auth/url", controllers.GetGithubUrl).Methods("GET")
 	router.HandleFunc("/github/auth", controllers.AuthGithub).Methods("GET")
 	
-	router.HandleFunc("/webhook/", controllers.Webhook).Methods("POST")
-
-
 	router.HandleFunc("/spotify/auth/url", controllers.CORS(controllers.GetSpotifyUrl)).Methods("GET")
 	router.HandleFunc("/spotify/auth", controllers.AuthSpotify).Methods("GET")
+
+
+	router.HandleFunc("/area/get", controllers.CORS(controllers.GetUserJobs)).Methods("GET")
 	router.HandleFunc("/area/create", controllers.CORS(controllers.AddJobToUser)).Methods("POST")
 	router.HandleFunc("/area/delete/{ID}", controllers.CORS(controllers.GetDiscordUrl)).Methods("DELETE")
 }
