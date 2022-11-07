@@ -30,7 +30,6 @@ func GetLeagueStat()([]byte ,error) {
 
 	defer res.Body.Close()
 	body, _ := ioutil.ReadAll(res.Body)
-
 	
 	return body, nil
 
@@ -43,7 +42,6 @@ func IsPlayingTeemo() (bool) {
 		return false
 	}
 	maybeTeemo := gjson.GetBytes(leagueData, "mostPlayedChamps.0.champName")
-	fmt.Println(maybeTeemo)
 	if (fmt.Sprintf("%s", maybeTeemo) == "Teemo") {
 		return true
 	} else {

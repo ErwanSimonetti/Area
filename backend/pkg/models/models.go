@@ -1,7 +1,7 @@
 package models
 
 import (
-	"fmt"
+	// "fmt"
 	"github.com/jinzhu/gorm"
 	"AREA/pkg/config"
 )
@@ -25,6 +25,7 @@ type Token struct {
 	SpotifyRefreshToken string `json:"spotifyRefreshToken"`
 	Email string `json:"email"`
 	EmailPassword string `json:"emailPassword"`
+	GithubToken string `json:"githubToken"`
 }
 
 func init() {
@@ -65,7 +66,6 @@ func FindUserID(Email string) *uint{
 }
 
 func SetUserToken(cookie string, column string, token string) {
-	fmt.Println(cookie, column, token)
 	db.Model(&Token{}).Where("user_id = ?", cookie).Update(column, token)
 }
 

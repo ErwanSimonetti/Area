@@ -11,7 +11,7 @@ import (
 	// "github.com/gofiber/fiber/middleware/cors"
 	// "AREA/pkg/jobs"
 	"AREA/pkg/routes"
-	"AREA/pkg/controllers"
+	// "AREA/pkg/controllers"
 	"strconv"
 	"strings"
 	// "github.com/jasonlvhit/gocron"
@@ -40,7 +40,7 @@ func main()  {
 	routes.AreaRouter(r)
 	http.Handle("/", r)
 
-	controllers.SendEmail()
+	// controllers.SendEmail()
 	// jobs.CreateNewJob("weather", "discord", "ok", 13)
 	// jobs.ExecAllJob()
 	// fmt.Println("wait 4 secs")

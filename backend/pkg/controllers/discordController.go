@@ -44,7 +44,6 @@ func AuthDiscord(w http.ResponseWriter, r *http.Request){
 	req.Header.Add("Content-Type", "application/x-www-form-urlencoded")
 	req.Header.Add("Content-Length", strconv.Itoa(len(data.Encode())))
 	response, _ := client.Do(req)
-	fmt.Println("ici")
 
 	body, _ := ioutil.ReadAll(response.Body)
 	jsonWebhook := make(map[string]interface{})
