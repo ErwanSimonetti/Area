@@ -11,8 +11,6 @@ import (
 func SendMessage(userID uint) {
 
 	userToken := *models.FindUserToken(userID)
-	fmt.Println(userToken.DiscordId)
-	fmt.Println(userToken.DiscordToken)
 
     messageUrl := fmt.Sprintf("%s/%s", userToken.DiscordId, userToken.DiscordToken)
 
@@ -21,5 +19,4 @@ func SendMessage(userID uint) {
 
     Imessage, _ := webhook.SendContent(msg)
 	Imessage = Imessage
-	fmt.Println("reaction @everyone")
 }

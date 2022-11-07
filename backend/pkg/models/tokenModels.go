@@ -7,9 +7,14 @@ import (
 
 type Token struct {
 	gorm.Model
-	UserId uint `json:"user_id"`
+	UserId uint `json:"userId"`
 	DiscordId string `json:"discordId"`
 	DiscordToken string `json:"discordToken"`
+	SpotifyToken string `json:"spotifyToken"`
+	SpotifyRefreshToken string `json:"spotifyRefreshToken"`
+	Email string `json:"email"`
+	EmailPassword string `json:"emailPassword"`
+	GithubToken string `json:"githubToken"`
 }
 
 func (newToken *Token) CreateTokenUser() *Token{

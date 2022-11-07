@@ -19,8 +19,7 @@ import (
 var state = "random"
 
 func AuthDiscord(w http.ResponseWriter, r *http.Request){
-	cookie, _ := r.Cookie("jwt")
-	fmt.Println(cookie)
+
 	authUrl := "https://discordapp.com/api/v6/oauth2/token";
 
 	client := &http.Client{
@@ -45,7 +44,6 @@ func AuthDiscord(w http.ResponseWriter, r *http.Request){
 	req.Header.Add("Content-Type", "application/x-www-form-urlencoded")
 	req.Header.Add("Content-Length", strconv.Itoa(len(data.Encode())))
 	response, _ := client.Do(req)
-	fmt.Println("ici")
 
 	body, _ := ioutil.ReadAll(response.Body)
 	jsonWebhook := make(map[string]interface{})
@@ -60,15 +58,16 @@ func AuthDiscord(w http.ResponseWriter, r *http.Request){
 	// 	panic(err.Error())
 	// }
 
+	requestUser, _ := GetUser(w, r)
+
 	fmt.Println(jsonWebhook["webhook"])
 	address := jsonWebhook["webhook"].(map[string]interface{})
 
 	webhookId := fmt.Sprintf("%s", address["id"])
 	webhookToken := fmt.Sprintf("%s", address["token"])
 
-	models.SetUserToken("13", "discord_id", webhookId)
-	models.SetUserToken("13", "discord_token", webhookToken)
-
+	models.SetUserToken(strconv.FormatUint(uint64(requestUser.ID), 10), "discord_id", webhookId)
+	models.SetUserToken(strconv.FormatUint(uint64(requestUser.ID), 10), "discord_token", webhookToken)
 }
 
 func GetDiscordUrl(w http.ResponseWriter, r *http.Request) {

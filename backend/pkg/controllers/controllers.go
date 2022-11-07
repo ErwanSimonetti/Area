@@ -183,7 +183,10 @@ func GetUser(w http.ResponseWriter, r *http.Request) (models.User, error) {
 		w.WriteHeader(http.StatusBadRequest)
 		return user, err
 	}
+
 	claims := token.Claims.(*jwt.StandardClaims)
+
+
 	config.GetDb().Where("id = ?", claims.Issuer).First(&user)
 	return user, nil
 }
@@ -203,6 +206,7 @@ func CORS(next http.HandlerFunc) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 	  w.Header().Add("Access-Control-Allow-Origin", "http://localhost:8081")
 	  w.Header().Add("Access-Control-Allow-Credentials", "true")
+  
 	  next(w, r)
 	}
   }
