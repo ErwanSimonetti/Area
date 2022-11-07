@@ -10,23 +10,21 @@ import LogoutIcon from './Icons/LogoutIcon'
 const StyledAppBar = styled(AppBar)(({ theme }) => ({
     backgroundColor: '#262626'
 }))
-
-export default function NavBar () {
-    const [disabledWallet, setDisabledWallet] = React.useState(false)
-
+export default function NavBar ({ setLoggedIn }) {
     React.useEffect(() => {
         console.log('je fais un truc')
-        if (localStorage.getItem('loggedIn') !== true) {
-            setDisabledWallet(true)
+        const cookie = document.cookie.indexOf('jwt')
+        console.log(cookie)
+        if (cookie !== -1) {
+            setLoggedIn(true)
         }
-    })
+    }, [])
 
     const handleLogout = (event) => {
         event.preventDefault()
         axios.get('http://localhost:8080/logout/', { withCredentials: true })
         .then(function (response) {
             localStorage.setItem('loggedIn', false)
-            setDisabledWallet(false)
         }).catch(function (error) {
             console.log(error)
         })
