@@ -6,6 +6,8 @@ import NavBar from './Components/Navbar'
 import { Route, Routes } from 'react-router-dom'
 import Register from './Components/Register'
 import Services from './Components/Services'
+import Github from './Components/Github'
+import Discord from './Components/Discord'
 
 export default function App () {
   return (
@@ -17,6 +19,8 @@ export default function App () {
         <Route path='/login' element={<Login />} />
         <Route path='/wallet' element={<Wallet />} />
         <Route path='/user/services' element={<Services />} />
+        <Route path='/github' element={<Github />} />
+        <Route path='/discord' element={<Discord />} />
       </Routes>
     </div>
   )

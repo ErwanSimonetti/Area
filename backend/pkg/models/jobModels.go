@@ -34,3 +34,13 @@ func DeleteUserJob(ID uint) Job{
 	db.Where("ID=?", ID).Delete(job)
 	return job
 }
+
+func CheckExistingGitAction(id uint, action string) bool{
+	var job []Job
+	db.Where("user_id = ?", id).Where("action_func = ?", action).Find(&job)
+	if (job == nil) {
+		return false
+	} else {
+		return true
+	}
+}
