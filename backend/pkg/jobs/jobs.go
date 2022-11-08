@@ -76,8 +76,8 @@ func ExecAllJob() {
 	fmt.Println(currentJobs)
 
 	for _, job := range currentJobs {
-
-		if ActionMap[job.ActionFunc](job.ActionFuncParams) {
+		
+		if ActionMap[job.ActionFunc] != nil && ActionMap[job.ActionFunc](job.ActionFuncParams) {
 			ReactionMap[job.ReactionFunc](job.ReactionFuncParams)
 		}
 	}
