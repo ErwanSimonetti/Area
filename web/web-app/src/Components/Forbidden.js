@@ -33,23 +33,23 @@ export default function Forbidden () {
             <ThemeProvider theme={theme}>
                 <Typography variant='h2' gutterBottom> Introuvable...</Typography>
             </ThemeProvider>
-            <Card container sx={{ ...parentCard }} display={ 'flex' } justifyContent={'center'}>
+            <Card container sx={{ ...parentCard }}>
                 <Card sx={{ ...btmCard }}>
-                    <Typography gutterBottom variant="h5" color={'white'}>
+                    <Typography gutterBottom variant="h5">
                         Vous n&apos;avez rien à faire ici. Sortez, madame.
                     </Typography>
                 </Card>
                 {/* <Button> */}
                     <Link href={'/login'}>
                         <Card sx={{ ...btmCard }}>
-                            <Typography gutterBottom variant="h5" color={'white'}>
+                            <Typography gutterBottom variant="h5">
                                 Connexion
                             </Typography>
                         </Card>
                     </Link>
                     <Link href={'/register'}>
                         <Card sx={{ ...btmCard }}>
-                            <Typography gutterBottom variant="h5" color={'white'}>
+                            <Typography gutterBottom variant="h5">
                                 Inscription
                             </Typography>
                         </Card>
