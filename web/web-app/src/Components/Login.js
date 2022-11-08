@@ -37,6 +37,8 @@ export default function SignIn () {
     .then(function (response) {
       console.log(response)
       localStorage.setItem('loggedIn', true)
+      location.href = '/wallet'
+
     })
     .catch(function (error) {
       console.log(error)

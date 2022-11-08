@@ -6,10 +6,11 @@ import (
 	"strconv"
 
 	"encoding/json"
+
 	"github.com/gorilla/mux"
 
-	"AREA/pkg/models"
 	"AREA/pkg/jobs"
+	"AREA/pkg/models"
 	"AREA/pkg/utils"
 )
 
@@ -42,6 +43,7 @@ func GetUserJobs(w http.ResponseWriter, r *http.Request) {
 	jobs := models.GetJobsByUserId(requestUser.ID)
 
 	res, _ := json.Marshal(jobs)
-	w.WriteHeader(http.StatusOK)
+	w.Header().Set("Content-Type","pkglication/json")
+	// w.WriteHeader(http.StatusOK)
 	w.Write(res)
 }
