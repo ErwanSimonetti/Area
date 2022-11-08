@@ -13,72 +13,51 @@ const actions = ['Un artiste poste un nouveau son', "J'ai ajouté une chanson à
 export default function Wallet () {
     const [openDialog, setOpenDialog] = React.useState(false)
     const [singleCard, setSingleCard] = React.useState(false)
-    const [cards, setCards] = React.useState([{
-        action: "J'update une de mes playlists",
-        actionService: 'Spotify',
-        reaction: 'Un lien vers la playlist est envoyé',
-        reactionService: 'Spotify'
-    }, {
-        action: "J'update une de mes playlists",
-        actionService: 'Spotify',
-        reaction: 'Un lien vers la playlist est envoyé',
-        reactionService: 'Spotify'
-    }, {
-        action: "J'update une de mes playlists",
-        actionService: 'Spotify',
-        reaction: 'Un lien vers la playlist est envoyé',
-        reactionService: 'Spotify'
-    }, {
-        action: "J'update une de mes playlists",
-        actionService: 'Spotify',
-        reaction: 'Un lien vers la playlist est envoyé',
-        reactionService: 'Spotify'
-    }, {
-        action: "J'update une de mes playlists",
-        actionService: 'Spotify',
-        reaction: 'Un lien vers la playlist est envoyé',
-        reactionService: 'Spotify'
-    }, {
-        action: "J'update une de mes playlists",
-        actionService: 'Spotify',
-        reaction: 'Un lien vers la playlist est envoyé',
-        reactionService: 'Spotify'
-    }, {
-        action: "J'update une de mes playlists",
-        actionService: 'Spotify',
-        reaction: 'Un lien vers la playlist est envoyé',
-        reactionService: 'Spotify'
-    }])
+    const [areaCards, setAreaCards] = React.useState([])
     const [newCard, setNewCard] = React.useState({
+        ID: null,
         action: null,
         actionService: null,
         reaction: null,
         reactionService: null
     })
+    const cards = []
 
-    const requestAREAS = (event) => {
-        event.preventDefault()
-        const headers = {
-            'Content-Type': 'text/plain'
-        }
-        axios.get('http://localhost:8080/area/get', { headers })
+    React.useEffect(() => {
+        axios.get('http://localhost:8080/area/get', { withCredentials: true })
         .then(function (response) {
-            console.log(response)
+            const areas = response.data
+            areas.forEach(area => {
+                const formattedArea = {
+                    ID: area.ID,
+                    action: area.action_func,
+                    actionService: area.action_service,
+                    reaction: area.reaction_func,
+                    reactionService: area.reaction_service
+                }
+                cards.push(formattedArea)
+            })
+            setAreaCards(cards)
         }).catch(function (error) {
             console.log(error)
         })
+    }, [])
+
+    const requestAREAS = (event) => {
+        event.preventDefault()
     }
 
     const handleNewCard = () => {
-        console.log(singleCard)
         if (singleCard) {
-            setCards([...cards, {
+            const addedCard = {
                 action: newCard.action,
                 actionService: newCard.actionService,
                 reaction: newCard.reaction,
                 reactionService: newCard.reactionService
-            }])
+            }
+            areaCards.push(addedCard)
             setNewCard({
+                ID: null,
                 action: null,
                 actionService: null,
                 reaction: null,
@@ -108,11 +87,11 @@ export default function Wallet () {
                     <ThemeProvider theme={theme}>
                         <Typography variant='h2' gutterBottom> Mon Wallet</Typography>
                     </ThemeProvider>
-                    <Button size="small" onClick={ requestAREAS } className="newAreaButton">
+                    <Button size="small" onClick={() => { setOpenDialog(true) }} className="newAreaButton">
                         <NewAreaButton/>
                     </Button>
                 </Box>
-                <AREACard cards={cards} />
+                <AREACard cards={areaCards} />
                 <NewCardDialog onClose={handleNewCard} setSingleCard={setSingleCard} singleCard={singleCard} open={openDialog} newCard={newCard} setNewCard={setNewCard} />
         </React.Fragment >
     )
