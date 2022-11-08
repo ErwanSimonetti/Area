@@ -5,11 +5,12 @@ import { AREACard } from './Cards'
 import './../App.css'
 import NewAreaButton from './Icons/NewAreaButton'
 import { createTheme, ThemeProvider, Typography } from '@material-ui/core'
+import axios from 'axios'
 
 const services = ['Spotify', 'Twitter', 'Discord', 'Github']
 const actions = ['Un artiste poste un nouveau son', "J'ai ajouté une chanson à une playlist", "Un autre option pour laquelle j'ai pas d'idée"]
 
-export function Wallet () {
+export default function Wallet () {
     const [openDialog, setOpenDialog] = React.useState(false)
     const [singleCard, setSingleCard] = React.useState(false)
     const [cards, setCards] = React.useState([{
@@ -55,6 +56,19 @@ export function Wallet () {
         reactionService: null
     })
 
+    const requestAREAS = (event) => {
+        event.preventDefault()
+        const headers = {
+            'Content-Type': 'text/plain'
+        }
+        axios.get('http://localhost:8080/area/get', { headers })
+        .then(function (response) {
+            console.log(response)
+        }).catch(function (error) {
+            console.log(error)
+        })
+    }
+
     const handleNewCard = () => {
         console.log(singleCard)
         if (singleCard) {
@@ -94,7 +108,7 @@ export function Wallet () {
                     <ThemeProvider theme={theme}>
                         <Typography variant='h2' gutterBottom> Mon Wallet</Typography>
                     </ThemeProvider>
-                    <Button size="small" onClick={ handleOpenDialog } className="newAreaButton">
+                    <Button size="small" onClick={ requestAREAS } className="newAreaButton">
                         <NewAreaButton/>
                     </Button>
                 </Box>
@@ -104,7 +118,7 @@ export function Wallet () {
     )
 }
 
-export function NewCardDialog ({ setNewCard, newCard, ...props }) {
+function NewCardDialog ({ setNewCard, newCard, ...props }) {
     const [openServiceActionDialog, setOpenServiceActionDialog] = React.useState(false)
     const [openActionDialog, setOpenActionDialog] = React.useState(false)
     const [openServiceReactionDialog, setOpenServiceReactionDialog] = React.useState(false)
@@ -175,8 +189,3 @@ export function NewCardDialog ({ setNewCard, newCard, ...props }) {
         </React.Fragment >
     )
 }
-
-Wallet.propTypes = {
-    newCard: propTypes.object
-}
-export default Wallet

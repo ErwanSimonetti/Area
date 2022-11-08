@@ -6,11 +6,12 @@ import { Toolbar, AppBar, Link, Button } from '@mui/material'
 import { Box } from '@mui/system'
 import axios from 'axios'
 import LogoutIcon from './Icons/LogoutIcon'
+import LogInIcon from './Icons/LogInIcon'
 
 const StyledAppBar = styled(AppBar)(({ theme }) => ({
     backgroundColor: '#262626'
 }))
-export default function NavBar ({ setLoggedIn }) {
+export default function NavBar ({ setLoggedIn, loggedIn }) {
     React.useEffect(() => {
         console.log('je fais un truc')
         const cookie = document.cookie.indexOf('jwt')
@@ -34,8 +35,8 @@ export default function NavBar ({ setLoggedIn }) {
         <StyledAppBar position='sticky'>
             <Box style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                 <Box >
-                    <Link href='/wallet'>
-                        <AccountIcon/>
+                    <Link href={loggedIn ? '/wallet' : '/login'}>
+                        {loggedIn ? <AccountIcon/> : <LogInIcon />}
                     </Link>
                 </Box>
                 <Box >
