@@ -43,7 +43,6 @@ func GetUserJobs(w http.ResponseWriter, r *http.Request) {
 	jobs := models.GetJobsByUserId(requestUser.ID)
 
 	res, _ := json.Marshal(jobs)
-	w.Header().Set("Content-Type","pkglication/json")
-	// w.WriteHeader(http.StatusOK)
+	w.WriteHeader(http.StatusOK)
 	w.Write(res)
 }
