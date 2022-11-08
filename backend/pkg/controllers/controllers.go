@@ -208,7 +208,6 @@ func CORS(next http.HandlerFunc) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 	  w.Header().Add("Access-Control-Allow-Origin", "http://localhost:8081")
 	  w.Header().Add("Access-Control-Allow-Credentials", "true")
-	  w.Header().Add("Content-Type", "application/json")
   
 	  next(w, r)
 	}
