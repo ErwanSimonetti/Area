@@ -1,17 +1,22 @@
 package controllers
 
 import (
+	"fmt"
 	"net/http"
+	"strconv"
+	"time"
+	"io/ioutil"
+	"bytes"
+	"encoding/json"
+	"strings"
+
+	"github.com/tidwall/gjson"
+
 	"AREA/pkg/utils"
 	"AREA/pkg/models"
-	"encoding/json"
-	"strconv"
-	"fmt"
-	"time"
-	"github.com/tidwall/gjson"
-	"io/ioutil"
-	// "log"
-	"bytes"
+	"AREA/pkg/jobs"
+	
+	"log"
 )
 
 func GetGithubUrl(w http.ResponseWriter, r *http.Request) {
@@ -48,25 +53,33 @@ func AuthGithub(w http.ResponseWriter, r *http.Request) {
 
 	accessToken := gjson.GetBytes(body, "access_token")
 
-	models.SetUserToken(strconv.FormatUint(uint64(requestUser.ID), 10), "github_token", accessToken.String())
-	CreateWebhook(requestUser.ID ,"JulietteDestang", "test-webhook")
+	models.SetUserToken(strconv.FormatUint(uint64(requestUser.ID), 10), "github_token", fmt.Sprintf("%s", accessToken))
+	// CreateWebhook(requestUser.ID ,"JulietteDestang", "test-webhook", "push")
+	fmt.Println("ok")
+	http.Redirect(w, r, "http://localhost:8081/user/services", http.StatusSeeOther)
 }
 
-func CreateWebhook(userID uint, username string, repository string) {
+func CreateWebhook(userID uint, action string, params string) {
+	split := strings.Split(params, "@@@")
+	username := split[0]
+	repository := split[1]
+
 	if (username == "") || repository == "" {
 		return 
 	}
+	if (models.CheckExistingGitAction(userID, action)) {
+		log.Fatal("webhook already exist")
+		return
+	}
+
 	userToken := *models.FindUserToken(userID)
+	
 	url := fmt.Sprintf("https://api.github.com/repos/%s/%s/hooks", username, repository)
 
 	client := &http.Client{
 		Timeout: time.Second * 10,
 	}
-	fmt.Println(userToken.GithubToken)
-
-
-	body := []byte(`{"name":"web","active":true,"events":["push","pull_request"],"config":{"url":"https://f206-2a01-cb04-6ff-a300-3b52-f22e-97d5-c899.eu.ngrok.io/webhook/","content_type":"json","insecure_ssl":"0"}}`)
-
+	body := []byte(`{"name":"web","active":true,"events":["` + action + `"],"config":{"url":"https://f206-2a01-cb04-6ff-a300-3b52-f22e-97d5-c899.eu.ngrok.io/webhook/","content_type":"json","insecure_ssl":"0"}}`)
 
 	req, err := http.NewRequest("POST", url, bytes.NewReader(body))
 	if err != nil {
@@ -80,8 +93,18 @@ func CreateWebhook(userID uint, username string, repository string) {
 	fmt.Println(req)
 	fmt.Println(response)
 	fmt.Println(string(newbody))
+	webhookID := gjson.GetBytes(newbody, "id")
+	webhookArray := models.GetWebhookArray(userID)
+	webhookArray = append(webhookArray, webhookID.String())
+	models.UpdateWebhookArray(userID, webhookArray)
+	// models.SetUserToken(strconv.FormatUint(uint64(userID), 10), "webhook_id", fmt.Sprintf("%s", webhookID))
+	
 }
 
 func Webhook(w http.ResponseWriter, r *http.Request) {
 	fmt.Println(r)
+	webhookID := r.Header.Get("X-Github-Hook-Id")
+	webhookEvent := r.Header.Get("X-Github-Event")
+	userToken:= *models.FindUserByWebhookToken(webhookID)
+	jobs.ExecGithJob(userToken.UserId, webhookEvent)
 }

@@ -14,12 +14,54 @@ import (
 	"AREA/pkg/utils"
 )
 
+var gitHubActions = []string{
+	"push",
+	"pull_request",
+	"branch_protection_rule",
+	"check_run",
+	"check_suite",
+	"create",
+	"delete",
+	"deployment",
+	"deployment_status",
+	"discussion",
+	"discussion_comment",
+	"fork",
+	"gollum",
+	"issue_comment",
+	"issues",
+	"label",
+	"merge_group",
+	"milestone",
+	"page_build",
+	"project_card",
+	"project_column",
+	"public",
+	"pull_request_comment",
+	"pull_request_review",
+	"pull_request_review_comment",
+	"pull_request_target",
+	"registry_package",
+	"release",
+	"repository_dispatch",
+	"schedule",
+	"status",
+	"watch",
+	"workflow_call",
+	"workflow_dispatch",
+	"workflow_run",
+}
+
 func AddJobToUser(w http.ResponseWriter, r *http.Request) {
 	newJob := &models.Job{}
 	utils.ParseBody(r, newJob)
 
 	requestUser, _ := GetUser(w, r)
 	newJob.UserId = requestUser.ID
+
+	if (utils.ArrayContainsString(gitHubActions, newJob.ActionFunc)) {
+		CreateWebhook(requestUser.ID, newJob.ActionFunc, newJob.ActionFuncParams)
+	}
 	jobs.AddJob(*newJob)
 
 	jobId := newJob.CreateJob()
