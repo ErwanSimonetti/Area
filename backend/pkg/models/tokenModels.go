@@ -15,6 +15,7 @@ type Token struct {
 	Email string `json:"email"`
 	EmailPassword string `json:"emailPassword"`
 	GithubToken string `json:"githubToken"`
+	WebhookID []string `json:"webhookId"`
 }
 
 func (newToken *Token) CreateTokenUser() *Token{
@@ -32,4 +33,20 @@ func FindUserToken(id uint) *Token {
 func SetUserToken(cookie string, column string, token string) {
 	fmt.Println(cookie, column, token)
 	db.Model(&Token{}).Where("user_id = ?", cookie).Update(column, token)
+}
+
+func FindUserByWebhookToken(token string) *Token {
+	var getToken Token
+	db.Where("webhook_id = ?", token).Find(&getToken)
+	return &getToken
+}
+
+func GetWebhookArray(id uint) []string {
+	var webhookArray []string 
+	db.Where("user_id = ?", id).Find(&webhookArray)
+	return webhookArray
+}
+
+func UpdateWebhookArray(id uint , newArray []string) {
+	db.Where("user_id = ?", id).Update("webhook_id", newArray)
 }

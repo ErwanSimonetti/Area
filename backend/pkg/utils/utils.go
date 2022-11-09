@@ -9,6 +9,15 @@ import(
 	"log"
 )
 
+func ArrayContainsString(s []string, str string) bool {
+	for _, v := range s {
+		if v == str {
+			return true
+		}
+	}
+	return false
+}
+
 func ParseBody(r *http.Request, x interface{}){
 	if body, err := ioutil.ReadAll(r.Body); err == nil{
 		if err := json.Unmarshal([]byte(body), x); err != nil{
@@ -29,4 +38,4 @@ func GetEnv(key string) string {
 	}
   
 	return os.Getenv(key)
-  }
+}

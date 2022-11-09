@@ -62,7 +62,6 @@ func RefreshSpotifyToken(userID uint) {
 		accessToken := spotifyRefreshResponse["access_token"]
 
 		models.SetUserToken(strconv.FormatUint(uint64(userID), 10), "spotify_token", fmt.Sprintf("%s", accessToken))
-
 }
 
 func AuthSpotify(w http.ResponseWriter, r *http.Request) {
@@ -107,6 +106,7 @@ func AuthSpotify(w http.ResponseWriter, r *http.Request) {
 
 	models.SetUserToken(strconv.FormatUint(uint64(requestUser.ID), 10), "spotify_token", fmt.Sprintf("%s", accessToken))
 	models.SetUserToken(strconv.FormatUint(uint64(requestUser.ID), 10), "spotify_refresh_token", fmt.Sprintf("%s", refreshToken))
+	http.Redirect(w, r, "http://localhost:8081/user/services", http.StatusSeeOther)
 	// song := GetSongByName(requestUser.ID ,"beatit")
 	// PlayASong(requestUser.ID, song)
 	// w.Write(spotifyResponse["access_token"])
