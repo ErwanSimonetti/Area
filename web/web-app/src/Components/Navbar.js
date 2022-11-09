@@ -2,7 +2,7 @@ import * as React from 'react'
 import { styled } from '@mui/material/styles'
 import AREALogo from './Icons/AREALogo'
 import AccountIcon from './Icons/AccountIcon'
-import { Toolbar, AppBar, Link, Button } from '@mui/material'
+import { AppBar, Link, Button } from '@mui/material'
 import { Box } from '@mui/system'
 import axios from 'axios'
 import LogoutIcon from './Icons/LogoutIcon'
@@ -13,9 +13,7 @@ const StyledAppBar = styled(AppBar)(({ theme }) => ({
 }))
 export default function NavBar ({ setLoggedIn, loggedIn }) {
     React.useEffect(() => {
-        console.log('je fais un truc')
         const cookie = document.cookie.indexOf('jwt')
-        console.log(cookie)
         if (cookie !== -1) {
             setLoggedIn(true)
         }
@@ -24,8 +22,9 @@ export default function NavBar ({ setLoggedIn, loggedIn }) {
     const handleLogout = (event) => {
         event.preventDefault()
         axios.get('http://localhost:8080/logout/', { withCredentials: true })
-        .then(function (response) {
+        .then(function () {
             localStorage.setItem('loggedIn', false)
+            window.location.reload(true)
         }).catch(function (error) {
             console.log(error)
         })
@@ -35,9 +34,14 @@ export default function NavBar ({ setLoggedIn, loggedIn }) {
         <StyledAppBar position='sticky'>
             <Box style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                 <Box >
-                    <Link href={loggedIn ? '/wallet' : '/login'}>
-                        {loggedIn ? <AccountIcon/> : <LogInIcon />}
+                    {loggedIn
+                    ? <Link href={'/wallet'}>
+                        <AccountIcon/>
                     </Link>
+                    : <Link href={'/login'}>
+                        <LogInIcon />
+                    </Link>
+                    }
                 </Box>
                 <Box >
                     <Link href="/">

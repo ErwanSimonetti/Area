@@ -35,7 +35,7 @@ export default function Wallet () {
                     reaction: area.reaction_func,
                     reactionService: area.reaction_service
                 }
-                cards.push(formattedArea)
+                cards.unshift(formattedArea)
             })
             setAreaCards(cards)
         }).catch(function (error) {
@@ -43,19 +43,32 @@ export default function Wallet () {
         })
     }, [])
 
-    const requestAREAS = (event) => {
-        event.preventDefault()
-    }
-
     const handleNewCard = () => {
         if (singleCard) {
-            const addedCard = {
+            const headers = {
+                'Content-Type': 'text/plain'
+            }
+            const sentCard = {
                 action: newCard.action,
                 actionService: newCard.actionService,
                 reaction: newCard.reaction,
                 reactionService: newCard.reactionService
             }
-            areaCards.push(addedCard)
+            axios.post('http://localhost:8080/area/create', {
+                action_service: sentCard.actionService,
+                action_func: sentCard.action,
+                action_func_params: 'action de B 3',
+                reaction_service: sentCard.reactionService,
+                reaction_func: sentCard.reaction,
+                reaction_func_params: 'reaction de B 2'
+            }, { headers: { 'Content-Type': 'text/plain' }, withCredentials: true })
+            .then(function (response) {
+                sentCard.ID = response.data
+                window.location.reload(true)
+            })
+            .catch(function (error) {
+                console.log(error)
+            })
             setNewCard({
                 ID: null,
                 action: null,
@@ -68,9 +81,6 @@ export default function Wallet () {
         setOpenDialog(false)
     }
 
-    const handleOpenDialog = () => {
-        setOpenDialog(true)
-    }
     const theme = createTheme({
         typography: {
           fontFamily: ['Titan One', 'cursive'].join(',')
@@ -108,7 +118,6 @@ function NewCardDialog ({ setNewCard, newCard, ...props }) {
             props.setSingleCard(true)
         }
     })
-
     return (
         <React.Fragment>
             <Dialog onClose={props.onClose} open={props.open}>
@@ -118,7 +127,7 @@ function NewCardDialog ({ setNewCard, newCard, ...props }) {
                     <FormControlLabel disabled control={<Checkbox checked={newCard.action !== null} />} label={<Button onClick={() => setOpenActionDialog(true)}> {newCard.action ? newCard.action : 'action'}</Button>} />
                     <FormControlLabel disabled control={<Checkbox checked={newCard.reactionService !== null} />} label={<Button onClick={() => setOpenServiceReactionDialog(true)}> {newCard.reactionService ? newCard.reactionService : 'service de réaction'}</Button>} />
                     <FormControlLabel disabled control={<Checkbox checked={newCard.reaction !== null} />} label={<Button onClick={() => setOpenReactionDialog(true)}> {newCard.reaction ? newCard.reaction : 'réaction'}</Button>} />
-                    <Button variant="outlined" disabled={!props.singleCard} onClick={() => { props.onClose(false); console.log('ici') }}>Valider</Button>
+                    <Button variant="outlined" disabled={!props.singleCard} onClick={() => { props.onClose(false) }}>Valider</Button>
                 </FormGroup>
             </Dialog>
             {/* Service Action Pick */}
