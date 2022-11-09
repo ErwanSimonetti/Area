@@ -18,7 +18,9 @@ export default function Wallet () {
         ID: null,
         action: null,
         actionService: null,
+        // actionTitle:
         reaction: null,
+        // reactionTitle
         reactionService: null
     })
     const cards = []
@@ -32,7 +34,9 @@ export default function Wallet () {
                     ID: area.ID,
                     action: area.action_func,
                     actionService: area.action_service,
+                    // actionTitle:
                     reaction: area.reaction_func,
+                    // reactionTitle
                     reactionService: area.reaction_service
                 }
                 cards.push(formattedArea)
@@ -52,7 +56,9 @@ export default function Wallet () {
             const addedCard = {
                 action: newCard.action,
                 actionService: newCard.actionService,
+                // actionTitle:
                 reaction: newCard.reaction,
+                // reactionTitle
                 reactionService: newCard.reactionService
             }
             areaCards.push(addedCard)
@@ -60,7 +66,9 @@ export default function Wallet () {
                 ID: null,
                 action: null,
                 actionService: null,
+                // actionTitle:
                 reaction: null,
+                // reactionTitle
                 reactionService: null
             })
             setSingleCard(false)
@@ -108,7 +116,7 @@ function NewCardDialog ({ setNewCard, newCard, ...props }) {
             props.setSingleCard(true)
         }
     })
-
+jhào
     return (
         <React.Fragment>
             <Dialog onClose={props.onClose} open={props.open}>

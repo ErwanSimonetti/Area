@@ -29,16 +29,16 @@ export function AREACard ({ cards }) {
             {cards.map((card, index) => (
                 < Grid item key={index} xs={12} sm={4} lg={3} style={{ paddingRight: '32px' }}>
                     <Card sx={{ ...parentCard }}>
-                    <Card sx={{ ...topCard }}>
-                        <Typography gutterBottom variant="h5">
-                            {card.action}
-                        </Typography>
-                    </Card>
-                    <Card sx={{ ...btmCard }}>
-                        <Typography gutterBottom variant="h5" color={'white'}>
-                            {card.reaction}
-                        </Typography>
-                    </Card>
+                        <Card sx={{ ...topCard }}>
+                            <Typography gutterBottom variant="h5">
+                                {card.actionTitle}
+                            </Typography>
+                        </Card>
+                        <Card sx={{ ...btmCard }}>
+                            <Typography gutterBottom variant="h5" color={'white'}>
+                                {card.reactionTitle}
+                            </Typography>
+                        </Card>
                     </Card>
                 </Grid>
             ))}
