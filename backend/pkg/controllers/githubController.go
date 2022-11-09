@@ -55,6 +55,8 @@ func AuthGithub(w http.ResponseWriter, r *http.Request) {
 
 	models.SetUserToken(strconv.FormatUint(uint64(requestUser.ID), 10), "github_token", fmt.Sprintf("%s", accessToken))
 	// CreateWebhook(requestUser.ID ,"JulietteDestang", "test-webhook", "push")
+	fmt.Println("ok")
+	http.Redirect(w, r, "http://localhost:8081/user/services", http.StatusSeeOther)
 }
 
 func CreateWebhook(userID uint, action string, params string) {
