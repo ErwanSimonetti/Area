@@ -20,7 +20,7 @@ var ActionMap = map[string]func(string)bool{
 	"test_action": action,
 }
 
-var ReactionMap = map[string]func(string){
+var ReactionMap = map[string]func(uint, string){
 	// "discord": SendMessage, 
 	"test_reaction": reaction,
 }
@@ -46,8 +46,8 @@ func action(ok string) bool {
 	return true
 }
 
-func reaction(params string) {
-	fmt.Println("reaction", params)
+func reaction(userID uint, params string) {
+	fmt.Println("reaction", userID, params)
 }
 
 func AddUserJobsOnLogin(userId uint) {
@@ -89,7 +89,7 @@ func ExecAllJob() {
 	for _, job := range currentJobs {
 
 		if ActionMap[job.ActionFunc](job.ActionFuncParams) {
-			ReactionMap[job.ReactionFunc](job.ReactionFuncParams)
+			ReactionMap[job.ReactionFunc](job.UserId, job.ReactionFuncParams)
 		}
 	}
 	fmt.Println()

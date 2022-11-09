@@ -64,7 +64,7 @@ func CreateUser(w http.ResponseWriter, r *http.Request) {
 func LoginUser(w http.ResponseWriter, r *http.Request) {
 	LoginUser := &models.User{}
 	utils.ParseBody(r, LoginUser)
-	
+
 	user := *models.FindUser(LoginUser.Email)
 
 	if (user.Email == "") {
@@ -191,17 +191,6 @@ func GetUser(w http.ResponseWriter, r *http.Request) (models.User, error) {
 
 	config.GetDb().Where("id = ?", claims.Issuer).First(&user)
 	return user, nil
-}
-
-
-func DoEvery(d time.Duration, f func(time.Time)) {
-	for x := range time.Tick(d) {
-		f(x)
-	}
-}
-
-func Helloworld(t time.Time) {
-	fmt.Printf("%v: Hello, World!\n", t)
 }
 
 func CORS(next http.HandlerFunc) http.HandlerFunc {
