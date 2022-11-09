@@ -32,5 +32,5 @@ var AreaRouter = func(router *mux.Router) {
 
 	router.HandleFunc("/area/get", controllers.CORS(controllers.GetUserJobs)).Methods("GET")
 	router.HandleFunc("/area/create", controllers.CORS(controllers.AddJobToUser)).Methods("POST")
-	router.HandleFunc("/area/delete/{ID}", controllers.CORS(controllers.RemoveJob)).Methods("DELETE")
+	router.HandleFunc("/area/delete/", controllers.CORS(controllers.RemoveJob)).Methods("POST")
 }

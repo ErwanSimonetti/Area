@@ -31,7 +31,7 @@ const parentCard = {
 export function AREACard ({ cards }) {
     function handleDeletion (card) {
         console.log(card.ID)
-        axios.delete('http://localhost:8080/area/delete/' + card.ID)
+        axios.post('http://localhost:8080/area/delete/' + card.ID, { withCredentials: true })
         .then(function (response) {
             console.log(response)
             window.location.reload(true)
