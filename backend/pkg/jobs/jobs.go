@@ -9,10 +9,9 @@ import (
 // type Job struct {
 // 	ActionFunc func(string) bool
 // 	ActionFuncParams string
-// 	ReactionFunc func(uint)
+// 	ReactionFunc func(string)
 // 	ReactionFuncParams uint
 // }
-
 var currentJobs []models.Job
 
 var ActionMap = map[string]func(string)bool{
@@ -40,6 +39,10 @@ func test(ok string) bool {
 	fmt.Println("action")
 	return true
 }
+
+// func nullAction(string) bool {
+// 	return false
+// }
 
 func action(ok string) bool {
 	fmt.Println("action", ok)
@@ -87,11 +90,17 @@ func ExecAllJob() {
 	fmt.Println(currentJobs)
 
 	for _, job := range currentJobs {
-
-		if ActionMap[job.ActionFunc](job.ActionFuncParams) {
+		if ActionMap[job.ActionFunc] != nil && ActionMap[job.ActionFunc](job.ActionFuncParams) {
 			ReactionMap[job.ReactionFunc](job.UserId, job.ReactionFuncParams)
 		}
 	}
-	fmt.Println()
-	fmt.Println()
+	// fmt.Println("\n")
+}
+
+func ExecGithJob(userID uint, githAction string) {
+	for _, job := range currentJobs {
+		if (job.ActionFunc == githAction) && (job.UserId == userID){
+			ReactionMap[job.ReactionFunc](job.UserId, job.ReactionFuncParams)
+		}
+	}
 }

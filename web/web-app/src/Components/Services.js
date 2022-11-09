@@ -1,15 +1,12 @@
 import { Typography, Box, Button, Card, CardContent, CardMedia, Grid, ButtonBase } from '@mui/material'
 import * as React from 'react'
 import axios from 'axios'
-
-const twitterImg = 'https://www.shareicon.net/data/256x256/2017/06/28/888044_logo_512x512.png'
-const spotifyImg = 'https://raw.githubusercontent.com/iobroker-community-adapters/ioBroker.spotify-premium/HEAD/admin/spotify-premium.png'
-const discordImg = 'https://www.svgrepo.com/show/353655/discord-icon.svg'
-const githubImg = 'https://cdn.iconscout.com/icon/free/png-256/github-163-761603.png'
-const deezerImg = 'https://cdn-1.webcatalog.io/catalog/deezer/deezer-icon-filled.png'
+import githubImg from '../resources/github.png'
+import spotifyImg from '../resources/spotify.png'
+import discordImg from '../resources/discord.svg'
 
 export default function Services () {
-    const services = [{ name: 'Spotify', token: null, img: spotifyImg }, { name: 'Github', token: null, img: githubImg }, { name: 'Discord', token: null, img: discordImg }, { name: 'Deezer', token: null, img: deezerImg }, { name: 'Twitter', token: null, img: twitterImg }]
+    const services = [{ name: 'Spotify', token: null, img: spotifyImg }, { name: 'Github', token: null, img: githubImg }, { name: 'Discord', token: null, img: discordImg }]
     return (
         <React.Fragment>
             <Box sx={{
@@ -39,12 +36,41 @@ function ServicesCard ({ services }) {
             console.log(error)
         })
     }
+
+    const getSpotifyToken = () => {
+        const headers = { 'Content-Type': 'text/plain' }
+        axios.get('http://localhost:8080/spotify/auth/url', { headers })
+        .then(function (response) {
+            console.log(response.data)
+            location.href = response.data
+        }).catch(function (error) {
+            console.log(error)
+        })
+    }
+
+    const getGithubToken = () => {
+        const headers = { 'Content-Type': 'text/plain' }
+        axios.get('http://localhost:8080/github/auth/url', { headers })
+        .then(function (response) {
+            console.log(response.data)
+            location.href = response.data
+        }).catch(function (error) {
+            console.log(error)
+        })
+    }
+
     const handleClick = (service) => {
         console.log('clicked ' + service.name)
         setService(service.name)
         switch (service.name) {
+            case 'Spotify':
+                getSpotifyToken()
+                break
             case 'Discord':
                 getDiscordToken()
+                break
+            case 'Github':
+                getGithubToken()
                 break
             default:
                 break

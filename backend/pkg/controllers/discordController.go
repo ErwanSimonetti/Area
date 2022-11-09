@@ -49,11 +49,6 @@ func AuthDiscord(w http.ResponseWriter, r *http.Request){
 	if errorUnmarshal != nil {
 	    log.Fatal(errorUnmarshal)
 	}
-	fmt.Println(jsonWebhook)
-	// cookieValue, cookieErr := r.Cookie("userID")
-	// if cookieErr != nil {
-	// 	panic(err.Error())
-	// }
 
 	requestUser, _ := GetUser(w, r)
 
@@ -65,6 +60,8 @@ func AuthDiscord(w http.ResponseWriter, r *http.Request){
 
 	models.SetUserToken(strconv.FormatUint(uint64(requestUser.ID), 10), "discord_id", webhookId)
 	models.SetUserToken(strconv.FormatUint(uint64(requestUser.ID), 10), "discord_token", webhookToken)
+
+	http.Redirect(w, r, "http://localhost:8081/user/services", http.StatusSeeOther)
 }
 
 func GetDiscordUrl(w http.ResponseWriter, r *http.Request) {
