@@ -15,31 +15,19 @@ import { GoogleLogin } from 'react-google-login'
 import { GoogleLoginButton } from 'react-social-login-buttons'
 import { gapi } from 'gapi-script'
 import axios from 'axios'
-import Cookies from 'universal-cookie'
-
-// const clientidGithub = "ac56fad434a3a3c1561e"
 
 const theme = createTheme()
-// const navigate = useNavigate()
 const clientId = '78828642227-b3tlfon89t2j66b2a81c60mu8oe45ijb.apps.googleusercontent.com'
 
 export default function SignIn () {
-  const [email, setEmail] = React.useState('')
-  const [password, setPassword] = React.useState('')
-
-  React.useEffect(() => {
-    gapi.load('client:auth2', () => {
-      gapi.auth2.init({ clientId })
-    })
-  }, [])
+  // const [email, setEmail] = React.useState('')
+  // const [password, setPassword] = React.useState('')
 
   const handleSubmit = (event) => {
     event.preventDefault()
     console.log(event)
-    // axios.defaults.withCredentials = true
     const headers = { 'Content-Type': 'application/x-www-form-urlencoded'}
     const data = new FormData(event.currentTarget)
-    // console.log(data)
 
     const [email, password] = [data.get('email'), data.get('password')]
     axios.post('http://localhost:8080/login/', {
@@ -48,7 +36,9 @@ export default function SignIn () {
     }, {headers: {'Content-Type': 'text/plain'}, withCredentials: true} ) 
     .then(function (response) {
       console.log(response)
-      Cookies.setCookie()
+      localStorage.setItem('loggedIn', true)
+      location.href = '/wallet'
+
     })
     .catch(function (error) {
       console.log(error)
@@ -62,7 +52,6 @@ export default function SignIn () {
   return (
     <ThemeProvider theme={theme}>
       <Container component="main" maxWidth="xs">
-
         <CssBaseline />
         <Box
           sx={{

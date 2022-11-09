@@ -47,7 +47,7 @@ func AuthGithub(w http.ResponseWriter, r *http.Request) {
 
 	body, _ := ioutil.ReadAll(response.Body)
 
-	requestUser, err := GetUser(w, r)
+	requestUser, _ := GetUser(w, r)
 
 	fmt.Println(requestUser.ID)
 

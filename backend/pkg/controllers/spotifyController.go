@@ -40,12 +40,12 @@ func RefreshSpotifyToken(userID uint) {
 		refreshData.Set("client_id", utils.GetEnv("SPOTIFY_ID"))
 		refreshEncodedData := refreshData.Encode()
 
-		refreshreq, err := http.NewRequest("POST", refreshurl, strings.NewReader(refreshEncodedData))
-		if err != nil {
+		refreshreq, _ := http.NewRequest("POST", refreshurl, strings.NewReader(refreshEncodedData))
+		// if err != nil {
 			// w.WriteHeader(http.StatusBadRequest)
 			// res, _ := json.Marshal("bad request")
 			// w.Write(res)
-		}
+		// }
 		refreshreq.Header.Add("Content-Type", "application/x-www-form-urlencoded")
 		refreshreq.Header.Add("Authorization", "Basic " + base64.StdEncoding.EncodeToString([]byte((utils.GetEnv("SPOTIFY_ID") + ":" +utils.GetEnv("SPOTIFY_SECRET")))))
 
@@ -102,7 +102,7 @@ func AuthSpotify(w http.ResponseWriter, r *http.Request) {
 	accessToken := spotifyResponse["access_token"]
 	refreshToken := spotifyResponse["refresh_token"]
 
-	requestUser, err := GetUser(w, r)
+	requestUser, _ := GetUser(w, r)
 
 
 	models.SetUserToken(strconv.FormatUint(uint64(requestUser.ID), 10), "spotify_token", fmt.Sprintf("%s", accessToken))
@@ -142,7 +142,7 @@ func GetSongByName(userID uint , songName string) (string){
 	choosenSong := gjson.GetBytes(body, "tracks.items.0.uri")
 
 
-	return fmt.Sprintf("%s",choosenSong)
+	return choosenSong.String()
 }
 
 func PlayASong(userID uint, trackID string) {
@@ -161,8 +161,8 @@ func PlayASong(userID uint, trackID string) {
 	}
 	req.Header.Add("Authorization", "Bearer " + userToken.SpotifyToken)
 
-	response, _ := client.Do(req)
-	response = response
+	client.Do(req)
+	// response = response
 
 }
 

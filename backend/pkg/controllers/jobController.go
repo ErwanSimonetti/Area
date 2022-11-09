@@ -6,10 +6,11 @@ import (
 	"strconv"
 
 	"encoding/json"
+
 	"github.com/gorilla/mux"
 
-	"AREA/pkg/models"
 	"AREA/pkg/jobs"
+	"AREA/pkg/models"
 	"AREA/pkg/utils"
 )
 
@@ -77,4 +78,13 @@ func RemoveJob(w http.ResponseWriter, r *http.Request) {
         fmt.Println(err)
     }
 	models.DeleteUserJob(uint(jobId))
+}
+
+func GetUserJobs(w http.ResponseWriter, r *http.Request) {
+	requestUser, _ := GetUser(w, r)
+	jobs := models.GetJobsByUserId(requestUser.ID)
+
+	res, _ := json.Marshal(jobs)
+	w.WriteHeader(http.StatusOK)
+	w.Write(res)
 }

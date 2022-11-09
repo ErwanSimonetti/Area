@@ -1,70 +1,63 @@
 import * as React from 'react'
 import propTypes from 'prop-types'
-import { Button, Box, Dialog, DialogTitle, List, ListItemText, ListItem, FormControlLabel, FormGroup, Checkbox } from '@mui/material'
+import { Button, Box, Dialog, Grid, DialogTitle, List, ListItemText, ListItem, FormControlLabel, FormGroup, Checkbox } from '@mui/material'
 import { AREACard } from './Cards'
 import './../App.css'
 import NewAreaButton from './Icons/NewAreaButton'
 import { createTheme, ThemeProvider, Typography } from '@material-ui/core'
+import axios from 'axios'
 
 const services = ['Spotify', 'Twitter', 'Discord', 'Github']
 const actions = ['Un artiste poste un nouveau son', "J'ai ajouté une chanson à une playlist", "Un autre option pour laquelle j'ai pas d'idée"]
 
-export function Wallet () {
+export default function Wallet () {
     const [openDialog, setOpenDialog] = React.useState(false)
     const [singleCard, setSingleCard] = React.useState(false)
-    const [cards, setCards] = React.useState([{
-        action: "J'update une de mes playlists",
-        actionService: 'Spotify',
-        reaction: 'Un lien vers la playlist est envoyé',
-        reactionService: 'Spotify'
-    }, {
-        action: "J'update une de mes playlists",
-        actionService: 'Spotify',
-        reaction: 'Un lien vers la playlist est envoyé',
-        reactionService: 'Spotify'
-    }, {
-        action: "J'update une de mes playlists",
-        actionService: 'Spotify',
-        reaction: 'Un lien vers la playlist est envoyé',
-        reactionService: 'Spotify'
-    }, {
-        action: "J'update une de mes playlists",
-        actionService: 'Spotify',
-        reaction: 'Un lien vers la playlist est envoyé',
-        reactionService: 'Spotify'
-    }, {
-        action: "J'update une de mes playlists",
-        actionService: 'Spotify',
-        reaction: 'Un lien vers la playlist est envoyé',
-        reactionService: 'Spotify'
-    }, {
-        action: "J'update une de mes playlists",
-        actionService: 'Spotify',
-        reaction: 'Un lien vers la playlist est envoyé',
-        reactionService: 'Spotify'
-    }, {
-        action: "J'update une de mes playlists",
-        actionService: 'Spotify',
-        reaction: 'Un lien vers la playlist est envoyé',
-        reactionService: 'Spotify'
-    }])
+    const [areaCards, setAreaCards] = React.useState([])
     const [newCard, setNewCard] = React.useState({
+        ID: null,
         action: null,
         actionService: null,
         reaction: null,
         reactionService: null
     })
+    const cards = []
+
+    React.useEffect(() => {
+        axios.get('http://localhost:8080/area/get', { withCredentials: true })
+        .then(function (response) {
+            const areas = response.data
+            areas.forEach(area => {
+                const formattedArea = {
+                    ID: area.ID,
+                    action: area.action_func,
+                    actionService: area.action_service,
+                    reaction: area.reaction_func,
+                    reactionService: area.reaction_service
+                }
+                cards.push(formattedArea)
+            })
+            setAreaCards(cards)
+        }).catch(function (error) {
+            console.log(error)
+        })
+    }, [])
+
+    const requestAREAS = (event) => {
+        event.preventDefault()
+    }
 
     const handleNewCard = () => {
-        console.log(singleCard)
         if (singleCard) {
-            setCards([...cards, {
+            const addedCard = {
                 action: newCard.action,
                 actionService: newCard.actionService,
                 reaction: newCard.reaction,
                 reactionService: newCard.reactionService
-            }])
+            }
+            areaCards.push(addedCard)
             setNewCard({
+                ID: null,
                 action: null,
                 actionService: null,
                 reaction: null,
@@ -86,7 +79,7 @@ export function Wallet () {
     return (
         <React.Fragment>
                 <Box sx={{
-                    marginTop: 8,
+                    marginTop: 5,
                     display: 'flex',
                     flexDirection: 'column',
                     alignItems: 'center'
@@ -94,22 +87,21 @@ export function Wallet () {
                     <ThemeProvider theme={theme}>
                         <Typography variant='h2' gutterBottom> Mon Wallet</Typography>
                     </ThemeProvider>
-                <Button size="small" onClick={ handleOpenDialog } className="newAreaButton">
-                    <NewAreaButton/>
-                </Button>
+                    <Button size="small" onClick={() => { setOpenDialog(true) }} className="newAreaButton">
+                        <NewAreaButton/>
+                    </Button>
                 </Box>
-                <AREACard cards={cards} />
+                <AREACard cards={areaCards} />
                 <NewCardDialog onClose={handleNewCard} setSingleCard={setSingleCard} singleCard={singleCard} open={openDialog} newCard={newCard} setNewCard={setNewCard} />
         </React.Fragment >
     )
 }
 
-export function NewCardDialog ({ setNewCard, newCard, ...props }) {
+function NewCardDialog ({ setNewCard, newCard, ...props }) {
     const [openServiceActionDialog, setOpenServiceActionDialog] = React.useState(false)
     const [openActionDialog, setOpenActionDialog] = React.useState(false)
     const [openServiceReactionDialog, setOpenServiceReactionDialog] = React.useState(false)
     const [openReactionDialog, setOpenReactionDialog] = React.useState(false)
-    // const [isCompleted, setIsCompleted] = React.useState(false)
 
     React.useEffect(() => {
         if (newCard.action != null && newCard.actionService != null && newCard.reaction != null && newCard.reactionService != null) {
@@ -176,8 +168,3 @@ export function NewCardDialog ({ setNewCard, newCard, ...props }) {
         </React.Fragment >
     )
 }
-
-Wallet.propTypes = {
-    newCard: propTypes.object
-}
-export default Wallet
