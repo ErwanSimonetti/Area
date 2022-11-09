@@ -59,6 +59,17 @@ func AddJob(newJob models.Job) {
 	currentJobs = append(currentJobs, newJob)
 }
 
+func RemoveJobByID(jobId uint) {
+	var newCurrentJobs []models.Job
+	for _, job := range currentJobs {
+		if (job.UserId == jobId) {
+			continue
+		}
+		newCurrentJobs = append(newCurrentJobs, job)
+	}
+	currentJobs = newCurrentJobs
+}
+
 func SuprUserJobsOnLogout(userId uint) {
 	var newCurrentJobs []models.Job
 

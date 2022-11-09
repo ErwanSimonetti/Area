@@ -36,6 +36,7 @@ func RemoveJob(w http.ResponseWriter, r *http.Request) {
         fmt.Println(err)
     }
 	models.DeleteUserJob(uint(jobId))
+	jobs.RemoveJobByID(uint(jobId))
 }
 
 func GetUserJobs(w http.ResponseWriter, r *http.Request) {
