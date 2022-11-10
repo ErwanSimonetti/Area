@@ -1,3 +1,11 @@
+/** @file controllers.go
+ * @brief functions related to users
+ *
+ * Create, get, delete, login and update users
+ */
+
+// @cond
+
 package controllers
 
 import (
@@ -21,6 +29,19 @@ var db * gorm.DB
 var NewUser models.User
 const SecretKey = "secret"
 
+// @endcond
+
+
+/** Function writing all the users on the response arg (what is it ?)
+ *
+ * More detailed version
+ *
+ * @param[in] w http.ResponseWriter
+ * @param[in] r *http.Request
+ *
+ * @return none
+ */
+
 func GetAllUsers(w http.ResponseWriter, r *http.Request){
 	newUsers:=models.GetAllUsers()
 	res, _ :=json.Marshal(newUsers)
@@ -29,6 +50,11 @@ func GetAllUsers(w http.ResponseWriter, r *http.Request){
 	w.WriteHeader(http.StatusOK)
 	w.Write(res)
 }
+
+/** Get user by his id and does xxx
+ *
+ * More detailed explanation
+ */
 
 func GetUserById(w http.ResponseWriter, r *http.Request){
 	vars := mux.Vars(r)
@@ -111,6 +137,7 @@ func LoginUser(w http.ResponseWriter, r *http.Request) {
 	w.Write(res)
 
 }
+
 func DeleteUser(w http.ResponseWriter, r *http.Request){
 	vars := mux.Vars(r)
 	userId := vars["userId"]

@@ -4,6 +4,8 @@
  * Detailed description of the file
  */
 
+// @cond
+
 package routes
 
 import (
@@ -11,6 +13,8 @@ import (
 	"AREA/pkg/controllers"
 	// "AREA/pkg/controllers/authControllers"
 )
+
+// @endcond
 
 var AreaRouter = func(router *mux.Router) {
 	// router.HandleFunc("/test/", controllers.Test).Methods("POST")
