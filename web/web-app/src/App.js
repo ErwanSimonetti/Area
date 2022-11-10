@@ -1,3 +1,9 @@
+/** @file App.js
+ * @brief main file
+ * 
+ * more detailed version here
+ */
+
 import React from 'react'
 import Home from './Components/Home'
 import Login from './Components/Login'
