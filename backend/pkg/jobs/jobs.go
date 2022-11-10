@@ -1,7 +1,7 @@
 package jobs
 
 import (
-	"fmt"
+	// "fmt"
 
 	"AREA/pkg/models"
 )
@@ -58,15 +58,15 @@ func SuprUserJobsOnLogout(userId uint) {
 }
 
 func ExecAllJob() {
-	fmt.Println(currentJobs)
+	// fmt.Println(currentJobs)
 
 	for _, job := range currentJobs {
 		if ActionMap[job.ActionFunc] != nil && ActionMap[job.ActionFunc](job.ActionFuncParams) {
 			ReactionMap[job.ReactionFunc](job.UserId, job.ReactionFuncParams)
 		}
 	}
-	fmt.Println()
-	fmt.Println()
+	// fmt.Println()
+	// fmt.Println()
 }
 
 func ExecGithJob(userID uint, githAction string) {
