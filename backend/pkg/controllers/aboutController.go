@@ -33,6 +33,8 @@ type AboutJson struct {
 	} `json:"server"`
 }
 
+var Services []Service
+
 func getIP(r *http.Request) (string, error) {
 	ips := r.Header.Get("X-Forwarded-For")
 	splitIps := strings.Split(ips, ",")
@@ -61,6 +63,21 @@ func getIP(r *http.Request) (string, error) {
 	return "", errors.New("IP not found")
 }
 
+func getServices() {
+	if (Services != nil) {
+		return
+	}
+
+	data, err := os.ReadFile("pkg/controllers/services.json")
+	if err != nil {
+        fmt.Println(err)
+    }
+    JsonErr := json.Unmarshal([]byte(data), &Services)
+    if JsonErr != nil {
+		panic(JsonErr)
+    }
+}
+
 func GetAboutJson(w http.ResponseWriter, r *http.Request) {
 	var aboutJson AboutJson
 
@@ -70,18 +87,17 @@ func GetAboutJson(w http.ResponseWriter, r *http.Request) {
 	now := time.Now()
 	aboutJson.Server.CurrentTime = uint(now.Unix())
 
-	data, err := os.ReadFile("pkg/controllers/services.json")
-	if err != nil {
-        fmt.Println(err)
-    }
-	var services []Service
-    JsonErr := json.Unmarshal([]byte(data), &services)
-    if JsonErr != nil {
-		panic(JsonErr)
-    }
-	aboutJson.Server.Services = services
+	getServices()
+	aboutJson.Server.Services = Services
 
 	w.WriteHeader(http.StatusOK)
 	js, _ := json.MarshalIndent(aboutJson, "", " ")
+	w.Write(js)
+}
+
+func GetServices(w http.ResponseWriter, r *http.Request) {
+	getServices()
+	w.WriteHeader(http.StatusOK)
+	js, _ := json.MarshalIndent(Services, "", " ")
 	w.Write(js)
 }

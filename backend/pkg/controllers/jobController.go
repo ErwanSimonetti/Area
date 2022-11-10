@@ -89,3 +89,27 @@ func GetUserJobs(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusOK)
 	w.Write(res)
 }
+
+func GetUserPropositions(w http.ResponseWriter, r *http.Request) {
+	requestUser, _ := GetUser(w, r)
+	services := Services
+	var servicesOptions []Service
+
+	tokens := models.FindUserToken(requestUser.ID)
+
+	for _, service := range services {
+        if service.Name == "discord" && !models.CheckIfConnectedToService(*tokens, "discord") {
+            continue
+        }
+		if service.Name == "spotify" && !models.CheckIfConnectedToService(*tokens, "spotify") {
+            continue
+        }
+		if service.Name == "github" && !models.CheckIfConnectedToService(*tokens, "github") {
+            continue
+        }
+		servicesOptions = append(servicesOptions, service)
+    }
+	res, _ := json.Marshal(servicesOptions)
+	w.WriteHeader(http.StatusOK)
+	w.Write(res)
+}
