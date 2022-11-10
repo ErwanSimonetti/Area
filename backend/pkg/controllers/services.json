@@ -4,11 +4,13 @@
         "actions": [
             {
                 "name": "temperature_over_N_degrees",
-                "description": "The temperature is over N degrees"
+                "description": "The temperature is over a given value",
+                "field_names": ["City", "Temperature in C°"] 
             },
             {
                 "name": "temperature_under_N_degrees",
-                "description": "The temperature is under N degrees"
+                "description": "The temperature is under a given value",
+                "field_names": ["City", "Temperature in C°"] 
             }
         ],
         "reactions": [
@@ -21,8 +23,219 @@
         "reactions": [
             {
                 "name": "add_song_to_queue",
-                "description": "Adds a given song to the user's queue"
+                "description": "Adds a given song to the user's queue",
+                "field_names": ["Song tittle"]
             }
+        ]
+    },
+    {
+        "name": "league",
+        "actions": [
+            {
+                "name": "is_teemo",
+                "description": "Check if the player mains Teemo",
+                "field_names": ["Player nickName"]
+            },
+            {
+                "name": "winrate_over_N%",
+                "description": "The player winrate is over a given %",
+                "field_names": ["Player nickName"]
+            },
+            {
+                "name": "kda_over_N",
+                "description": "The player KDA is over a given value",
+                "field_names": ["Player nickName"]
+            }
+        ],
+        "reactions": [
+        ]
+    },
+    {
+        "name": "covid",
+        "actions": [
+            {
+                "name": "case_over_N",
+                "description": "The covid cases are over a given number",
+                "field_names": ["Number of cases"]
+            },
+            {
+                "name": "critical_over_N",
+                "description": "The covid critical cases are over a given number",
+                "field_names": ["Number of critical cases"]
+            }
+        ],
+        "reactions": [
+        ]
+    },
+    {
+        "name": "email",
+        "actions": [
+        ],
+        "reactions": [
+            {
+                "name": "send_email",
+                "description": "Sends an email from user to given receiver",
+                "field_names": ["Message", "Mail of the receiver"]
+            }
+        ]
+    },
+    {
+        "name": "discord",
+        "actions": [
+        ],
+        "reactions": [
+            {
+                "name": "send_message",
+                "description": "Sends a webhook message on selected channel",
+                "field_names": ["Message"]
+            }
+        ]
+    },
+    {
+        "name": "github",
+        "actions": [
+            {
+                "name": "push",
+                "description": "Push action happened on your repository"
+            },
+            {
+                "name": "pull_request",
+                "description": "Pull request action happened on your repository"
+            },
+            {
+                "name": "branch_protection_rule",
+                "description": "If branch protection changed on your repository"
+            },
+            {
+                "name": "check_run",
+                "description": "Checks run action on your repository"
+            },
+            {
+                "name": "check_suite",
+                "description": "Checks suite action on your repository"
+            },
+            {
+                "name": "create",
+                "description": "Someone created a git reference on your repository"
+            },
+            {
+                "name": "delete",
+                "description": "Someone deleted a git reference on your repository"
+            },
+            {
+                "name": "deployment",
+                "description": "Check deploy action on your repository"
+            },
+            {
+                "name": "deployment_status",
+                "description": "Check deploy action on your repository"
+            },
+            {
+                "name": "discussion",
+                "description": "A discussion started on you repository"
+            },
+            {
+                "name": "discussion_comment",
+                "description": "A comment was added to discussion on you repository"
+            },
+            {
+                "name": "fork",
+                "description": "Fork action on your repository"
+            },
+            {
+                "name": "gollum",
+                "description": "Gollum action on your repository"
+            },
+            {
+                "name": "issue_comment",
+                "description": "Someone wrote an issue comment"
+            },
+            {
+                "name": "issues",
+                "description": "Someone created an issue"
+            },
+            {
+                "name": "label",
+                "description": "Someone created a label on your repository"
+            },
+            {
+                "name": "merge_group",
+                "description": "A merge was perfomed on your repository"
+            },
+            {
+                "name": "milestone",
+                "description": "A milestone was created on your repository"
+            },
+            {
+                "name": "page_build",
+                "description": "Someone pushed on your publishing branch"
+            },
+            {
+                "name": "project_card",
+                "description": "Created a project card on your repository"
+            },
+            {
+                "name": "project_column",
+                "description": "Moved a card to a column in you repository"
+            },
+            {
+                "name": "public",
+                "description": "Set your repoistory to public"
+            },
+            {
+                "name": "pull_request_comment",
+                "description": "Add a comment to a pull request"
+            },
+            {
+                "name": "pull_request_review",
+                "description": "Someone reviewed your pull request"
+            },
+            {
+                "name": "pull_request_review_comment",
+                "description": "Added a comment to a review on some pull request"
+            },
+            {
+                "name": "pull_request_review_target",
+                "description": "Some activity was detected on a pull request"
+            },
+            {
+                "name": "registry_package",
+                "description": "Some activity was detected on your package"
+            },
+            {
+                "name": "release",
+                "description": "Released action on your repository"
+            },
+            {
+                "name": "repository_dispatch",
+                "description": "Dispatched action on your repository"
+            },
+            {
+                "name": "schedule",
+                "description": "Added a schedule on your repository"
+            },
+            {
+                "name": "status",
+                "description": "Changed the status of your repository"
+            },
+            {
+                "name": "watch",
+                "description": "Someone watched your repository"
+            },
+            {
+                "name": "workflow_call",
+                "description": "There was some activity on your workflow"
+            },
+            {
+                "name": "workflow_dispatch",
+                "description": "Dispatched action on your workflow"
+            },
+            {
+                "name": "workflow_run",
+                "description": "Ran your repository workflow"
+            }
+        ],
+        "reactions": [
         ]
     }
 ]
