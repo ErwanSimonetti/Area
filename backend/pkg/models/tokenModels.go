@@ -30,6 +30,28 @@ func FindUserToken(id uint) *Token {
 	return &getToken
 }
 
+func CheckIfConnectedToService(token Token, service string) bool {
+	returnValue := false
+	switch service {
+	case "discord":
+		if (token.DiscordToken != "") {
+			returnValue = true
+			break
+		}
+	case "spotify":
+		if (token.SpotifyToken != "") {
+			returnValue = true
+			break
+		}
+	case "gitHub":
+		if (token.GithubToken != "") {
+			returnValue = true
+			break
+		}
+	}
+	return returnValue
+}
+
 func SetUserToken(cookie string, column string, token string) {
 	fmt.Println(cookie, column, token)
 	db.Model(&Token{}).Where("user_id = ?", cookie).Update(column, token)

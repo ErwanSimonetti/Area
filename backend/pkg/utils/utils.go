@@ -6,6 +6,7 @@ import(
 	"net/http"
 	"github.com/joho/godotenv"
 	"os"
+	"strings"
 	"log"
 )
 
@@ -16,6 +17,11 @@ func ArrayContainsString(s []string, str string) bool {
 		}
 	}
 	return false
+}
+
+func GetParams(params string) []string {
+	split := strings.Split(params, "@@@")
+	return split
 }
 
 func ParseBody(r *http.Request, x interface{}){

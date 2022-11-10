@@ -1,20 +1,21 @@
-package controllers
+package jobs
 
 import (
-	"log"
-	"fmt"
-	"net/http"
-	"io/ioutil"
 	"encoding/json"
 	"errors"
+	"fmt"
+	"io/ioutil"
+	"log"
+	"net/http"
+	"strconv"
 
 	"AREA/pkg/utils"
 )
 
 
-func GetWeather() (float64 ,error){
+func GetWeather(city string) (float64 ,error){
 
-	url := "https://weather-by-api-ninjas.p.rapidapi.com/v1/weather?city=Paris"
+	url := "https://weather-by-api-ninjas.p.rapidapi.com/v1/weather?city=" + city
 
 	req, _ := http.NewRequest("GET", url, nil)
 
@@ -45,28 +46,32 @@ func GetWeather() (float64 ,error){
 }
 
 
-func TemperatureIsOver24() (bool) {
-	temperature, weatherErr := GetWeather()
+func TemperatureIsOverN(params string) (bool) {
+	paramsArr := utils.GetParams(params)
+	compareTemp, _ := strconv.ParseFloat(paramsArr[1], 64)
+	temperature, weatherErr := GetWeather(paramsArr[0])
 	if (weatherErr != nil) {
 		fmt.Println(weatherErr)
 		return false
 	}
 
-	if (temperature > 24.0 && temperature != 0) {
+	if (temperature > compareTemp && temperature != 0) {
 		return true
 	} else { 
 		return false
 	}
 }
 
-func TemperatureIsUnderr24() (bool) {
-	temperature, weatherErr := GetWeather()
+func TemperatureIsUnderrN(params string) (bool) {
+	paramsArr := utils.GetParams(params)
+	compareTemp, _ := strconv.ParseFloat(paramsArr[1], 64)
+	temperature, weatherErr := GetWeather(paramsArr[0])
 	if (weatherErr != nil) {
 		fmt.Println(weatherErr)
 		return false
 	}
 
-	if (temperature < 24.0 && temperature != 0) {
+	if (temperature < compareTemp && temperature != 0) {
 		return true
 	} else { 
 		return false

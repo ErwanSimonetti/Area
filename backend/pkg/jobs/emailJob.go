@@ -3,11 +3,16 @@ package jobs
 import (
 	"fmt"
 	"net/smtp"
-  
+
 	"AREA/pkg/models"
+	"AREA/pkg/utils"
 )
 
-func SendEmail(userID uint, receiver string, message string) {
+func SendEmail(userID uint, params string) {
+	paramsArr := utils.GetParams(params)
+	receiver := paramsArr[0]
+	message := paramsArr[1]
+
 	requestUser := *models.FindUserToken(userID)
 	from := requestUser.Email
 	password := requestUser.EmailPassword

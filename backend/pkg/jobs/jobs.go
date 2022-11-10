@@ -1,56 +1,27 @@
 package jobs
 
 import (
-	// "AREA/pkg/controllers"
-	"AREA/pkg/models"
 	"fmt"
+
+	"AREA/pkg/models"
 )
 
-// type Job struct {
-// 	ActionFunc func(string) bool
-// 	ActionFuncParams string
-// 	ReactionFunc func(string)
-// 	ReactionFuncParams uint
-// }
 var currentJobs []models.Job
 
-var ActionMap = map[string]func(string)bool{
-	"weather": test,
-	"test_action": action,
+var ActionMap = map[string]func(string) bool {
+	"The temperature is over N degrees": TemperatureIsOverN,
+	"The temperature is under N degrees": TemperatureIsUnderrN,
+	"Check if the player main Teemo": IsPlayingTeemo,
+	"The player winrate is over a given %": WinrateIsOverN,
+	"The player KDA is over a given value": KDAIsOverN,
+	"The covid case are over a given number": CovidCaseIsOverN,
+	"The covid critical case are over a given number": CovidCriticalCaseIsOverN,
 }
 
-var ReactionMap = map[string]func(uint, string){
-	// "discord": SendMessage, 
-	"test_reaction": reaction,
-}
-
-// func CreateNewJob( action string, reaction string, paramA string, paramR uint ) {
-// 	var newJob Job
-
-// 	newJob.ActionFunc = ActionMap[action]
-// 	newJob.ReactionFunc = ReactionMap[reaction]
-// 	newJob.ActionFuncParams = paramA
-// 	newJob.ReactionFuncParams = paramR
-
-// 	currentJobs = append(currentJobs, newJob)
-// }
-
-func test(ok string) bool {
-	fmt.Println("action")
-	return true
-}
-
-// func nullAction(string) bool {
-// 	return false
-// }
-
-func action(ok string) bool {
-	fmt.Println("action", ok)
-	return true
-}
-
-func reaction(userID uint, params string) {
-	fmt.Println("reaction", userID, params)
+var ReactionMap = map[string]func(uint, string) {
+	"Adds a given song to the user's queue": AddSongToQueue,
+	"Send an email from user to given receiver": SendEmail,
+	"Send a webhook message on selected channel": SendMessage,
 }
 
 func AddUserJobsOnLogin(userId uint) {
@@ -94,7 +65,8 @@ func ExecAllJob() {
 			ReactionMap[job.ReactionFunc](job.UserId, job.ReactionFuncParams)
 		}
 	}
-	// fmt.Println("\n")
+	fmt.Println()
+	fmt.Println()
 }
 
 func ExecGithJob(userID uint, githAction string) {

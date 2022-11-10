@@ -49,13 +49,10 @@ func AuthGithub(w http.ResponseWriter, r *http.Request) {
 
 	requestUser, _ := GetUser(w, r)
 
-	fmt.Println(requestUser.ID)
-
 	accessToken := gjson.GetBytes(body, "access_token")
 
-	models.SetUserToken(strconv.FormatUint(uint64(requestUser.ID), 10), "github_token", fmt.Sprintf("%s", accessToken))
+	models.SetUserToken(strconv.FormatUint(uint64(requestUser.ID), 10), "github_token", accessToken.String())
 	// CreateWebhook(requestUser.ID ,"JulietteDestang", "test-webhook", "push")
-	fmt.Println("ok")
 	http.Redirect(w, r, "http://localhost:8081/user/services", http.StatusSeeOther)
 }
 
@@ -90,9 +87,7 @@ func CreateWebhook(userID uint, action string, params string) {
 
 	response, _ := client.Do(req)
 	newbody, _ := ioutil.ReadAll(response.Body)
-	fmt.Println(req)
-	fmt.Println(response)
-	fmt.Println(string(newbody))
+
 	webhookID := gjson.GetBytes(newbody, "id")
 	webhookArray := models.GetWebhookArray(userID)
 	webhookArray = append(webhookArray, webhookID.String())

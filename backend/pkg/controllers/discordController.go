@@ -44,7 +44,6 @@ func AuthDiscord(w http.ResponseWriter, r *http.Request){
 
 	body, _ := ioutil.ReadAll(response.Body)
 	jsonWebhook := make(map[string]interface{})
-	fmt.Println(body)
 	errorUnmarshal := json.Unmarshal(body, &jsonWebhook)
 	if errorUnmarshal != nil {
 	    log.Fatal(errorUnmarshal)
@@ -52,7 +51,6 @@ func AuthDiscord(w http.ResponseWriter, r *http.Request){
 
 	requestUser, _ := GetUser(w, r)
 
-	fmt.Println(jsonWebhook["webhook"])
 	address := jsonWebhook["webhook"].(map[string]interface{})
 
 	webhookId := fmt.Sprintf("%s", address["id"])

@@ -13,9 +13,9 @@ import (
 	"strings"
 )
 
-func GetLeagueStat()([]byte ,error) {
+func GetLeagueStat(playerName string)([]byte ,error) {
 
-	url := "https://lol_stats.p.rapidapi.com/euw1/0Pixelle0"
+	url := "https://lol_stats.p.rapidapi.com/euw1/" + playerName
 
 	req, _ := http.NewRequest("GET", url, nil)
 
@@ -35,8 +35,8 @@ func GetLeagueStat()([]byte ,error) {
 
 }
 
-func IsPlayingTeemo() (bool) {
-	leagueData, Err := GetLeagueStat()
+func IsPlayingTeemo(params string) (bool) {
+	leagueData, Err := GetLeagueStat(params)
 	if (Err != nil) {
 		fmt.Println(Err)
 		return false
@@ -49,8 +49,8 @@ func IsPlayingTeemo() (bool) {
 	}
 }
 
-func WinrateIsOver50() (bool) {
-	leagueData, Err := GetLeagueStat()
+func WinrateIsOverN(params string) (bool) {
+	leagueData, Err := GetLeagueStat(params)
 	if (Err != nil) {
 		fmt.Println(Err)
 		return false
@@ -65,8 +65,8 @@ func WinrateIsOver50() (bool) {
 	}
 }
 
-func KDAIsOver3() (bool) {
-	leagueData, Err := GetLeagueStat()
+func KDAIsOverN(params string) (bool) {
+	leagueData, Err := GetLeagueStat(params)
 	if (Err != nil) {
 		fmt.Println(Err)
 		return false

@@ -33,7 +33,8 @@ func GetCovidData() ([] byte, error) {
 	return body, nil 
 }
 
-func CovidCaseIsOver700000() (bool){
+func CovidCaseIsOverN(params string) (bool) {
+
 	covidData, Err := GetCovidData()
 	if (Err != nil) {
 		fmt.Println(Err)
@@ -41,15 +42,15 @@ func CovidCaseIsOver700000() (bool){
 	}
 	data := gjson.GetBytes(covidData, "response.0.cases.active")
 	floatCase, _ := strconv.ParseFloat(data.String(), 64)
-	fmt.Println(floatCase)
-	if (floatCase > 700000) {
+	compareCaseNb, _ := strconv.ParseFloat(params, 64)
+	if (floatCase > compareCaseNb) {
 		return true
 	} else {
 		return false
 	}
 }
 
-func CovidCriticalCaseIsOver1000() (bool){
+func CovidCriticalCaseIsOverN(params string) (bool) {
 	covidData, Err := GetCovidData()
 	if (Err != nil) {
 		fmt.Println(Err)
@@ -57,8 +58,8 @@ func CovidCriticalCaseIsOver1000() (bool){
 	}
 	data := gjson.GetBytes(covidData, "response.0.cases.critical")
 	floatCase, _ := strconv.ParseFloat(data.String(), 64)
-	fmt.Println(floatCase)
-	if (floatCase > 1000) {
+	compareCaseNb, _ := strconv.ParseFloat(params, 64)
+	if (floatCase > compareCaseNb) {
 		return true
 	} else {
 		return false

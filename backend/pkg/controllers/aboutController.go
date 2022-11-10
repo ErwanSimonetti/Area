@@ -16,6 +16,7 @@ type Service struct {
 	Actions []struct {
 		Name string `json:"name"`
 		Description string `json:"description"`
+		FieldNames string `json:"field_names"`
 	} `json:"actions"`
 	Reactions []struct {
 		Name string `json:"name"`
