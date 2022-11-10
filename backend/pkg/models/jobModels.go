@@ -33,14 +33,20 @@ func GetJobsByUserId(userId uint) ([]Job){
 
 func DeleteUserJob(ID uint) Job{
 	var job Job
-	db.Where("ID=?", ID).Delete(job)
+	db.Where("ID=?", ID).Delete(&job)
+	return job
+}
+
+func DeleteJobByUserId(ID uint) Job{
+	var job Job
+	db.Where("user_id=?", ID).Delete(&job)
 	return job
 }
 
 func CheckExistingGitAction(id uint, action string) bool{
-	var job []Job
+	var job Job
 	db.Where("user_id = ?", id).Where("action_func = ?", action).Find(&job)
-	if (job == nil) {
+	if (job.ActionFunc == "") {
 		return false
 	} else {
 		return true
