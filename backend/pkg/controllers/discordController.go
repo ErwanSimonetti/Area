@@ -43,6 +43,8 @@ func AuthDiscord(w http.ResponseWriter, r *http.Request){
 	response, _ := client.Do(req)
 
 	body, _ := ioutil.ReadAll(response.Body)
+
+	fmt.Println(string(body))
 	jsonWebhook := make(map[string]interface{})
 	errorUnmarshal := json.Unmarshal(body, &jsonWebhook)
 	if errorUnmarshal != nil {
@@ -56,8 +58,7 @@ func AuthDiscord(w http.ResponseWriter, r *http.Request){
 	webhookId := fmt.Sprintf("%s", address["id"])
 	webhookToken := fmt.Sprintf("%s", address["token"])
 
-	models.SetUserToken(strconv.FormatUint(uint64(requestUser.ID), 10), "discord_id", webhookId)
-	models.SetUserToken(strconv.FormatUint(uint64(requestUser.ID), 10), "discord_token", webhookToken)
+	models.SetDiscordWebhook(requestUser.ID, webhookId, webhookToken)
 
 	http.Redirect(w, r, "http://localhost:8081/user/services", http.StatusSeeOther)
 }

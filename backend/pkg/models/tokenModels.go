@@ -13,6 +13,14 @@ type GithubWebhook struct {
 	WebhookID     		string   `json:"webhook_id"`
 }
 
+type DiscordWebhook struct {
+	gorm.Model
+	UserId              uint     `json:"user_id"`
+	WebhookID     		string   `json:"webhook_id"`
+	WebhookToken     	string   `json:"webhook_token"`
+}
+
+
 type Token struct {
 	gorm.Model
 	UserId              uint     `json:"user_id"`
@@ -34,6 +42,12 @@ func (newToken *Token) CreateTokenUser() *Token {
 
 func FindUserToken(id uint) *Token {
 	var getToken Token
+	db.Where("user_id = ?", id).Find(&getToken)
+	return &getToken
+}
+
+func FindUserByDiscordWebhook(id uint) *DiscordWebhook {
+	var getToken DiscordWebhook
 	db.Where("user_id = ?", id).Find(&getToken)
 	return &getToken
 }
@@ -71,10 +85,19 @@ func FindUserByWebhookToken(token string) *GithubWebhook {
 	return &getToken
 }
 
-func SetWebhook(userId uint, newWebhook string) {
+func SetGithubWebhook(userId uint, newWebhook string) {
 	var newGithubWebhook GithubWebhook
 	newGithubWebhook.UserId = userId
 	newGithubWebhook.WebhookID = newWebhook
 	db.Create(&newGithubWebhook)
+	// db.Model(&Token{}).Where("user_id = ?", userId).Update("webhook_id", newWebhook)
+}
+
+func SetDiscordWebhook(userId uint, newWebhookID string, newWebhookToken string) {
+	var newDiscordWebhook DiscordWebhook
+	newDiscordWebhook.UserId = userId
+	newDiscordWebhook.WebhookID = newWebhookID
+	newDiscordWebhook.WebhookToken = newWebhookToken
+	db.Create(&newDiscordWebhook)
 	// db.Model(&Token{}).Where("user_id = ?", userId).Update("webhook_id", newWebhook)
 }

@@ -10,9 +10,9 @@ import (
 
 func SendMessage(userID uint, params string) {
 
-	userToken := *models.FindUserToken(userID)
+	userToken := *models.FindUserByDiscordWebhook(userID)
 
-    messageUrl := fmt.Sprintf("%s/%s", userToken.DiscordId, userToken.DiscordToken)
+    messageUrl := fmt.Sprintf("%s/%s", userToken.WebhookID, userToken.WebhookToken)
 
     webhook, _ := disgohook.NewWebhookClientByToken(nil, nil, messageUrl)
 

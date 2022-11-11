@@ -101,7 +101,7 @@ func CreateWebhook(userID uint, action string, params string) {
 
 
 	webhookID := gjson.GetBytes(newbody, "id")
-	models.SetWebhook(userID, webhookID.String())
+	models.SetGithubWebhook(userID, webhookID.String())
 }
 
 func Webhook(w http.ResponseWriter, r *http.Request) {
