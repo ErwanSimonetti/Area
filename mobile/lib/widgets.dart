@@ -10,7 +10,7 @@ class CustomWidgets {
         height: 50,
         margin: EdgeInsets.symmetric(vertical: 20, horizontal: 20),
         decoration: BoxDecoration(
-            color: color, borderRadius: BorderRadius.all(Radius.circular(10))),
+            color: color, borderRadius: BorderRadius.all(Radius.circular(40))),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[

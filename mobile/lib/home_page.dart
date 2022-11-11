@@ -1,16 +1,19 @@
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:flutter/material.dart';
-import './home_route.dart';
+import './drop_down_button.dart';
+import './menu_list_auth_plateform.dart';
+import './create_area_menu.dart';
 
-class MyHomePage extends StatefulWidget {
-  MyHomePage({Key? key, this.title = ""}) : super(key: key);
+class HomePage extends StatefulWidget {
+  HomePage({Key? key, this.title = ""}) : super(key: key);
 
   final String title;
 
   @override
-  _MyHomePageState createState() => new _MyHomePageState();
+  _HomePageState createState() => new _HomePageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class _HomePageState extends State<HomePage> {
   PageController? _pageController;
   int _page = 0;
   String _title = "MyApp";
@@ -22,6 +25,7 @@ class _MyHomePageState extends State<MyHomePage> {
       appBar: new AppBar(
         title: new Text(_title),
         backgroundColor: _appBarColor,
+        leading: new CustomButtonTest(),
       ),
       body: PageView(
         children: <Widget>[
@@ -29,11 +33,11 @@ class _MyHomePageState extends State<MyHomePage> {
             child: Center(child: Text("People")),
           ),
           Container(
-            child: Center(child: Text("Timeline")),
+            child: new CreationAreaMenu(),
           ),
-          // Container(
-          //   child: new SecondRoute(),
-          // ),
+          Container(
+            // child: new ListPlateform(),
+          ),
         ],
         controller: _pageController,
         onPageChanged: onPageChanged,
@@ -41,17 +45,17 @@ class _MyHomePageState extends State<MyHomePage> {
       bottomNavigationBar: BottomNavigationBar(
         items: [
           BottomNavigationBarItem(
-            icon: Icon(Icons.people),
-            label: "People",
+            icon: Icon(Icons.home),
+            label: "My Area",
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.access_time),
-            label: "Timeline",
+            icon: Icon(Icons.exposure_plus_1),
+            label: "New Area",
           ),
-          // BottomNavigationBarItem(
-          //   icon: Icon(Icons.pie_chart),
-          //   label: "Stats",
-          // ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.pie_chart),
+            label: "Stats",
+          ),
         ],
         onTap: navigateToPage,
         currentIndex: _page,
@@ -69,17 +73,17 @@ class _MyHomePageState extends State<MyHomePage> {
     Color _tempColor = Colors.blue;
     switch (page) {
       case 0:
-        _temptitle = "Wallet";
+        _temptitle = "My Area";
         _tempColor = Colors.pink;
         break;
       case 1:
         _temptitle = "New Area";
         _tempColor = Colors.green;
         break;
-      // case 2:
-      //   _temptitle = "Stats";
-      //   _tempColor = Colors.deepPurple;
-      //   break;
+      case 2:
+        _temptitle = "Stats";
+        _tempColor = Colors.deepPurple;
+        break;
     }
     setState(() {
       this._page = page;
@@ -92,7 +96,7 @@ class _MyHomePageState extends State<MyHomePage> {
   void initState() {
     super.initState();
     _pageController = new PageController();
-    _title = "People";
+    _title = "My Area";
   }
 
   @override
