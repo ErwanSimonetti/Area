@@ -59,7 +59,7 @@ func AddJobToUser(w http.ResponseWriter, r *http.Request) {
 	requestUser, _ := GetUser(w, r)
 	newJob.UserId = requestUser.ID
 
-	if (utils.ArrayContainsString(gitHubActions, newJob.ActionFunc)) {
+	if utils.ArrayContainsString(gitHubActions, newJob.ActionFunc) {
 		CreateWebhook(requestUser.ID, newJob.ActionFunc, newJob.ActionFuncParams)
 	}
 	jobs.AddJob(*newJob)
@@ -75,8 +75,8 @@ func RemoveJob(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	jobId, err := strconv.ParseUint(vars["ID"], 10, 32)
 	if err != nil {
-        fmt.Println(err)
-    }
+		fmt.Println(err)
+	}
 	jobs.RemoveJobByID(uint(jobId))
 	models.DeleteUserJob(uint(jobId))
 }
@@ -92,23 +92,23 @@ func GetUserJobs(w http.ResponseWriter, r *http.Request) {
 
 func GetUserPropositions(w http.ResponseWriter, r *http.Request) {
 	requestUser, _ := GetUser(w, r)
+	FillServices()
 	services := Services
 	var servicesOptions []Service
 
 	tokens := models.FindUserToken(requestUser.ID)
-
 	for _, service := range services {
-        if service.Name == "discord" && !models.CheckIfConnectedToService(*tokens, "discord") {
-            continue
-        }
+		if service.Name == "discord" && !models.CheckIfConnectedToService(*tokens, "discord") {
+			continue
+		}
 		if service.Name == "spotify" && !models.CheckIfConnectedToService(*tokens, "spotify") {
-            continue
-        }
+			continue
+		}
 		if service.Name == "github" && !models.CheckIfConnectedToService(*tokens, "github") {
-            continue
-        }
+			continue
+		}
 		servicesOptions = append(servicesOptions, service)
-    }
+	}
 	res, _ := json.Marshal(servicesOptions)
 	w.WriteHeader(http.StatusOK)
 	w.Write(res)
