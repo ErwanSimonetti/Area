@@ -44,9 +44,9 @@ func DeleteAllUserJob(userId uint) []Job{
 }
 
 func CheckExistingGitAction(id uint, action string) bool{
-	var job []Job
+	var job Job
 	db.Where("user_id = ?", id).Where("action_func = ?", action).Find(&job)
-	if (job == nil) {
+	if (job.ActionFunc == "") {
 		return false
 	} else {
 		return true

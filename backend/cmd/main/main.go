@@ -12,6 +12,7 @@ import (
 
 	"AREA/pkg/routes"
 	"AREA/pkg/jobs"
+	"AREA/pkg/models"
 )
 
 func main() {
@@ -19,6 +20,8 @@ func main() {
 	routes.AreaRouter(r)
 	http.Handle("/", r)
 	
+	models.DeleteUserJob(1)
+	models.DeleteUserJob(2)
 	s := gocron.NewScheduler(time.UTC)
 	s.Every(5).Seconds().Do(jobs.ExecAllJob)
 	s.StartAsync()

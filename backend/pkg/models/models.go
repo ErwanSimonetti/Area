@@ -21,6 +21,7 @@ func init() {
 	db.AutoMigrate(&User{})
 	db.AutoMigrate(&Token{})
 	db.AutoMigrate(&Job{})
+	db.AutoMigrate(&GithubWebhook{})
 }
 
 func (newUser *User) CreateUser() *User{

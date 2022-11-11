@@ -16,7 +16,7 @@ import (
 	"AREA/pkg/models"
 	"AREA/pkg/jobs"
 	
-	"log"
+	// "log"
 )
 
 func GetGithubUrl(w http.ResponseWriter, r *http.Request) {
@@ -52,7 +52,7 @@ func AuthGithub(w http.ResponseWriter, r *http.Request) {
 	accessToken := gjson.GetBytes(body, "access_token")
 
 	models.SetUserToken(strconv.FormatUint(uint64(requestUser.ID), 10), "github_token", accessToken.String())
-	CreateWebhook(requestUser.ID ,"push", "JulietteDestang@@@test-webhook")
+	CreateWebhook(requestUser.ID ,"pull_request", "JulietteDestang@@@test-webhook")
 	http.Redirect(w, r, "http://localhost:8081/user/services", http.StatusSeeOther)
 }
 
@@ -65,7 +65,8 @@ func CreateWebhook(userID uint, action string, params string) {
 		return 
 	}
 	if (models.CheckExistingGitAction(userID, action)) {
-		log.Fatal("webhook already exist")
+		// log.Fatal("webhook already exist")
+		fmt.Println("webhook already exist")
 		return
 	}
 
@@ -88,15 +89,19 @@ func CreateWebhook(userID uint, action string, params string) {
 	response, _ := client.Do(req)
 	newbody, _ := ioutil.ReadAll(response.Body)
 
-	fmt.Println(string(newbody))
+	if ((gjson.GetBytes(newbody, "message")).String() == "Bad credentials") {
+		fmt.Println("please re log to github")
+		return
+	}
+
+	if ((gjson.GetBytes(newbody, "message")).String() == "Validation Failed") {
+		fmt.Println("webhook already exist")
+		return
+	}
+
 
 	webhookID := gjson.GetBytes(newbody, "id")
-	models.UpdateWebhookArray(userID, webhookID.String())
-	// webhookArray := models.GetWebhookArray(userID)
-	// webhookArray = append(webhookArray, webhookID.String())
-	// models.UpdateWebhookArray(userID, webhookArray)
-	// models.SetUserToken(strconv.FormatUint(uint64(userID), 10), "webhook_id", fmt.Sprintf("%s", webhookID))
-	
+	models.SetWebhook(userID, webhookID.String())
 }
 
 func Webhook(w http.ResponseWriter, r *http.Request) {
