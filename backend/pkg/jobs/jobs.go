@@ -1,8 +1,6 @@
 package jobs
 
 import (
-	// "fmt"
-
 	"AREA/pkg/models"
 )
 
@@ -36,7 +34,7 @@ func AddJob(newJob models.Job) {
 func RemoveJobByID(jobId uint) {
 	var newCurrentJobs []models.Job
 	for _, job := range currentJobs {
-		if (job.UserId == jobId) {
+		if (job.ID == jobId) {
 			continue
 		}
 		newCurrentJobs = append(newCurrentJobs, job)

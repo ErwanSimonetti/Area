@@ -77,8 +77,8 @@ func RemoveJob(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
         fmt.Println(err)
     }
-	models.DeleteUserJob(uint(jobId))
 	jobs.RemoveJobByID(uint(jobId))
+	models.DeleteUserJob(uint(jobId))
 }
 
 func GetUserJobs(w http.ResponseWriter, r *http.Request) {

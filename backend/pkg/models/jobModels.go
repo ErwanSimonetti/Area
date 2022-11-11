@@ -33,7 +33,13 @@ func GetJobsByUserId(userId uint) ([]Job){
 
 func DeleteUserJob(ID uint) Job{
 	var job Job
-	db.Where("ID=?", ID).Delete(job)
+	db.Unscoped().Where("ID = ?", ID).Delete(&job)
+	return job
+}
+
+func DeleteAllUserJob(userId uint) []Job{
+	var job []Job
+	db.Unscoped().Where("user_id = ?", userId).Delete(&job)
 	return job
 }
 
