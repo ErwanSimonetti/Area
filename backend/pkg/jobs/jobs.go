@@ -1,8 +1,18 @@
+/** @file jobs.go
+ * @brief This file contain all the functions to handle the actions and reactions of the Email API
+ * @author Juliette Destang
+ * @version
+ */
+
+// @conv
+
 package jobs
 
 import (
 	"AREA/pkg/models"
 )
+
+// @endconv
 
 var currentJobs []models.Job
 
@@ -22,15 +32,24 @@ var ReactionMap = map[string]func(uint, string) {
 	"Send a webhook message on selected channel": SendMessage,
 }
 
+/** @brief This function take a user id and activate his job on login
+ * @param userID uint
+ */
 func AddUserJobsOnLogin(userId uint) {
 	jobs := models.GetJobsByUserId(userId)
 	currentJobs = append(currentJobs, jobs...)
 }
 
+/** @brief This function take a Job model and append a new job to the currentJob
+ * @param newJob models.Job
+ */
 func AddJob(newJob models.Job) {
 	currentJobs = append(currentJobs, newJob)
 }
 
+/** @brief Remove a given job to the currentJob
+ * @param jobId uint
+ */
 func RemoveJobByID(jobId uint) {
 	var newCurrentJobs []models.Job
 	for _, job := range currentJobs {
@@ -42,6 +61,9 @@ func RemoveJobByID(jobId uint) {
 	currentJobs = newCurrentJobs
 }
 
+/** @brief Remove all job from the currentJob when a user logout
+ * @param userID uint
+ */
 func SuprUserJobsOnLogout(userId uint) {
 	var newCurrentJobs []models.Job
 
@@ -55,6 +77,8 @@ func SuprUserJobsOnLogout(userId uint) {
 	currentJobs = newCurrentJobs
 }
 
+/** @brief Execute all active jobs each X seconds thanks to a crontab
+ */
 func ExecAllJob() {
 	// fmt.Println(currentJobs)
 
@@ -67,6 +91,9 @@ func ExecAllJob() {
 	// fmt.Println()
 }
 
+/** @brief On ping from github api, execute the réaction of a given gitAction
+ * @param userID uint, githAction string
+ */
 func ExecGithJob(userID uint, githAction string) {
 	for _, job := range currentJobs {
 		if (job.ActionFunc == githAction) && (job.UserId == userID){

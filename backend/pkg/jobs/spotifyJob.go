@@ -1,5 +1,12 @@
+/** @file spotifyJob.go
+ * @brief This file contain all the functions to handle the actions and reactions of the Spotify API
+ * @author Timothee de Boynes
+ * @version
+ */
+
 package jobs
 
+// @conv
 import (
 	"net/http"
 	"encoding/json"
@@ -17,6 +24,11 @@ import (
 	"AREA/pkg/models"
 )
 
+// @endconv
+
+/** @brief Refresh spotify token in our DB if it is outdated
+ * @param userID uint
+ */
 func RefreshSpotifyToken(userID uint) {
 
 	userToken := *models.FindUserToken(userID)
@@ -57,7 +69,11 @@ func RefreshSpotifyToken(userID uint) {
 		models.SetUserToken(strconv.FormatUint(uint64(userID), 10), "spotify_token", fmt.Sprintf("%s", accessToken))
 }
 
-func GetSongByName(userID uint , songName string) (string){
+/** @brief Returns the ID of the song based on the name given in params
+ * @param userID uint , songName string
+ * @return string
+ */
+func GetSongByName(userID uint , songName string) (string) {
 
 	userToken := *models.FindUserToken(userID)
 
@@ -81,12 +97,15 @@ func GetSongByName(userID uint , songName string) (string){
 
 	body, _ := ioutil.ReadAll(response.Body)
 
-	choosenSong := gjson.GetBytes(body, "tracks.items.0.uri")
+	choosenSongID := gjson.GetBytes(body, "tracks.items.0.uri")
 
 
-	return choosenSong.String()
+	return choosenSongID.String()
 }
 
+/** @brief Adds a given song to the user's queue
+ * @param userID uint, params string
+ */
 func AddSongToQueue(userID uint, params string) {
 	trackID := GetSongByName(userID, params)
 	userToken := *models.FindUserToken(userID)

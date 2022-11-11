@@ -1,3 +1,11 @@
+/** @file discordController.go
+ * @brief This file contain all the functions to communicate with the discord API
+ * @author Juliette Destang
+ * @version
+ */
+
+// @cond
+
 package controllers
 
 import (
@@ -15,6 +23,11 @@ import (
 	"AREA/pkg/models"
 )
 
+// @endcond
+
+/** @brief callback of the discord API. This function retrieve a token for the connected user and store it in the database.
+ * @param w http.ResponseWriter, r *http.Request
+ */
 func AuthDiscord(w http.ResponseWriter, r *http.Request){
 
 	authUrl := "https://discordapp.com/api/v6/oauth2/token";
@@ -63,6 +76,9 @@ func AuthDiscord(w http.ResponseWriter, r *http.Request){
 	http.Redirect(w, r, "http://localhost:8081/user/services", http.StatusSeeOther)
 }
 
+/** @brief on a request, retrieve the discord redirect url
+ * @param w http.ResponseWriter, r *http.Request
+ */
 func GetDiscordUrl(w http.ResponseWriter, r *http.Request) {
 	utils.EnableCors(&w)
 	discordID := utils.GetEnv("DISCORD_CLIENT_ID");

@@ -1,3 +1,10 @@
+/** @file jobController.go
+ * @brief This file contain all the functions to handle the job
+ * @author Timothee de Boynes
+ * @version
+ */
+
+  // @cond
 package controllers
 
 import (
@@ -52,6 +59,11 @@ var gitHubActions = []string{
 	"workflow_run",
 }
 
+// @endcond
+
+/** @brief on a request, add a new job to a given user
+ * @param w http.ResponseWriter, r *http.Request
+ */
 func AddJobToUser(w http.ResponseWriter, r *http.Request) {
 	newJob := &models.Job{}
 	utils.ParseBody(r, newJob)
@@ -71,6 +83,9 @@ func AddJobToUser(w http.ResponseWriter, r *http.Request) {
 	w.Write(res)
 }
 
+/** @brief on a request, remove a job to a given user
+ * @param w http.ResponseWriter, r *http.Request
+ */
 func RemoveJob(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	jobId, err := strconv.ParseUint(vars["ID"], 10, 32)
@@ -81,6 +96,9 @@ func RemoveJob(w http.ResponseWriter, r *http.Request) {
 	models.DeleteUserJob(uint(jobId))
 }
 
+/** @brief on a request, retrieve all a user's job
+ * @param w http.ResponseWriter, r *http.Request
+ */
 func GetUserJobs(w http.ResponseWriter, r *http.Request) {
 	requestUser, _ := GetUser(w, r)
 	jobs := models.GetJobsByUserId(requestUser.ID)
@@ -90,6 +108,9 @@ func GetUserJobs(w http.ResponseWriter, r *http.Request) {
 	w.Write(res)
 }
 
+/** @brief on a request, retrieve the actions and reaction if the user is connected to the service
+ * @param w http.ResponseWriter, r *http.Request
+ */
 func GetUserPropositions(w http.ResponseWriter, r *http.Request) {
 	requestUser, _ := GetUser(w, r)
 	FillServices()

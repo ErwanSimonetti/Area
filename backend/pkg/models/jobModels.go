@@ -1,3 +1,10 @@
+/** @file jobModels.go
+ * @brief This file contains all the functions to maipulate the jobs in the db
+ * @author Juliette Destang
+ * @version
+ */
+
+// @cond
 package models
 
 import "github.com/jinzhu/gorm"
@@ -13,39 +20,65 @@ type Job struct {
 	ReactionFuncParams string `json:"reaction_func_params"`
 }
 
+// @endcond
+
+/** @brief Creates a new job and returns its id
+ * @param job *Job
+ * @return uint
+ */
 func (job *Job) CreateJob() uint {
 	db.NewRecord(job)
 	db.Create(&job)
 	return job.ID
 }
 
+/** @brief Creates a new job and returns its id
+ * @param job *Job
+ * @return uint
+ */
 func GetJobById(Id uint) ([]Job){
 	var jobs []Job
 	db.Where("ID=?", Id).Find(&jobs)
 	return jobs
 }
 
+/** @brief Returns all the jobs related to a User based on his ID
+ * @param userId uint
+ * @return []Job
+ */
 func GetJobsByUserId(userId uint) ([]Job){
 	var jobs []Job
 	db.Where("user_id=?", userId).Find(&jobs)
 	return jobs
 }
 
+/** @brief Deletes a job based on its ID
+ * @param ID uint
+ * @return Job
+ */
 func DeleteUserJob(ID uint) Job{
 	var job Job
 	db.Unscoped().Where("ID = ?", ID).Delete(&job)
 	return job
 }
 
+/** @brief Deletes all jobs related to a User based on his ID 
+ * @param userId uint
+ * @return []Job
+ */
 func DeleteAllUserJob(userId uint) []Job{
 	var job []Job
 	db.Unscoped().Where("user_id = ?", userId).Delete(&job)
 	return job
 }
 
-func CheckExistingGitAction(id uint, action string) bool{
+/** @brief Checks if a User already has a job on a Github action
+ * @param id uint, action string
+ * @return bool
+ */
+func CheckExistingGitAction(userId uint, action string) bool{
 	var job Job
-	db.Where("user_id = ?", id).Where("action_func = ?", action).Find(&job)
+	db.Where("user_id = ?", userId).Where("action_func = ?", action).Find(&job)
 	if (job.ActionFunc == "") {
 		return false
 	} else {

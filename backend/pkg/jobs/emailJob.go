@@ -1,3 +1,11 @@
+/** @file emailJob.go
+ * @brief This file contain all the functions to handle the actions and reactions of the Email API
+ * @author Juliette Destang
+ * @version
+ */
+
+// @conv
+
 package jobs
 
 import (
@@ -8,6 +16,11 @@ import (
 	"AREA/pkg/utils"
 )
 
+// @endconv
+
+/** @brief this function take a user id and a message, and send an email to a receiver
+ * @param userID uint, params string
+ */
 func SendEmail(userID uint, params string) {
 	paramsArr := utils.GetParams(params)
 	receiver := paramsArr[0]

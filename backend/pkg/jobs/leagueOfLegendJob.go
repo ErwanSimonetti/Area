@@ -1,3 +1,10 @@
+/** @file leagueOfLeagendJob.go
+ * @brief This file contain all the functions to handle the actions and reactions of the Covid API
+ * @author Juliette Destang
+ * @version
+ */
+
+// @conv
 package jobs
 
 import (
@@ -13,6 +20,12 @@ import (
 	"strings"
 )
 
+// @endconv
+
+/** @brief Retrieves all the data concerning a given player from the League of legend API
+ * @param playerName string
+ * @return []byte ,error
+ */
 func GetLeagueStat(playerName string)([]byte ,error) {
 
 	url := "https://lol_stats.p.rapidapi.com/euw1/" + playerName
@@ -35,6 +48,10 @@ func GetLeagueStat(playerName string)([]byte ,error) {
 
 }
 
+/** @brief Returns true if the player played teemo recently
+ * @param params string
+ * @return bool
+ */
 func IsPlayingTeemo(params string) (bool) {
 	leagueData, Err := GetLeagueStat(params)
 	if (Err != nil) {
@@ -49,6 +66,10 @@ func IsPlayingTeemo(params string) (bool) {
 	}
 }
 
+/** @brief Returns true if the player played winrate is over a given value
+ * @param params string
+ * @return bool
+ */
 func WinrateIsOverN(params string) (bool) {
 	leagueData, Err := GetLeagueStat(params)
 	if (Err != nil) {
@@ -65,6 +86,10 @@ func WinrateIsOverN(params string) (bool) {
 	}
 }
 
+/** @brief Returns true if the player played KDA is over a given value
+ * @param params string
+ * @return bool
+ */
 func KDAIsOverN(params string) (bool) {
 	leagueData, Err := GetLeagueStat(params)
 	if (Err != nil) {

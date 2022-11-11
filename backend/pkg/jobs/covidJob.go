@@ -1,4 +1,12 @@
+/** @file covidJob.go
+ * @brief This file contain all the functions to handle the actions and reactions of the Covid API
+ * @author Juliette Destang
+ * @version
+ */
+
 package jobs
+
+// @cond
 
 import (
 	"fmt"
@@ -9,6 +17,11 @@ import (
 	"strconv"
 )
 
+// @endcond
+
+/** @brief Retrieves all the data concerning covid cases from the covid API
+ * @param [] byte, error
+ */
 func GetCovidData() ([] byte, error) {
 
 	url := "https://covid-193.p.rapidapi.com/statistics?country=france"
@@ -33,6 +46,10 @@ func GetCovidData() ([] byte, error) {
 	return body, nil 
 }
 
+/** @brief Returns true if the covid cases are over than the params passed as argument
+ * @param params string
+ * @return bool
+ */
 func CovidCaseIsOverN(params string) (bool) {
 
 	covidData, Err := GetCovidData()
@@ -50,6 +67,10 @@ func CovidCaseIsOverN(params string) (bool) {
 	}
 }
 
+/** @brief Returns true if the covid critical cases are over than the params passed as argument
+ * @param params string
+ * @return bool
+ */
 func CovidCriticalCaseIsOverN(params string) (bool) {
 	covidData, Err := GetCovidData()
 	if (Err != nil) {

@@ -1,3 +1,10 @@
+/** @file routes.go
+ * @brief This file contains the AreaRouter, used to handle all our API endpoints
+ * @author Juliette Destang
+ * @version
+ */
+
+ // @cond
 package routes
 
 import (
@@ -34,3 +41,5 @@ var AreaRouter = func(router *mux.Router) {
 	router.HandleFunc("/area/create", controllers.CORS(controllers.AddJobToUser)).Methods("POST")
 	router.HandleFunc("/area/delete/{ID}", controllers.CORS(controllers.RemoveJob)).Methods("GET")
 }
+
+// @endcond

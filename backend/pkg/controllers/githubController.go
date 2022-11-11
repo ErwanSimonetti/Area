@@ -1,3 +1,10 @@
+/** @file githubController.go
+ * @brief This file contain all the functions to communicate with the discord API
+ * @author Juliette Destang
+ * @version
+ */
+
+ // @cond
 package controllers
 
 import (
@@ -19,6 +26,11 @@ import (
 	// "log"
 )
 
+// @endcond
+
+/** @brief on a request, retrieve the github redirect url
+ * @param w http.ResponseWriter, r *http.Request
+ */
 func GetGithubUrl(w http.ResponseWriter, r *http.Request) {
 	utils.EnableCors(&w)
 	githubID := utils.GetEnv("GITHUB_ID");
@@ -27,6 +39,9 @@ func GetGithubUrl(w http.ResponseWriter, r *http.Request) {
 	w.Write(res)
 }
 
+/** @brief on a request, retrieve a token for the connected user 
+ * @param w http.ResponseWriter, r *http.Request
+ */
 func AuthGithub(w http.ResponseWriter, r *http.Request) {
 	fmt.Println("redirect")
 	url := fmt.Sprintf("https://github.com/login/oauth/access_token?client_id=%s&client_secret=%s&code=%s", utils.GetEnv("GITHUB_ID"), utils.GetEnv("GITHUB_SECRET"), r.FormValue("code"))
@@ -56,6 +71,10 @@ func AuthGithub(w http.ResponseWriter, r *http.Request) {
 	http.Redirect(w, r, "http://localhost:8081/user/services", http.StatusSeeOther)
 }
 
+/** @brief on a request, when the user create an area with github, create a webhook that can handle the action of the user.
+ * store the webhook id in the database 
+ * @param w http.ResponseWriter, r *http.Request
+ */
 func CreateWebhook(userID uint, action string, params string) {
 	split := strings.Split(params, "@@@")
 	username := split[0]
@@ -104,6 +123,9 @@ func CreateWebhook(userID uint, action string, params string) {
 	models.SetGithubWebhook(userID, webhookID.String())
 }
 
+/** @brief this function is called when a ping webhook is send to the api
+ * @param w http.ResponseWriter, r *http.Request
+ */
 func Webhook(w http.ResponseWriter, r *http.Request) {
 	fmt.Println(r)
 	webhookID := r.Header.Get("X-Github-Hook-Id")

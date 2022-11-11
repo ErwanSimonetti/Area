@@ -1,3 +1,11 @@
+/** @file spotifyController.go
+ * @brief This file contain all the functions to use the spotify API
+ * @author Juliette Destang
+ * @version
+ */
+
+// @cond
+
 package controllers
 
 import (
@@ -15,6 +23,11 @@ import (
 	"AREA/pkg/models"
 )
 
+// @endcond
+
+/** @brief on a request, retrieve the OAuth spotify url 
+ * @param w http.ResponseWriter, r *http.Request
+ */
 func GetSpotifyUrl(w http.ResponseWriter, r *http.Request) {
 	utils.EnableCors(&w)
 	spotifyID := utils.GetEnv("SPOTIFY_ID");
@@ -23,6 +36,9 @@ func GetSpotifyUrl(w http.ResponseWriter, r *http.Request) {
 	w.Write(res)
 }
 
+/** @brief this function is call by the spotify callback and stock an api token for the user in database
+ * @param w http.ResponseWriter, r *http.Request
+ */
 func AuthSpotify(w http.ResponseWriter, r *http.Request) {
 
 	data := url.Values{}

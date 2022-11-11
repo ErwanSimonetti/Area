@@ -1,3 +1,11 @@
+/** @file weatherJob.go
+ * @brief This file contain all the functions to handle the actions and reactions of the Weather API
+ * @author Juliette Destang
+ * @version
+ */
+
+// @cond
+
 package jobs
 
 import (
@@ -12,7 +20,12 @@ import (
 	"AREA/pkg/utils"
 )
 
+// @endcond
 
+/** @brief This function take a user id and activate his job on login
+ * @param city string
+ * @return float64 temperature
+ */
 func GetWeather(city string) (float64 ,error){
 
 	url := "https://weather-by-api-ninjas.p.rapidapi.com/v1/weather?city=" + city
@@ -45,7 +58,10 @@ func GetWeather(city string) (float64 ,error){
 	return temperature.(float64), nil
 }
 
-
+/** @brief An action that return true if the temperature is over N degrees
+ * @param params string
+ * @return bool
+ */
 func TemperatureIsOverN(params string) (bool) {
 	paramsArr := utils.GetParams(params)
 	compareTemp, _ := strconv.ParseFloat(paramsArr[1], 64)
@@ -62,6 +78,10 @@ func TemperatureIsOverN(params string) (bool) {
 	}
 }
 
+/** @brief An action that return true if the temperature is under N degrees
+ * @param params string
+ * @return bool
+ */
 func TemperatureIsUnderrN(params string) (bool) {
 	paramsArr := utils.GetParams(params)
 	compareTemp, _ := strconv.ParseFloat(paramsArr[1], 64)
