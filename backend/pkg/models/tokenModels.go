@@ -13,7 +13,6 @@ type GithubWebhook struct {
 	WebhookID     		string   `json:"webhook_id"`
 }
 
-
 type Token struct {
 	gorm.Model
 	UserId              uint     `json:"user_id"`

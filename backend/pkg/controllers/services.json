@@ -96,143 +96,179 @@
         "actions": [
             {
                 "name": "push",
-                "description": "Push action happened on your repository"
+                "description": "Push action happened on your repository",
+                "field_names": ["GitHub username", "Repository name", "action to check (select from the 36 actions of github)"]
             },
             {
                 "name": "pull_request",
-                "description": "Pull request action happened on your repository"
+                "description": "Pull request action happened on your repository",
+                "field_names": ["GitHub username", "Repository name", "action to check (select from the 36 actions of github)"]
+
             },
             {
                 "name": "branch_protection_rule",
-                "description": "If branch protection changed on your repository"
+                "description": "If branch protection changed on your repository",
+                "field_names": ["GitHub username", "Repository name", "action to check (select from the 36 actions of github)"]
             },
             {
                 "name": "check_run",
-                "description": "Checks run action on your repository"
+                "description": "Checks run action on your repository",
+                "field_names": ["GitHub username", "Repository name", "action to check (select from the 36 actions of github)"]
             },
             {
                 "name": "check_suite",
-                "description": "Checks suite action on your repository"
+                "description": "Checks suite action on your repository",
+                "field_names": ["GitHub username", "Repository name", "action to check (select from the 36 actions of github)"]
             },
             {
                 "name": "create",
-                "description": "Someone created a git reference on your repository"
+                "description": "Someone created a git reference on your repository",
+                "field_names": ["GitHub username", "Repository name", "action to check (select from the 36 actions of github)"]
             },
             {
                 "name": "delete",
-                "description": "Someone deleted a git reference on your repository"
+                "description": "Someone deleted a git reference on your repository",
+                "field_names": ["GitHub username", "Repository name", "action to check (select from the 36 actions of github)"]
             },
             {
                 "name": "deployment",
-                "description": "Check deploy action on your repository"
+                "description": "Check deploy action on your repository",
+                "field_names": ["GitHub username", "Repository name", "action to check (select from the 36 actions of github)"]
             },
             {
                 "name": "deployment_status",
-                "description": "Check deploy action on your repository"
+                "description": "Check deploy action on your repository",
+                "field_names": ["GitHub username", "Repository name", "action to check (select from the 36 actions of github)"]
             },
             {
                 "name": "discussion",
-                "description": "A discussion started on you repository"
+                "description": "A discussion started on you repository",
+                "field_names": ["GitHub username", "Repository name", "action to check (select from the 36 actions of github)"]
             },
             {
                 "name": "discussion_comment",
-                "description": "A comment was added to discussion on you repository"
+                "description": "A comment was added to discussion on you repository",
+                "field_names": ["GitHub username", "Repository name", "action to check (select from the 36 actions of github)"]
             },
             {
                 "name": "fork",
-                "description": "Fork action on your repository"
+                "description": "Fork action on your repository",
+                "field_names": ["GitHub username", "Repository name", "action to check (select from the 36 actions of github)"]
             },
             {
                 "name": "gollum",
-                "description": "Gollum action on your repository"
+                "description": "Gollum action on your repository",
+                "field_names": ["GitHub username", "Repository name", "action to check (select from the 36 actions of github)"]
             },
             {
                 "name": "issue_comment",
-                "description": "Someone wrote an issue comment"
+                "description": "Someone wrote an issue comment",
+                "field_names": ["GitHub username", "Repository name", "action to check (select from the 36 actions of github)"]
             },
             {
                 "name": "issues",
-                "description": "Someone created an issue"
+                "description": "Someone created an issue",
+                "field_names": ["GitHub username", "Repository name", "action to check (select from the 36 actions of github)"]
             },
             {
                 "name": "label",
-                "description": "Someone created a label on your repository"
+                "description": "Someone created a label on your repository",
+                "field_names": ["GitHub username", "Repository name", "action to check (select from the 36 actions of github)"]
             },
             {
                 "name": "merge_group",
-                "description": "A merge was perfomed on your repository"
+                "description": "A merge was perfomed on your repository",
+                "field_names": ["GitHub username", "Repository name", "action to check (select from the 36 actions of github)"]
             },
             {
                 "name": "milestone",
-                "description": "A milestone was created on your repository"
+                "description": "A milestone was created on your repository",
+                "field_names": ["GitHub username", "Repository name", "action to check (select from the 36 actions of github)"]
             },
             {
                 "name": "page_build",
-                "description": "Someone pushed on your publishing branch"
+                "description": "Someone pushed on your publishing branch",
+                "field_names": ["GitHub username", "Repository name", "action to check (select from the 36 actions of github)"]
             },
             {
                 "name": "project_card",
-                "description": "Created a project card on your repository"
+                "description": "Created a project card on your repository",
+                "field_names": ["GitHub username", "Repository name", "action to check (select from the 36 actions of github)"]
             },
             {
                 "name": "project_column",
-                "description": "Moved a card to a column in you repository"
+                "description": "Moved a card to a column in you repository",
+                "field_names": ["GitHub username", "Repository name", "action to check (select from the 36 actions of github)"]
             },
             {
                 "name": "public",
-                "description": "Set your repoistory to public"
+                "description": "Set your repoistory to public",
+                "field_names": ["GitHub username", "Repository name", "action to check (select from the 36 actions of github)"]
             },
             {
                 "name": "pull_request_comment",
-                "description": "Add a comment to a pull request"
+                "description": "Add a comment to a pull request",
+                "field_names": ["GitHub username", "Repository name", "action to check (select from the 36 actions of github)"]
             },
             {
                 "name": "pull_request_review",
-                "description": "Someone reviewed your pull request"
+                "description": "Someone reviewed your pull request",
+                "field_names": ["GitHub username", "Repository name", "action to check (select from the 36 actions of github)"]
             },
             {
                 "name": "pull_request_review_comment",
-                "description": "Added a comment to a review on some pull request"
+                "description": "Added a comment to a review on some pull request",
+                "field_names": ["GitHub username", "Repository name", "action to check (select from the 36 actions of github)"]
             },
             {
                 "name": "pull_request_review_target",
-                "description": "Some activity was detected on a pull request"
+                "description": "Some activity was detected on a pull request",
+                "field_names": ["GitHub username", "Repository name", "action to check (select from the 36 actions of github)"]
             },
             {
                 "name": "registry_package",
-                "description": "Some activity was detected on your package"
+                "description": "Some activity was detected on your package",
+                "field_names": ["GitHub username", "Repository name", "action to check (select from the 36 actions of github)"]
             },
             {
                 "name": "release",
-                "description": "Released action on your repository"
+                "description": "Released action on your repository",
+                "field_names": ["GitHub username", "Repository name", "action to check (select from the 36 actions of github)"]
             },
             {
                 "name": "repository_dispatch",
-                "description": "Dispatched action on your repository"
+                "description": "Dispatched action on your repository",
+                "field_names": ["GitHub username", "Repository name", "action to check (select from the 36 actions of github)"]
             },
             {
                 "name": "schedule",
-                "description": "Added a schedule on your repository"
+                "description": "Added a schedule on your repository",
+                "field_names": ["GitHub username", "Repository name", "action to check (select from the 36 actions of github)"]
             },
             {
                 "name": "status",
-                "description": "Changed the status of your repository"
+                "description": "Changed the status of your repository",
+                "field_names": ["GitHub username", "Repository name", "action to check (select from the 36 actions of github)"]
             },
             {
                 "name": "watch",
-                "description": "Someone watched your repository"
+                "description": "Someone watched your repository",
+                "field_names": ["GitHub username", "Repository name", "action to check (select from the 36 actions of github)"]
             },
             {
                 "name": "workflow_call",
-                "description": "There was some activity on your workflow"
+                "description": "There was some activity on your workflow",
+                "field_names": ["GitHub username", "Repository name", "action to check (select from the 36 actions of github)"]
             },
             {
                 "name": "workflow_dispatch",
-                "description": "Dispatched action on your workflow"
+                "description": "Dispatched action on your workflow",
+                "field_names": ["GitHub username", "Repository name", "action to check (select from the 36 actions of github)"]
             },
             {
                 "name": "workflow_run",
-                "description": "Ran your repository workflow"
+                "description": "Ran your repository workflow",
+                "field_names": ["GitHub username", "Repository name", "action to check (select from the 36 actions of github)"]
             }
         ],
         "reactions": [
