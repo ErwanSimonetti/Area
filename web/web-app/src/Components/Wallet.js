@@ -60,7 +60,7 @@ export default function Wallet () {
                     })
                     const actionsObj = {
                         description: item.description,
-                        fields: fields
+                        fields
                     }
                     actionsArr.push(actionsObj)
                 })
@@ -71,7 +71,7 @@ export default function Wallet () {
                     })
                     const reactionsObj = {
                         description: item.description,
-                        fields: fields
+                        fields
                     }
                     reactionsArr.push(reactionsObj)
                 })
