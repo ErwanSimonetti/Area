@@ -1,7 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:workspace/menu_list_auth_plateform.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:http/http.dart' as http;
+import 'globals.dart' as globals;
 import './drop_down_menu.dart';
 import './create_area_menu.dart';
+import 'dart:async';
+import 'package:flutter/foundation.dart';
+import 'dart:convert';
+import 'dart:io';
+import 'actions.dart';
 
 class SelectableImage extends StatelessWidget {
   const SelectableImage({
@@ -35,46 +43,8 @@ class _CreationAreaMenuState extends State<CreationAreaMenu> {
   String selectedValue = "Discord";
   String selectedAction = "Appeler Erwan";
   int currentStep = 0;
-  List<DropdownMenuItem<String>> dropDownActions = [
-    DropdownMenuItem(child: Text("Appeler Erwan"), value: "Appeler Erwan"),
-    DropdownMenuItem(child: Text("Ratio Pixelle"), value: "Ratio Pixelle"),
-  ];
-  final _images = [
-    "assets/Deezer.png",
-    "assets/Discord.png",
-    "assets/Spotify.png",
-  ];
+  List<Parser> listElement = [];
 
-  List<DropdownMenuItem<String>> get dropdownItems {
-    List<DropdownMenuItem<String>> menuItems = [
-      DropdownMenuItem(child: Text("Discord"), value: "Discord"),
-      DropdownMenuItem(child: Text("Spotify"), value: "Spotify"),
-      DropdownMenuItem(child: Text("Deezer"), value: "Deezer"),
-      DropdownMenuItem(child: Text("Meteo"), value: "Meteo"),
-    ];
-    return menuItems;
-  }
-
-  Map<String, List<String>> get listOfActions {
-    Map<String, List<String>> menuList = {
-      "Discord": ["Appeler Erwan", "Ratio Pixelle", "Jaj ?"],
-      "Spotify": [
-        "Nouvel album",
-        "Lancer Chante"
-      ],
-      "Deezer": ["Jouter Despacito"],
-      "Meteo": ["Il pleut", "Bo", "Neige"],
-    };
-    return menuList;
-  }
-
-  void listDropDown(List<String> list) {
-    list.forEach((element) {
-      DropdownMenuItem<String> temp =
-          DropdownMenuItem(child: Text(element), value: element);
-      dropDownActions.add(temp);
-    });
-  }
 
   Widget build(BuildContext context) {
     return new Scaffold(
@@ -86,75 +56,7 @@ class _CreationAreaMenuState extends State<CreationAreaMenu> {
                   minWidth: double.infinity,
                   height: 60,
                   onPressed: () {
-                    showDialog(
-                        context: context,
-                        builder: (BuildContext context) {
-                          return AlertDialog(
-                            content: Stack(
-                              children: <Widget>[
-                                Positioned(
-                                  right: -40.0,
-                                  top: -40.0,
-                                  child: InkResponse(
-                                    onTap: () {
-                                      Navigator.of(context).pop();
-                                    },
-                                    child: CircleAvatar(
-                                      child: Icon(Icons.close),
-                                      backgroundColor: Colors.red,
-                                    ),
-                                  ),
-                                ),
-                                Form(
-                                  key: _formKey,
-                                  child: Column(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: <Widget>[
-                                      Padding(
-                                        padding: EdgeInsets.all(8.0),
-                                        child: DropdownButton(
-                                          value: selectedValue,
-                                          onChanged: ((value) {
-                                            setState(() {
-                                              selectedValue = value.toString();
-                                              dropDownActions.clear();
-                                              listDropDown(listOfActions[selectedValue] ?? []);
-                                            });
-                                          }),
-                                          items: dropdownItems,
-                                        ),
-                                      ),
-                                      Padding(
-                                        padding: EdgeInsets.all(8.0),
-                                        child: DropdownButton(
-                                          value: selectedAction,
-                                          onChanged: ((value) {
-                                            selectedAction = value.toString();
-                                          }),
-                                          items: dropDownActions,
-                                        ),
-                                      ),
-                                      Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: MaterialButton(
-                                          child: Text("Submit"),
-                                          onPressed: () {
-                                            print(selectedValue);
-                                            print(selectedAction);
-                                            selectedValue = "Discord";
-                                            selectedAction = "Appeler Erwan";
-                                            listDropDown(listOfActions["Discord"] ?? []);
-                                            Navigator.of(context).pop();
-                                          },
-                                        ),
-                                      )
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            ),
-                          );
-                        });
+                    fetchAreaction();
                   },
                   color: Colors.redAccent,
                   shape: RoundedRectangleBorder(
@@ -190,7 +92,44 @@ class _CreationAreaMenuState extends State<CreationAreaMenu> {
               ],
             )));
   }
+
+  void iterateJson(String jsonStr) {
+    var myMap = jsonDecode(jsonStr);
+
+    for (var element in myMap) {
+      List<Reac> listAction = [];
+      List<Reac> listReaction = [];
+
+      for (var word in element['actions']) {
+        listAction.add(Reac.fromJson(word));
+      }
+      for (var word in element['reactions']) {
+        listReaction.add(Reac.fromJson(word));
+      }
+      listElement.add(Parser(action: listAction, reaction: listReaction, plateforme: element['name']));
+    }
+  }
+
+  Future<void> fetchAreaction() async {
+    print(globals.tokenUser);
+    final response = await http.get(
+        Uri.parse("http://10.0.2.2:8080/area/user/propositions"),
+        headers: <String, String>{
+          'cookie': globals.tokenUser
+        }).timeout(Duration(seconds: 30));
+
+    print('${response.statusCode}');
+    if (response.statusCode == 200) {
+      // Map<String, dynamic> myMap = json.decode(response.body);
+      iterateJson(response.body);
+      // print(responseData);
+    } else {
+      Fluttertoast.showToast(msg: 'Error: Failed request');
+    }
+  }
 }
+
+
 
 List<Widget> printTextList(List<String> map) {
   List<Widget> list = [];

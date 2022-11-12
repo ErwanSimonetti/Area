@@ -1,10 +1,10 @@
 import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:http/http.dart' as http;
+import 'globals.dart' as globals;
 import './colors.dart';
 import './widgets.dart';
 import './home_page.dart';
@@ -171,7 +171,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
       final cookies = response.headers['set-cookie'];
 
       if (cookies != null) {
-        final authToken = cookies.split(';')[0];
+        globals.tokenUser = cookies.split(';')[0];
       }
       Navigator.push(
         context,
