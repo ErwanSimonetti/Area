@@ -70,6 +70,7 @@ func AddJobToUser(w http.ResponseWriter, r *http.Request) {
 
 	requestUser, _ := GetUser(w, r)
 	newJob.UserId = requestUser.ID
+	newJob.ActionExecuted = false
 
 	if utils.ArrayContainsString(gitHubActions, newJob.ActionFunc) {
 		CreateWebhook(requestUser.ID, newJob.ActionFunc, newJob.ActionFuncParams)

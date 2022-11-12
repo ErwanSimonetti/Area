@@ -10,6 +10,7 @@ package jobs
 
 import (
 	"AREA/pkg/models"
+	// "fmt"
 )
 
 // @endconv
@@ -17,8 +18,8 @@ import (
 var currentJobs []models.Job
 
 var ActionMap = map[string]func(string) bool {
-	"The temperature is over N degrees": TemperatureIsOverN,
-	"The temperature is under N degrees": TemperatureIsUnderrN,
+	"The temperature is over a given value": TemperatureIsOverN,
+	"The temperature is under a given value": TemperatureIsUnderrN,
 	"Check if the player main Teemo": IsPlayingTeemo,
 	"The player winrate is over a given %": WinrateIsOverN,
 	"The player KDA is over a given value": KDAIsOverN,
@@ -61,7 +62,7 @@ func RemoveJobByID(jobId uint) {
 	currentJobs = newCurrentJobs
 }
 
-/** @brief Remove all job from the currentJob when a user logout
+/** @brief Remove* all job from the currentJob when a user logout
  * @param userID uint
  */
 func SuprUserJobsOnLogout(userId uint) {
@@ -81,10 +82,14 @@ func SuprUserJobsOnLogout(userId uint) {
  */
 func ExecAllJob() {
 	// fmt.Println(currentJobs)
-
-	for _, job := range currentJobs {
-		if ActionMap[job.ActionFunc] != nil && ActionMap[job.ActionFunc](job.ActionFuncParams) {
-			ReactionMap[job.ReactionFunc](job.UserId, job.ReactionFuncParams)
+	for index := range currentJobs {
+		if ActionMap[currentJobs[index].ActionFunc] != nil && ActionMap[currentJobs[index].ActionFunc](currentJobs[index].ActionFuncParams) {
+			if (currentJobs[index].ActionExecuted == false) {
+				currentJobs[index].ActionExecuted = true
+				ReactionMap[currentJobs[index].ReactionFunc](currentJobs[index].UserId, currentJobs[index].ReactionFuncParams)
+			}
+		} else {
+			currentJobs[index].ActionExecuted = false
 		}
 	}
 	// fmt.Println()

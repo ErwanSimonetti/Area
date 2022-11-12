@@ -66,6 +66,11 @@ func AuthDiscord(w http.ResponseWriter, r *http.Request){
 
 	requestUser, _ := GetUser(w, r)
 
+	if (jsonWebhook["message"] == "Maximum number of webhooks reached (10)") {
+		w.WriteHeader(http.StatusBadRequest)
+		return
+	}
+
 	address := jsonWebhook["webhook"].(map[string]interface{})
 
 	webhookId := fmt.Sprintf("%s", address["id"])

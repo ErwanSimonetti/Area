@@ -64,8 +64,11 @@ func GetWeather(city string) (float64 ,error){
  */
 func TemperatureIsOverN(params string) (bool) {
 	paramsArr := utils.GetParams(params)
+	fmt.Println(paramsArr)
 	compareTemp, _ := strconv.ParseFloat(paramsArr[1], 64)
 	temperature, weatherErr := GetWeather(paramsArr[0])
+	fmt.Println(compareTemp)
+	fmt.Println(temperature)
 	if (weatherErr != nil) {
 		fmt.Println(weatherErr)
 		return false

@@ -1,12 +1,14 @@
+/*eslint-disable*/
 import { Typography, Box, Button, Card, CardContent, CardMedia, Grid, ButtonBase } from '@mui/material'
 import * as React from 'react'
 import axios from 'axios'
 import githubImg from '../resources/github.png'
 import spotifyImg from '../resources/spotify.png'
 import discordImg from '../resources/discord.svg'
+import gmailImg from '../resources/gmail.png'
 
 export default function Services () {
-    const services = [{ name: 'Spotify', token: null, img: spotifyImg }, { name: 'Github', token: null, img: githubImg }, { name: 'Discord', token: null, img: discordImg }]
+    const services = [{ name: 'Spotify', token: null, img: spotifyImg }, { name: 'Github', token: null, img: githubImg }, { name: 'Discord', token: null, img: discordImg }, { name: 'Gmail', token: null, img: gmailImg }]
     return (
         <React.Fragment>
             <Box sx={{
@@ -59,6 +61,21 @@ function ServicesCard ({ services }) {
         })
     }
 
+    const getGmailToken = () => {
+        const headers = { 'Content-Type': 'text/plain' }
+        const [email, password] = ['juliette.destang@gmail.com', 'ok']
+        axios.post('http://localhost:8080/email/login', {
+            email: email,
+            password: password,
+        }, { headers: { 'Content-Type': 'text/plain' }, withCredentials: true })
+        .then(function (response) {
+            console.log(email, password)
+            // location.href = response.data
+        }).catch(function (error) {
+            console.log(error)
+        })
+    }
+
     const handleClick = (service) => {
         console.log('clicked ' + service.name)
         setService(service.name)
@@ -71,6 +88,9 @@ function ServicesCard ({ services }) {
                 break
             case 'Github':
                 getGithubToken()
+                break
+            case 'Gmail':
+                getGmailToken()
                 break
             default:
                 break

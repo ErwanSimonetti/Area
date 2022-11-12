@@ -12,6 +12,7 @@ import "github.com/jinzhu/gorm"
 type Job struct {
 	gorm.Model
 	UserId uint `json:"user_id"`
+	ActionExecuted bool `json:"action_executed"`
 	ActionService string `json:"action_service"`
 	ActionFunc string `json:"action_func"`
 	ActionFuncParams string `json:"action_func_params"`

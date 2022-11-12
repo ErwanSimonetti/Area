@@ -35,6 +35,8 @@ var AreaRouter = func(router *mux.Router) {
 
 	router.HandleFunc("/spotify/auth/url", controllers.CORS(controllers.GetSpotifyUrl)).Methods("GET")
 	router.HandleFunc("/spotify/auth", controllers.AuthSpotify).Methods("GET")
+	
+	router.HandleFunc("/email/login", controllers.CORS(controllers.AuthEmail)).Methods("POST")
 
 	router.HandleFunc("/area/user/areas", controllers.CORS(controllers.GetUserJobs)).Methods("GET")
 	router.HandleFunc("/area/user/propositions", controllers.CORS(controllers.GetUserPropositions)).Methods("GET")
