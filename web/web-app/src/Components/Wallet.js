@@ -94,6 +94,8 @@ export default function Wallet () {
             })
             setActionArray(actionData)
             setReactionArray(reactionData)
+            console.log('act: ', actionData)
+            console.log('react: ', reactionData)
         })
         .catch(function (error) {
             console.log(error)

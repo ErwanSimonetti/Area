@@ -1,7 +1,10 @@
 import * as React from 'react'
 import Card from '@mui/material/Card'
 import './style.css'
-import { Typography, Grid } from '@mui/material'
+import { Typography, Grid, Box } from '@mui/material'
+import IconButton from '@mui/material/IconButton'
+import DeleteIcon from '@mui/icons-material/Delete'
+import axios from 'axios'
 
 const topCard = {
     bgcolor: '#5CCCE2',
@@ -24,6 +27,16 @@ const parentCard = {
 }
 
 export function AREACard ({ cards }) {
+    function handleDeletion (card) {
+        console.log(card.ID)
+        axios.get('http://localhost:8080/area/delete/' + card.ID)
+        .then(function (response) {
+            console.log(response)
+            window.location.reload(true)
+        }).catch(function (error) {
+            console.log(error)
+        })
+    }
     return (
         <Grid container spacing={4} sx={{ padding: '0 10%', width: '100%', marginLeft: '0px', marginTop: '10px' }}>
             {cards.map((card, index) => (
@@ -39,6 +52,13 @@ export function AREACard ({ cards }) {
                             {card.reaction}
                         </Typography>
                     </Card>
+                    <Box display='flex' justifyContent='center'>
+                        <Card sx={{ ...topCard, display: 'flex' }}>
+                            <IconButton aria-label="delete" size="large" onClick={ () => { handleDeletion(card) } }>
+                                <DeleteIcon fontSize="inherit" />
+                            </IconButton>
+                        </Card>
+                    </Box>
                     </Card>
                 </Grid>
             ))}

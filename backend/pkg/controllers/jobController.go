@@ -126,7 +126,7 @@ func GetUserPropositions(w http.ResponseWriter, r *http.Request) {
 
 	tokens := models.FindUserToken(requestUser.ID)
 	for _, service := range services {
-		if service.Name == "discord" && !models.CheckIfConnectedToService(*tokens, "discord") {
+		if service.Name == "email" && !models.CheckIfConnectedToService(*tokens, "email") {
 			continue
 		}
 		if service.Name == "spotify" && !models.CheckIfConnectedToService(*tokens, "spotify") {
