@@ -29,8 +29,8 @@ var ActionMap = map[string]func(string) bool {
 
 var ReactionMap = map[string]func(uint, string) {
 	"Adds a given song to the user's queue": AddSongToQueue,
-	"Send an email from user to given receiver": SendEmail,
-	"Send a webhook message on selected channel": SendMessage,
+	"Sends an email from user to given receiver": SendEmail,
+	"Sends a webhook message on selected channel": SendMessage,
 }
 
 /** @brief This function take a user id and activate his job on login
