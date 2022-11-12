@@ -78,8 +78,8 @@ func AuthSpotify(w http.ResponseWriter, r *http.Request) {
 
 	requestUser, _ := GetUser(w, r)
 
-	models.SetUserToken(strconv.FormatUint(uint64(requestUser.ID), 10), "spotify_token", fmt.Sprintf("%s", accessToken))
-	models.SetUserToken(strconv.FormatUint(uint64(requestUser.ID), 10), "spotify_refresh_token", fmt.Sprintf("%s", refreshToken))
+	models.SetUserToken(requestUser.ID, "spotify_token", fmt.Sprintf("%s", accessToken))
+	models.SetUserToken(requestUser.ID, "spotify_refresh_token", fmt.Sprintf("%s", refreshToken))
 	http.Redirect(w, r, "http://localhost:8081/user/services", http.StatusSeeOther)
 	// song := GetSongByName(requestUser.ID ,"beatit")
 	// PlayASong(requestUser.ID, song)

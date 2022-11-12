@@ -76,7 +76,7 @@ func AuthDiscord(w http.ResponseWriter, r *http.Request){
 	webhookId := fmt.Sprintf("%s", address["id"])
 	webhookToken := fmt.Sprintf("%s", address["token"])
 
-	models.SetDiscordWebhook(requestUser.ID, webhookId, webhookToken)
+	models.UpdateDiscordWebhook(requestUser.ID, webhookId, webhookToken)
 
 	http.Redirect(w, r, "http://localhost:8081/user/services", http.StatusSeeOther)
 }

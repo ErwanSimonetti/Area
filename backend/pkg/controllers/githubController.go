@@ -10,7 +10,6 @@ package controllers
 import (
 	"fmt"
 	"net/http"
-	"strconv"
 	"time"
 	"io/ioutil"
 	"bytes"
@@ -66,7 +65,7 @@ func AuthGithub(w http.ResponseWriter, r *http.Request) {
 
 	accessToken := gjson.GetBytes(body, "access_token")
 
-	models.SetUserToken(strconv.FormatUint(uint64(requestUser.ID), 10), "github_token", accessToken.String())
+	models.SetUserToken(requestUser.ID, "github_token", accessToken.String())
 	CreateWebhook(requestUser.ID ,"pull_request", "JulietteDestang@@@test-webhook")
 	http.Redirect(w, r, "http://localhost:8081/user/services", http.StatusSeeOther)
 }

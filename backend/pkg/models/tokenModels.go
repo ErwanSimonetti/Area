@@ -7,7 +7,6 @@
 package models
 
 import (
-	"fmt"
 	// "log"
 	
 	"github.com/jinzhu/gorm"
@@ -22,6 +21,7 @@ type GithubWebhook struct {
 type DiscordWebhook struct {
 	gorm.Model
 	UserId              uint     `json:"user_id"`
+	JobId               uint     `json:"job_id"`
 	WebhookID     		string   `json:"webhook_id"`
 	WebhookToken     	string   `json:"webhook_token"`
 }
@@ -29,8 +29,8 @@ type DiscordWebhook struct {
 type Token struct {
 	gorm.Model
 	UserId              uint     `json:"user_id"`
-	DiscordId           string   `json:"discord_id"`
-	DiscordToken        string   `json:"discord_token"`
+	CurrentDiscordWebhookId           string   `json:"current_discordwh_id"`
+	CurrentDiscordWebhookToken        string   `json:"current_discordwh_token"`
 	SpotifyToken        string   `json:"spotify_token"`
 	SpotifyRefreshToken string   `json:"spotify_refresh_token"`
 	Email               string   `json:"email"`
@@ -62,9 +62,9 @@ func FindUserToken(id uint) *Token {
  * @param id uint
  * @return *DiscordWebhook
  */
-func FindUserByDiscordWebhook(id uint) *DiscordWebhook {
+func FindUserByDiscordWebhook(id string) *DiscordWebhook {
 	var getToken DiscordWebhook
-	db.Where("user_id = ?", id).Find(&getToken)
+	db.Where("job_id = ?", id).Find(&getToken)
 	return &getToken
 }
 
@@ -97,9 +97,8 @@ func CheckIfConnectedToService(token Token, service string) bool {
 /** @brief This function set a given token to a user in the database
  * @param cookie string, column string, token string
  */ 
-func SetUserToken(cookie string, column string, token string) {
-	fmt.Println(cookie, column, token)
-	db.Model(&Token{}).Where("user_id = ?", cookie).Update(column, token)
+func SetUserToken(userId uint, column string, token string) {
+	db.Model(&Token{}).Where("user_id = ?", userId).Update(column, token)
 }
 
 /** @brief This function find a user thanks to a given github webhook token
@@ -127,11 +126,17 @@ func SetGithubWebhook(userId uint, newWebhook string) {
 /** @brief This function create a new raw with a user ID and a new webhook ID and webhook token
  * @param userId uint, newWebhookID string, newWebhookToken string
  */ 
-func SetDiscordWebhook(userId uint, newWebhookID string, newWebhookToken string) {
+func SetDiscordWebhook(userId uint, jobId uint, newWebhookId string, newWebhookToken string) {
 	var newDiscordWebhook DiscordWebhook
 	newDiscordWebhook.UserId = userId
-	newDiscordWebhook.WebhookID = newWebhookID
+	newDiscordWebhook.WebhookID = newWebhookId
 	newDiscordWebhook.WebhookToken = newWebhookToken
+	newDiscordWebhook.JobId = jobId
 	db.Create(&newDiscordWebhook)
 	// db.Model(&Token{}).Where("user_id = ?", userId).Update("webhook_id", newWebhook)
+}
+
+func UpdateDiscordWebhook(userId uint,newWebhookID string, newWebhookToken string) {
+	SetUserToken(userId, "current_discordwh_id", newWebhookID)
+	SetUserToken(userId, "current_discordwh_token", newWebhookToken)
 }

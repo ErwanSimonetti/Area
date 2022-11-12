@@ -53,6 +53,10 @@ func GetJobsByUserId(userId uint) ([]Job){
 	return jobs
 }
 
+func UpdateJobField(jobId uint, column string, value string) {
+	db.Model(&Token{}).Where("ID = ?", jobId).Update(column, value)
+}
+
 /** @brief Deletes a job based on its ID
  * @param ID uint
  * @return Job

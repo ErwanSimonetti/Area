@@ -76,8 +76,14 @@ func AddJobToUser(w http.ResponseWriter, r *http.Request) {
 		CreateWebhook(requestUser.ID, newJob.ActionFunc, newJob.ActionFuncParams)
 	}
 	jobs.AddJob(*newJob)
-
+	
 	jobId := newJob.CreateJob()
+	userToken := models.FindUserToken(newJob.UserId)
+
+	if (newJob.ReactionService == "discord") {
+		models.SetDiscordWebhook(newJob.UserId, jobId, userToken.CurrentDiscordWebhookId, userToken.CurrentDiscordWebhookToken)
+		UpdateJobField(jobId, "reaction_func_params", newJob.ReactionFuncParams + "@@@" + jobId)
+	}
 	res, _ := json.Marshal(jobId)
 
 	w.WriteHeader(http.StatusOK)

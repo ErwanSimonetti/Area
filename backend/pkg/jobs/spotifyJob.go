@@ -13,7 +13,6 @@ import (
 	"fmt"
 	"net/url"
 	"strings"
-	"strconv"
 	"io/ioutil"
 	"log"
 	"time"
@@ -66,7 +65,7 @@ func RefreshSpotifyToken(userID uint) {
 		}
 		accessToken := spotifyRefreshResponse["access_token"]
 
-		models.SetUserToken(strconv.FormatUint(uint64(userID), 10), "spotify_token", fmt.Sprintf("%s", accessToken))
+		models.SetUserToken(userID, "spotify_token", fmt.Sprintf("%s", accessToken))
 }
 
 /** @brief Returns the ID of the song based on the name given in params

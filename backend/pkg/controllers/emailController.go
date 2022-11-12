@@ -10,7 +10,6 @@ package controllers
 
 import (
 	"net/http"
-	"strconv"
 	"io"
 
 	"AREA/pkg/models"
@@ -27,7 +26,7 @@ func AuthEmail(w http.ResponseWriter, r *http.Request) {
     email := gjson.GetBytes(b, "email")
     password := gjson.GetBytes(b, "password")
 	requestUser, _ := GetUser(w, r)
-	models.SetUserToken(strconv.FormatUint(uint64(requestUser.ID), 10), "email", email.String())
-	models.SetUserToken(strconv.FormatUint(uint64(requestUser.ID), 10), "email_password", password.String())
+	models.SetUserToken(requestUser.ID, "email", email.String())
+	models.SetUserToken(requestUser.ID, "email_password", password.String())
 	w.WriteHeader(http.StatusOK)
 }

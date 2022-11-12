@@ -14,6 +14,7 @@ import (
 	"github.com/DisgoOrg/disgohook"
 
 	"AREA/pkg/models"
+	"AREA/pkg/utils"
 )
 
 // @endconv
@@ -22,13 +23,14 @@ import (
  * @param userID uint, params string
  */
 func SendMessage(userID uint, params string) {
+	paramsArr := utils.GetParams(params)
 
-	userToken := *models.FindUserByDiscordWebhook(userID)
+	userToken := *models.FindUserByDiscordWebhook(paramsArr[1])
 
     messageUrl := fmt.Sprintf("%s/%s", userToken.WebhookID, userToken.WebhookToken)
 
     webhook, _ := disgohook.NewWebhookClientByToken(nil, nil, messageUrl)
 
-    webhook.SendContent(params)
+    webhook.SendContent(paramsArr[0])
 	// Imessage = Imessage
 }
