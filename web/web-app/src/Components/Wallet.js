@@ -1,5 +1,4 @@
 import * as React from 'react'
-import propTypes from 'prop-types'
 import { Button, Box, Dialog, DialogTitle, List, ListItemText, ListItem, FormControlLabel, FormGroup, Checkbox } from '@mui/material'
 import { AREACard } from './Cards'
 import './../App.css'
@@ -13,7 +12,8 @@ export default function Wallet () {
     const [openDialog, setOpenDialog] = React.useState(false)
     const [singleCard, setSingleCard] = React.useState(false)
     const [areaCards, setAreaCards] = React.useState([])
-    const [serviceArray, setServiceArray] = React.useState([])
+    const [actionArray, setActionArray] = React.useState([])
+    const [reactionArray, setReactionArray] = React.useState([])
     const [newCard, setNewCard] = React.useState({
         ID: null,
         action: null,
@@ -24,7 +24,8 @@ export default function Wallet () {
         reactionService: null
     })
     const cards = []
-    const servicesData = []
+    const actionData = []
+    const reactionData = []
 
     React.useEffect(() => {
         axios.get('http://localhost:8080/area/user/areas', { withCredentials: true })
@@ -64,6 +65,14 @@ export default function Wallet () {
                     }
                     actionsArr.push(actionsObj)
                 })
+                const actionTotal = {
+                    service: service.name,
+                    actions: actionsArr
+                }
+                if (actionTotal.actions.length !== 0) {
+                    actionData.push(actionTotal)
+                }
+
                 service.reactions.forEach((item) => {
                     const fields = []
                     item.field_names.forEach((key) => {
@@ -75,14 +84,16 @@ export default function Wallet () {
                     }
                     reactionsArr.push(reactionsObj)
                 })
-                const actionTotal = {
+                const reactionTotal = {
                     service: service.name,
-                    actions: actionsArr,
                     reactions: reactionsArr
                 }
-                servicesData.push(actionTotal)
+                if (reactionTotal.reactions.length !== 0) {
+                    reactionData.push(reactionTotal)
+                }
             })
-            setServiceArray(servicesData)
+            setActionArray(actionData)
+            setReactionArray(reactionData)
         })
         .catch(function (error) {
             console.log(error)
@@ -157,12 +168,13 @@ export default function Wallet () {
                     open={openDialog}
                     newCard={newCard}
                     setNewCard={setNewCard}
-                    serviceArray={serviceArray} />
+                    actionArray={actionArray}
+                    reactionArray={reactionArray} />
         </React.Fragment >
     )
 }
 
-function NewCardDialog ({ setNewCard, newCard, serviceArray, ...props }) {
+function NewCardDialog ({ setNewCard, newCard, actionArray, reactionArray, ...props }) {
     const [openAFieldsDialog, setOpenAFieldsDialog] = React.useState(false)
     const [openRFieldsDialog, setOpenRFieldsDialog] = React.useState(false)
     const [openServiceActionDialog, setOpenServiceActionDialog] = React.useState(false)
@@ -193,11 +205,9 @@ function NewCardDialog ({ setNewCard, newCard, serviceArray, ...props }) {
     }, [newCard])
 
     React.useEffect(() => {
-        console.log('currentAction ', currentAction)
     }, [currentAction])
 
     React.useEffect(() => {
-        console.log('currentReaction ', currentReaction)
     }, [currentReaction])
 
     React.useEffect(() => {
@@ -242,11 +252,11 @@ function NewCardDialog ({ setNewCard, newCard, serviceArray, ...props }) {
                     <Button variant="outlined" disabled={!props.singleCard} onClick={() => { props.onClose(false) }}>Valider</Button>
                 </FormGroup>
             </Dialog>
-            {/* Service Action Pick */}
+
             <Dialog onClose={() => setOpenServiceActionDialog(false)} open={openServiceActionDialog}>
                 <DialogTitle>Action Service</DialogTitle>
                     <List sx={{ pt: 0 }}>
-                    {serviceArray.map((service, index) => (
+                    {actionArray.map((service, index) => (
                         <ListItem button onClick={() => handleClickActionService(service) } key={index}>
                             <ListItemText primary={service.service} />
                     </ListItem>
@@ -271,7 +281,7 @@ function NewCardDialog ({ setNewCard, newCard, serviceArray, ...props }) {
             <Dialog onClose={() => setOpenServiceReactionDialog(false)} open={openServiceReactionDialog}>
                 <DialogTitle>Reaction Service</DialogTitle>
                     <List sx={{ pt: 0 }}>
-                    {serviceArray.map((service, index) => (
+                    {reactionArray.map((service, index) => (
                         <ListItem button onClick={() => handleClickReactionService(service) } key={index}>
                             <ListItemText primary={service.service} />
                     </ListItem>
@@ -289,8 +299,10 @@ function NewCardDialog ({ setNewCard, newCard, serviceArray, ...props }) {
                     ))}
                 </List>
             </Dialog >
+
             {currentReaction?.fields &&
             <TextInputsRParams open={openRFieldsDialog} setOpen={setOpenRFieldsDialog} newCard={newCard} setNewCard={setNewCard} fields={currentReaction?.fields}/>}
+
         </React.Fragment >
     )
 }
