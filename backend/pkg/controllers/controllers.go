@@ -65,6 +65,13 @@ func GetUserById(w http.ResponseWriter, r *http.Request){
 func CreateUser(w http.ResponseWriter, r *http.Request) {
 	NewUser := &models.User{}
 	utils.ParseBody(r, NewUser)
+
+	sameUser := models.FindUser(NewUser.Email)
+	if (sameUser.Email != "") {
+		w.WriteHeader(http.StatusBadRequest)
+		return
+	}
+
 	password, _ := bcrypt.GenerateFromPassword([]byte(NewUser.Password), 14)
 
 	NewUser.Password = password

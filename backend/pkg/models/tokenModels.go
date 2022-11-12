@@ -75,8 +75,8 @@ func FindUserByDiscordWebhook(id uint) *DiscordWebhook {
 func CheckIfConnectedToService(token Token, service string) bool {
 	returnValue := false
 	switch service {
-	case "discord":
-		if token.DiscordToken != "" {
+	case "email":
+		if token.Email != "" {
 			returnValue = true
 			break
 		}

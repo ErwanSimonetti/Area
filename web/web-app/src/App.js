@@ -8,6 +8,7 @@ import Register from './Components/Register'
 import Services from './Components/Services'
 import Cookies from 'js-cookie'
 import Forbidden from './Components/Forbidden'
+import Googleot from './Components/googleot'
 
 export default function App () {
   const [loggedIn, setLoggedIn] = React.useState(Cookies.get('jwt') < 0)
@@ -29,6 +30,7 @@ export default function App () {
           <Route path='/wallet' element={<Forbidden />} />
           <Route path='/register' element={<Register />} />
           <Route path='/login' element={<Login />} />
+          <Route path='/google' element={<Googleot />} />
         </React.Fragment>
       }
       </Routes>
