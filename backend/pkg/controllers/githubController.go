@@ -1,7 +1,7 @@
 /** @file githubController.go
  * @brief This file contain all the functions to communicate with the discord API
  * @author Juliette Destang
- * @version
+ * 
  */
 
 // @cond
@@ -120,7 +120,6 @@ func CreateWebhook(userID uint, action string, params string) {
  * @param w http.ResponseWriter, r *http.Request
  */
 func Webhook(w http.ResponseWriter, r *http.Request) {
-	println(("ping"))
 	webhookID := r.Header.Get("X-Github-Hook-Id")
 	webhookEvent := r.Header.Get("X-Github-Event")
 	userToken := *models.FindUserByWebhookToken(webhookID)

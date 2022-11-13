@@ -94,8 +94,6 @@ export default function Wallet () {
             })
             setActionArray(actionData)
             setReactionArray(reactionData)
-            console.log('act: ', actionData)
-            console.log('react: ', reactionData)
         })
         .catch(function (error) {
             console.log(error)
@@ -156,9 +154,9 @@ export default function Wallet () {
                     alignItems: 'center'
                 }}>
                     <ThemeProvider theme={theme}>
-                        <Typography variant='h2' gutterBottom> Mon Wallet</Typography>
+                        <Typography variant='h2' gutterBottom> AREA Wallet</Typography>
                     </ThemeProvider>
-                    <Button size="small" onClick={ () => { setOpenDialog(true) } } className="newAreaButton">
+                    <Button size='small' onClick={ () => { setOpenDialog(true) } } className='newAreaButton'>
                         <NewAreaButton/>
                     </Button>
                 </Box>
@@ -203,16 +201,6 @@ function NewCardDialog ({ setNewCard, newCard, actionArray, reactionArray, ...pr
     })
 
     React.useEffect(() => {
-        console.log(newCard)
-    }, [newCard])
-
-    React.useEffect(() => {
-    }, [currentAction])
-
-    React.useEffect(() => {
-    }, [currentReaction])
-
-    React.useEffect(() => {
         if (newCard.action != null && newCard.actionService != null && newCard.reaction != null && newCard.reactionService != null) {
             props.setSingleCard(true)
         }
@@ -245,13 +233,13 @@ function NewCardDialog ({ setNewCard, newCard, actionArray, reactionArray, ...pr
     return (
         <React.Fragment>
             <Dialog onClose={props.onClose} open={props.open}>
-                <DialogTitle>Créer une nouvelle AREA :</DialogTitle>
+                <DialogTitle>Create a new AREA :</DialogTitle>
                 <FormGroup>
-                    <FormControlLabel disabled control={<Checkbox checked={newCard.actionService !== null} />} label={<Button onClick={() => setOpenServiceActionDialog(true)}> {newCard.actionService ? newCard.actionService : "service d'action"}</Button>} />
-                    <FormControlLabel disabled control={<Checkbox checked={newCard.action !== null} />} label={<Button onClick={() => setOpenActionDialog(true)}> {newCard.action ? newCard.action : 'action'}</Button>} />
-                    <FormControlLabel disabled control={<Checkbox checked={newCard.reactionService !== null} />} label={<Button onClick={() => setOpenServiceReactionDialog(true)}> {newCard.reactionService ? newCard.reactionService : 'service de réaction'}</Button>} />
-                    <FormControlLabel disabled control={<Checkbox checked={newCard.reaction !== null} />} label={<Button onClick={() => setOpenReactionDialog(true)}> {newCard.reaction ? newCard.reaction : 'réaction'}</Button>} />
-                    <Button variant="outlined" disabled={!props.singleCard} onClick={() => { props.onClose(false) }}>Valider</Button>
+                    <FormControlLabel disabled control={<Checkbox checked={newCard.actionService !== null} />} label={<Button onClick={() => setOpenServiceActionDialog(true)}> {newCard.actionService ? newCard.actionService : 'Action Service'}</Button>} />
+                    <FormControlLabel disabled control={<Checkbox checked={newCard.action !== null} />} label={<Button onClick={() => setOpenActionDialog(true)}> {newCard.action ? newCard.action : 'Action'}</Button>} />
+                    <FormControlLabel disabled control={<Checkbox checked={newCard.reactionService !== null} />} label={<Button onClick={() => setOpenServiceReactionDialog(true)}> {newCard.reactionService ? newCard.reactionService : 'Reaction Service'}</Button>} />
+                    <FormControlLabel disabled control={<Checkbox checked={newCard.reaction !== null} />} label={<Button onClick={() => setOpenReactionDialog(true)}> {newCard.reaction ? newCard.reaction : 'Reaction'}</Button>} />
+                    <Button variant='outlined' disabled={!props.singleCard} onClick={() => { props.onClose(false) }}>Valider</Button>
                 </FormGroup>
             </Dialog>
 
@@ -267,7 +255,7 @@ function NewCardDialog ({ setNewCard, newCard, actionArray, reactionArray, ...pr
             </Dialog>
 
             <Dialog onClose={() => setOpenActionDialog(false)} open={openActionDialog}>
-                <DialogTitle>Choisir une action</DialogTitle>
+                <DialogTitle>Action</DialogTitle>
                 <List sx={{ pt: 0 }}>
                     { currentActionService?.actions && currentActionService.actions.map((action, index) => (
                         <ListItem button onClick={() => handleActionPick(action)} key={index}>

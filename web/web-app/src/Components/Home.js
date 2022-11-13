@@ -8,10 +8,11 @@ import LoginIcon from '@mui/icons-material/Login'
 import ListItemText from '@mui/material/ListItemText'
 import ListItemAvatar from '@mui/material/ListItemAvatar'
 import AppRegistrationIcon from '@mui/icons-material/AppRegistration'
+import { createTheme, ThemeProvider, Typography } from '@material-ui/core'
 import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet'
 
 function RollingCarousel () {
-  return (
+    return (
         <div className="Iam">
             <p>Bienvenue sur</p>
             <b>
@@ -28,17 +29,23 @@ function RollingCarousel () {
 }
 
 export default function FolderList () {
+    const theme = createTheme({
+        typography: {
+          fontFamily: ['Titan One', 'cursive'].join(',')
+        }
+    })
+
   return (
         <React.Fragment>
-            <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                <RollingCarousel />
-            </Box>
             <Box sx={{
               marginTop: 8,
               display: 'flex',
               flexDirection: 'column',
               alignItems: 'center'
             }}>
+                <ThemeProvider theme={theme}>
+                    <Typography variant='h2' gutterBottom> AREA - Home</Typography>
+                </ThemeProvider>
                 <List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
                     <ListItem>
                         <ListItemAvatar>

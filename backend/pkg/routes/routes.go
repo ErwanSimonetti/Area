@@ -1,7 +1,7 @@
 /** @file routes.go
  * @brief This file contains the AreaRouter, used to handle all our API endpoints
  * @author Juliette Destang
- * @version
+ * 
  */
 
  // @cond
@@ -34,10 +34,15 @@ var AreaRouter = func(router *mux.Router) {
 	router.HandleFunc("/spotify/auth/url", controllers.CORS(controllers.GetSpotifyUrl)).Methods("GET")
 	router.HandleFunc("/spotify/auth", controllers.AuthSpotify).Methods("GET")
 	
+	router.HandleFunc("/deezer/auth/url", controllers.CORS(controllers.GetDeezerUrl)).Methods("GET")
+	router.HandleFunc("/deezer/auth", controllers.AuthDeezer).Methods("GET")
+	
 	router.HandleFunc("/email/login", controllers.CORS(controllers.AuthEmail)).Methods("POST")
 
 	router.HandleFunc("/area/user/areas", controllers.CORS(controllers.GetUserJobs)).Methods("GET")
 	router.HandleFunc("/area/user/propositions", controllers.CORS(controllers.GetUserPropositions)).Methods("GET")
+
+	router.HandleFunc("/area/get", controllers.CORS(controllers.GetUserJobs)).Methods("GET")
 	router.HandleFunc("/area/create", controllers.CORS(controllers.AddJobToUser)).Methods("POST")
 	router.HandleFunc("/area/delete/{ID}", controllers.CORS(controllers.RemoveJob)).Methods("GET")
 }

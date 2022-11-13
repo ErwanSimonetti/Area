@@ -1,7 +1,7 @@
 /** @file discordController.go
  * @brief This file contain all the functions to communicate with the discord API
  * @author Juliette Destang
- * @version
+ * 
  */
 
 // @cond
@@ -57,12 +57,6 @@ func AuthDiscord(w http.ResponseWriter, r *http.Request){
 
 	response, _ := client.Do(req)
 	body, _ := ioutil.ReadAll(response.Body)
-	// jsonWebhook := make(map[string]interface{})
-	// errorUnmarshal := json.Unmarshal(body, &jsonWebhook)
-	// if errorUnmarshal != nil {
-	// 	fmt.Fprintln(os.Stderr, errorUnmarshal)
-	// 	return
-	// }
 
 	message := gjson.GetBytes(body, "message")
 
@@ -86,7 +80,6 @@ func GetDiscordUrl(w http.ResponseWriter, r *http.Request) {
 	utils.EnableCors(&w)
 	discordID := utils.GetEnv("DISCORD_CLIENT_ID");
 	res, _ := json.Marshal(fmt.Sprintf("https://discord.com/api/oauth2/authorize?client_id=%s&redirect_uri=http://localhost:8080/discord/auth&response_type=code&scope=webhook.incoming&permissions=536870912", discordID))
-	//fmt.Println(fmt.Sprintf("https://discord.com/api/oauth2/authorize?client_id=%s&redirect_uri=http://localhost:8080/discord/auth&response_type=code&scope=webhook.incoming&permissions=536870912", discordID))
 	w.WriteHeader(http.StatusOK)
 	w.Write(res)
 }

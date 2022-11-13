@@ -1,10 +1,10 @@
 /** @file discordJobs.go
  * @brief This file contain all the functions to handle the actions and reactions of the Discord API
  * @author Juliette Destang
- * @version
+ * 
  */
 
-// @conv
+// @cond
 
 package jobs
 
@@ -18,7 +18,7 @@ import (
 	"AREA/pkg/utils"
 )
 
-// @endconv
+// @endcond
 
 /** @brief this function take a user id and a message, and send a discord message thanks to webhook id
  * @param userID uint, params string

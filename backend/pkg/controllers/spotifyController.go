@@ -1,7 +1,7 @@
 /** @file spotifyController.go
  * @brief This file contain all the functions to use the spotify API
  * @author Juliette Destang
- * @version
+ * 
  */
 
 // @cond

@@ -1,7 +1,7 @@
 /** @file jobModels.go
  * @brief This file contains all the functions to maipulate the jobs in the db
  * @author Juliette Destang
- * @version
+ * 
  */
 
 // @cond

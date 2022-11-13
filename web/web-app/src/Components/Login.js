@@ -20,8 +20,6 @@ const theme = createTheme()
 const clientId = '78828642227-b3tlfon89t2j66b2a81c60mu8oe45ijb.apps.googleusercontent.com'
 
 export default function SignIn () {
-  // const [email, setEmail] = React.useState('')
-  // const [password, setPassword] = React.useState('')
 
   const handleSubmit = (event) => {
     event.preventDefault()
@@ -33,7 +31,6 @@ export default function SignIn () {
       password,
     }, {headers: {'Content-Type': 'text/plain'}, withCredentials: true} ) 
     .then(function (response) {
-      console.log(response)
       localStorage.setItem('loggedIn', true)
       location.href = '/wallet'
 
@@ -50,7 +47,6 @@ export default function SignIn () {
       password,
     }, {headers: {'Content-Type': 'text/plain'}, withCredentials: true} ) 
     .then(function (response) {
-      console.log(response)
       localStorage.setItem('loggedIn', true)
       location.href = '/wallet'
 

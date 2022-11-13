@@ -33,7 +33,7 @@ export default function Forbidden () {
             <ThemeProvider theme={theme}>
                 <Typography variant='h2' gutterBottom> Introuvable...</Typography>
             </ThemeProvider>
-            <Card container sx={{ ...parentCard }}>
+            <Card sx={{ ...parentCard }}>
                 <Card sx={{ ...btmCard }}>
                     <Typography gutterBottom variant="h5">
                         Vous n&apos;avez rien à faire ici. Sortez, madame.

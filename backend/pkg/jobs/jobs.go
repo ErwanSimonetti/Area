@@ -1,18 +1,16 @@
 /** @file jobs.go
  * @brief This file contain all the functions to handle the actions and reactions of the Email API
  * @author Juliette Destang
- * @version
+ * 
  */
 
-// @conv
+// @cond
 
 package jobs
 
 import (
 	"AREA/pkg/models"
 )
-
-// @endconv
 
 var currentJobs []models.Job
 
@@ -62,13 +60,19 @@ var ActionMap = map[string]func(string) bool {
 	"The player KDA is over a given value": KDAIsOverN,
 	"The covid cases are over a given number": CovidCaseIsOverN,
 	"The covid critical cases are over a given number": CovidCriticalCaseIsOverN,
+	"Play heads or tails": HeadsOrTails,
+	"A choosen crypto is over a given number": CryptoIsOverN,
+	"A choosen crypto is under a given number": CryptoIsUnderN,
 }
 
 var ReactionMap = map[string]func(uint, string) {
 	"Adds a given song to the user's queue": AddSongToQueue,
 	"Sends an email from user to given receiver": SendEmail,
 	"Sends a webhook message on selected channel": SendMessage,
+	"Adds a given song to the given playlist": AddSongToPlaylist,
 }
+
+// @endcond
 
 /** @brief This function take a user id and activate his job on login
  * @param userID uint

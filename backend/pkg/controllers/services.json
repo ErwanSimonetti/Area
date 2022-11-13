@@ -29,6 +29,18 @@
         ]
     },
     {
+        "name": "deezer",
+        "actions": [
+        ],
+        "reactions": [
+            {
+                "name": "add_song_to_playlist",
+                "description": "Adds a given song to the given playlist",
+                "field_names": ["Song tittle", "Playlist name"]
+            }
+        ]
+    },
+    {
         "name": "league",
         "actions": [
             {
@@ -62,6 +74,35 @@
                 "name": "critical_over_N",
                 "description": "The covid critical cases are over a given number",
                 "field_names": ["Number of critical cases"]
+            }
+        ],
+        "reactions": [
+        ]
+    },
+    {
+        "name": "Heads or Tails",
+        "actions": [
+            {
+                "name": "heads_or_tails",
+                "description": "Play heads or tails",
+                "field_names": ["Heads or Tails ?"]
+            }
+        ],
+        "reactions": [
+        ]
+    },
+    {
+        "name": "Crypto",
+        "actions": [
+            {
+                "name": "crypto_is_over_n",
+                "description": "A choosen crypto is over a given number",
+                "field_names": ["target (eur, usd, jpy...)", "base (btc, bnb, ltc...)", "value"]
+            },
+            {
+                "name": "crypto_is_under_n",
+                "description": "A choosen crypto is under a given number",
+                "field_names": ["target (eur, usd, jpy...)", "base (btc, bnb, ltc...)", "value"]
             }
         ],
         "reactions": [

@@ -1,7 +1,7 @@
 /** @file covidJob.go
  * @brief This file contain all the functions to handle the actions and reactions of the Covid API
  * @author Juliette Destang
- * @version
+ * 
  */
 
 package jobs
