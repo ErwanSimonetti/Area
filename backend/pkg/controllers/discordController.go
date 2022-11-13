@@ -66,7 +66,8 @@ func AuthDiscord(w http.ResponseWriter, r *http.Request){
 	requestUser, _ := GetUser(w, r)
 
 	if (jsonWebhook["message"] == "Maximum number of webhooks reached (10)") {
-		w.WriteHeader(http.StatusBadRequest)
+		// w.WriteHeader(http.StatusBadRequest)
+		http.Redirect(w, r, "http://localhost:8081/user/services", http.StatusSeeOther)
 		return
 	}
 
@@ -87,6 +88,7 @@ func GetDiscordUrl(w http.ResponseWriter, r *http.Request) {
 	utils.EnableCors(&w)
 	discordID := utils.GetEnv("DISCORD_CLIENT_ID");
 	res, _ := json.Marshal(fmt.Sprintf("https://discord.com/api/oauth2/authorize?client_id=%s&redirect_uri=http://localhost:8080/discord/auth&response_type=code&scope=webhook.incoming&permissions=536870912", discordID))
+	//fmt.Println(fmt.Sprintf("https://discord.com/api/oauth2/authorize?client_id=%s&redirect_uri=http://localhost:8080/discord/auth&response_type=code&scope=webhook.incoming&permissions=536870912", discordID))
 	w.WriteHeader(http.StatusOK)
 	w.Write(res)
 }
