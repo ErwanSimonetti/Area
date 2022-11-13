@@ -1,3 +1,4 @@
+/*eslint-disable*/
 import * as React from 'react'
 import Avatar from '@mui/material/Avatar'
 import Button from '@mui/material/Button'
@@ -15,36 +16,24 @@ import { GoogleLoginButton } from 'react-social-login-buttons'
 import { gapi } from 'gapi-script'
 import axios from 'axios'
 
-// const clientidGithub = "ac56fad434a3a3c1561e"
-
 const theme = createTheme()
-// const navigate = useNavigate()
 const clientId = '78828642227-b3tlfon89t2j66b2a81c60mu8oe45ijb.apps.googleusercontent.com'
 
 export default function SignIn () {
-  const [email, setEmail] = React.useState('')
-  const [password, setPassword] = React.useState('')
-
-  React.useEffect(() => {
-    gapi.load('client:auth2', () => {
-      gapi.auth2.init({ clientId })
-    })
-  }, [])
 
   const handleSubmit = (event) => {
     event.preventDefault()
-    console.log(event)
-    const headers = { 'Content-Type': 'text/plain' }
     const data = new FormData(event.currentTarget)
-    console.log(data)
 
     const [email, password] = [data.get('email'), data.get('password')]
     axios.post('http://localhost:8080/login/', {
       email,
-      password
-    }, { headers })
+      password,
+    }, {headers: {'Content-Type': 'text/plain'}, withCredentials: true} ) 
     .then(function (response) {
-      console.log(response)
+      localStorage.setItem('loggedIn', true)
+      location.href = '/wallet'
+
     })
     .catch(function (error) {
       console.log(error)
@@ -52,13 +41,24 @@ export default function SignIn () {
   }
 
   const googleResponse = (e) => {
-    console.log('LOGIN SUCCESS! Current user :', e.profileObj)
+    const [email, password] = [e.profileObj.email, e.profileObj.googleId]
+    axios.post('http://localhost:8080/login/', {
+      email,
+      password,
+    }, {headers: {'Content-Type': 'text/plain'}, withCredentials: true} ) 
+    .then(function (response) {
+      localStorage.setItem('loggedIn', true)
+      location.href = '/wallet'
+
+    })
+    .catch(function (error) {
+      console.log(error)
+    })
   }
 
   return (
     <ThemeProvider theme={theme}>
       <Container component="main" maxWidth="xs">
-
         <CssBaseline />
         <Box
           sx={{

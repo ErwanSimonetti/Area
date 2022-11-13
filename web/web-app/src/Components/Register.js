@@ -1,3 +1,4 @@
+/* eslint-disable */
 import * as React from 'react'
 import Button from '@mui/material/Button'
 import CssBaseline from '@mui/material/CssBaseline'
@@ -9,18 +10,18 @@ import Typography from '@mui/material/Typography'
 import Container from '@mui/material/Container'
 import { createTheme, ThemeProvider } from '@mui/material/styles'
 import { Alert, Snackbar } from '@mui/material'
+import { GoogleLogin } from 'react-google-login'
+import { GoogleLoginButton } from 'react-social-login-buttons'
 import axios from 'axios'
 
 const theme = createTheme()
+const clientId = '78828642227-b3tlfon89t2j66b2a81c60mu8oe45ijb.apps.googleusercontent.com'
 
 export default function Register () {
   const [wrongPassword, setWrongPassword] = React.useState(false)
 
   const handleSubmit = (event) => {
     event.preventDefault()
-    const headers = {
-        'Content-Type': 'text/plain'
-    }
 
     const data = new FormData(event.currentTarget)
     const [firstname, lastname, email, password] = [data.get('firstName'), data.get('lastName'), data.get('email'), data.get('password')]
@@ -29,9 +30,26 @@ export default function Register () {
         lastname,
         email,
         password
-    }, { headers })
+    }, { headers: {'Content-Type': 'text/plain'} })
     .then(function (response) {
-        console.log(response)
+        localStorage.setItem('loggedIn', true)
+        location.href = '/wallet'
+    })
+    .catch(function (error) {
+        console.log(error)
+    })
+  }
+
+  
+  const googleResponse = (e) => {
+    const [firstname, lastname, email, password] = [e.profileObj.givenName, e.profileObj.familyName, e.profileObj.email, e.profileObj.googleId]
+    axios.post('http://localhost:8080/register/', {
+        firstname,
+        lastname,
+        email,
+        password
+    }, { headers: {'Content-Type': 'text/plain'} })
+    .then(function (response) {
     })
     .catch(function (error) {
         console.log(error)
@@ -123,6 +141,16 @@ export default function Register () {
                             >
                                 Sign Up
                             </Button>
+                            <GoogleLogin
+                                clientId={clientId}
+                                render={renderProps => (
+                                <GoogleLoginButton onClick={renderProps.onClick} disabled={renderProps.disabled} />
+                                )}
+                                buttonText="Login"
+                                onSuccess={googleResponse}
+                                onFailure={googleResponse}
+                                cookiePolicy={'single_host_origin'}
+                                />
                             <Grid container justifyContent="flex-end">
                                 <Grid item>
                                     <Link href="/login" variant="body2">
