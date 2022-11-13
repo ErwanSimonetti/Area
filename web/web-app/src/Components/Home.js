@@ -13,9 +13,6 @@ import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet'
 
 function RollingCarousel () {
     return (
-    //     <ThemeProvider theme={theme}>
-    //     <Typography variant='h2' gutterBottom> Mon Wallet</Typography>
-    // </ThemeProvider>
         <div className="Iam">
             <p>Bienvenue sur</p>
             <b>
@@ -40,9 +37,6 @@ export default function FolderList () {
 
   return (
         <React.Fragment>
-            {/* <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                <RollingCarousel />
-            </Box> */}
             <Box sx={{
               marginTop: 8,
               display: 'flex',

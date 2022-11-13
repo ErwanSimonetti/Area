@@ -9,23 +9,6 @@ import(
 	"github.com/tidwall/gjson"
 )
 
-// const axios = require("axios");
-
-// const options = {
-//   method: 'GET',
-//   url: 'https://coin-flip1.p.rapidapi.com/headstails',
-//   headers: {
-//     'X-RapidAPI-Key': '54fb216729msh1db59bd41d901b7p12938ajsn6b6525d7a1c2',
-//     'X-RapidAPI-Host': 'coin-flip1.p.rapidapi.com'
-//   }
-// };
-
-// axios.request(options).then(function (response) {
-// 	console.log(response.data);
-// }).catch(function (error) {
-// 	console.error(error);
-// });
-
 func GetHeadTailData() (string, error) {
 
 	url := "https://coin-flip1.p.rapidapi.com/headstails"
