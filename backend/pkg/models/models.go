@@ -5,7 +5,6 @@
  */
 
 // @cond
-
 package models
 
 import (
@@ -15,7 +14,6 @@ import (
 
 var db * gorm.DB
 
-// @endcond
 
 type User struct {
 	gorm.Model
@@ -24,6 +22,7 @@ type User struct {
 	Email string `json:"email"`
 	Password []byte `json:"password"`
 }
+// @endcond
 
 /** @brief Initialize the tables of the databases thanks to model struct
  */

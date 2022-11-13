@@ -16,6 +16,7 @@ import (
 	"net/url"
 	"strings"
 	"time"
+	"os"
 
 	"github.com/tidwall/gjson"
 
@@ -44,20 +45,13 @@ func RefreshSpotifyToken(userID uint) {
 	refreshEncodedData := refreshData.Encode()
 
 	refreshreq, _ := http.NewRequest("POST", refreshurl, strings.NewReader(refreshEncodedData))
-	// if err != nil {
-	// w.WriteHeader(http.StatusBadRequest)
-	// res, _ := json.Marshal("bad request")
-	// w.Write(res)
-	// }
 	refreshreq.Header.Add("Content-Type", "application/x-www-form-urlencoded")
 	refreshreq.Header.Add("Authorization", "Basic "+base64.StdEncoding.EncodeToString([]byte((utils.GetEnv("SPOTIFY_ID")+":"+utils.GetEnv("SPOTIFY_SECRET")))))
 
 	refreshResponse, _ := client.Do(refreshreq)
-
-	refreshBody, _ := ioutil.ReadAll(refreshResponse.Body)
-
+	
 	spotifyRefreshResponse := make(map[string]interface{})
-
+	refreshBody, _ := ioutil.ReadAll(refreshResponse.Body)
 	refresherrorUnmarshal := json.Unmarshal(refreshBody, &spotifyRefreshResponse)
 	if refresherrorUnmarshal != nil {
 		fmt.Println(refresherrorUnmarshal)
@@ -85,7 +79,7 @@ func GetSongByName(userID uint, songName string) string {
 	req, err := http.NewRequest("GET", url, nil)
 	if err != nil {
 		RefreshSpotifyToken(userID)
-		fmt.Println("can't get song name")
+		fmt.Fprintln(os.Stderr, "can't get song name")
 		return ""
 	}
 	req.Header.Add("Accept", "application/json")
@@ -93,11 +87,7 @@ func GetSongByName(userID uint, songName string) string {
 	req.Header.Add("Authorization", "Bearer "+userToken.SpotifyToken)
 
 	response, _ := client.Do(req)
-
 	body, _ := ioutil.ReadAll(response.Body)
-
-	fmt.Println((string(body)))
-
 	choosenSongID := gjson.GetBytes(body, "tracks.items.0.uri")
 
 	return choosenSongID.String()
@@ -121,11 +111,5 @@ func AddSongToQueue(userID uint, params string) {
 		return
 	}
 	req.Header.Add("Authorization", "Bearer "+userToken.SpotifyToken)
-
-	response, _ := client.Do(req)
-
-	body, _ := ioutil.ReadAll(response.Body)
-
-	fmt.Println((string(body)))
-	// response = response
+	client.Do(req)
 }

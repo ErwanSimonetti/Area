@@ -79,6 +79,8 @@ func getIP(r *http.Request) (string, error) {
 	return "", errors.New("IP not found")
 }
 
+/** @brief Fills the global Servives if it is empty
+ */
 func FillServices() {
 	if Services != nil {
 		return
@@ -86,11 +88,11 @@ func FillServices() {
 
 	data, err := os.ReadFile("pkg/controllers/services.json")
 	if err != nil {
-		fmt.Println(err)
+		fmt.Fprintln(os.Stderr, err)
 	}
 	JsonErr := json.Unmarshal([]byte(data), &Services)
 	if JsonErr != nil {
-		panic(JsonErr)
+		fmt.Fprintln(os.Stderr, JsonErr)
 	}
 }
 

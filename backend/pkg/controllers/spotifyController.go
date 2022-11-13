@@ -17,6 +17,7 @@ import (
 	"strconv"
 	"strings"
 	"time"
+	"os"
 
 	"AREA/pkg/models"
 	"AREA/pkg/utils"
@@ -69,7 +70,8 @@ func AuthSpotify(w http.ResponseWriter, r *http.Request) {
 
 	errorUnmarshal := json.Unmarshal(body, &spotifyResponse)
 	if errorUnmarshal != nil {
-		fmt.Println(errorUnmarshal)
+		fmt.Fprintln(os.Stderr, errorUnmarshal)
+		return
 	}
 
 	accessToken := spotifyResponse["access_token"]
@@ -80,7 +82,4 @@ func AuthSpotify(w http.ResponseWriter, r *http.Request) {
 	models.SetUserToken(requestUser.ID, "spotify_token", fmt.Sprintf("%s", accessToken))
 	models.SetUserToken(requestUser.ID, "spotify_refresh_token", fmt.Sprintf("%s", refreshToken))
 	http.Redirect(w, r, "http://localhost:8081/user/services", http.StatusSeeOther)
-	// song := GetSongByName(requestUser.ID ,"beatit")
-	// PlayASong(requestUser.ID, song)
-	// w.Write(spotifyResponse["access_token"])
 }

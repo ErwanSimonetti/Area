@@ -10,7 +10,6 @@ package jobs
 
 import (
 	"AREA/pkg/models"
-	"fmt"
 )
 
 // @endconv
@@ -119,7 +118,6 @@ func SuprUserJobsOnLogout(userId uint) {
 /** @brief Execute all active jobs each X seconds thanks to a crontab
  */
 func ExecAllJob() {
-	fmt.Println(currentJobs)
 	for index := range currentJobs {
 		if ActionMap[currentJobs[index].ActionFunc] != nil && ActionMap[currentJobs[index].ActionFunc](currentJobs[index].ActionFuncParams) {
 			if (currentJobs[index].ActionExecuted == false) {
@@ -130,8 +128,6 @@ func ExecAllJob() {
 			currentJobs[index].ActionExecuted = false
 		}
 	}
-	fmt.Println()
-	// fmt.Println()
 }
 
 /** @brief On ping from github api, execute the réaction of a given gitAction
@@ -139,9 +135,7 @@ func ExecAllJob() {
  */
 func ExecGithJob(userID uint, githAction string) {
 	for _, job := range currentJobs {
-		fmt.Println("a job")
 		if (githAction == GitHubActions[job.ActionFunc]) && (job.UserId == userID){
-			fmt.Println("a job excuted")
 			ReactionMap[job.ReactionFunc](job.UserId, job.ReactionFuncParams)
 		}
 	}

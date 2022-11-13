@@ -55,6 +55,9 @@ func GetJobsByUserId(userId uint) ([]Job){
 	return jobs
 }
 
+/** @brief Update a job column based on the given params
+ * @param jobId uint, column string, value string
+ */
 func UpdateJobField(jobId uint, column string, value string) {
 	db.Model(&Job{}).Where("ID = ?", jobId).Update(column, value)
 }

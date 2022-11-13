@@ -13,6 +13,7 @@ import (
 	"net/http"
 	"strconv"
 	"time"
+	"os"
 
 	"github.com/dgrijalva/jwt-go"
 	"github.com/gorilla/mux"
@@ -49,7 +50,7 @@ func GetUserById(w http.ResponseWriter, r *http.Request){
 	userId := vars["userID"]
 	ID, err:= strconv.ParseInt(userId,0,0)
 	if err != nil {
-		fmt.Println("error while parsing")
+		fmt.Fprintln(os.Stderr, "error while parsing", err)
 	}
 	userDetails, _:= models.GetUserById(ID)
 	res, _ := json.Marshal(userDetails)
@@ -120,7 +121,7 @@ func LoginUser(w http.ResponseWriter, r *http.Request) {
 	token, err := claims.SignedString([]byte(SecretKey))
 
 	if err != nil {
-		fmt.Println("jwt")
+		fmt.Fprintln(os.Stderr, err)
 		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
@@ -168,7 +169,8 @@ func UpdateUser(w http.ResponseWriter, r *http.Request){
 	userId := vars["userId"]
 	ID, err := strconv.ParseInt(userId, 0,0)
 	if err != nil {
-		fmt.Println("error while parsing")
+		fmt.Fprintln(os.Stderr, "error while parsing")
+		return
 	}
 	userDetails, db:=models.GetUserById(ID)
 	if updateUser.Firstname != ""{
@@ -201,7 +203,6 @@ func Logout(w http.ResponseWriter, r *http.Request) {
 	}
 	requestUser, _ := GetUser(w, r)
 	http.SetCookie(w , cookie)
-	fmt.Println(requestUser.ID, requestUser.Firstname)
 	jobs.SuprUserJobsOnLogout(requestUser.ID)
 	res, _ := json.Marshal("sucess")
 	w.WriteHeader(http.StatusOK)
@@ -223,23 +224,23 @@ func GetUser(w http.ResponseWriter, r *http.Request) (models.User, error) {
 		return []byte(SecretKey), nil
 	})
 	if err != nil {
-		fmt.Println("ici ?")
 		w.WriteHeader(http.StatusBadRequest)
 		return user, err
 	}
 
 	claims := token.Claims.(*jwt.StandardClaims)
-
-
 	config.GetDb().Where("id = ?", claims.Issuer).First(&user)
 	return user, nil
 }
 
+/** @brief Sets the CORS for the front
+ * @param next http.HandlerFunc
+ * @return http.HandlerFunc
+ */
 func CORS(next http.HandlerFunc) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 	  w.Header().Add("Access-Control-Allow-Origin", "http://localhost:8081")
 	  w.Header().Add("Access-Control-Allow-Credentials", "true")
-  
 	  next(w, r)
 	}
-  }
+}

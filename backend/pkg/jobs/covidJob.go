@@ -13,8 +13,10 @@ import (
 	"net/http"
 	"io/ioutil"
 	"errors"
-	"github.com/tidwall/gjson"
 	"strconv"
+	"os"
+
+	"github.com/tidwall/gjson"
 )
 
 // @endcond
@@ -51,7 +53,7 @@ func CovidCaseIsOverN(params string) (bool) {
 
 	covidData, Err := GetCovidData()
 	if (Err != nil) {
-		fmt.Println(Err)
+		fmt.Fprintln(os.Stderr, Err)
 		return false
 	}
 	data := gjson.GetBytes(covidData, "response.0.cases.active")
@@ -71,7 +73,7 @@ func CovidCaseIsOverN(params string) (bool) {
 func CovidCriticalCaseIsOverN(params string) (bool) {
 	covidData, Err := GetCovidData()
 	if (Err != nil) {
-		fmt.Println(Err)
+		fmt.Fprintln(os.Stderr, Err)
 		return false
 	}
 	data := gjson.GetBytes(covidData, "response.0.cases.critical")

@@ -10,8 +10,8 @@ package jobs
 
 import (
 	"fmt"
-	"os"
 	"net/smtp"
+	"os"
 
 	"AREA/pkg/models"
 	"AREA/pkg/utils"
@@ -24,8 +24,8 @@ import (
  */
 func SendEmail(userID uint, params string) {
 	paramsArr := utils.GetParams(params)
-	if (len(paramsArr) != 2) {
-		fmt.Fprintln(os.Stderr, "params passed are not correct")
+	if len(paramsArr) != 2 {
+		fmt.Fprintln(os.Stderr, paramsArr, "params passed are not correct")
 		return
 	}
 	receiver := paramsArr[1]

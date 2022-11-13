@@ -4,6 +4,7 @@
  * @version
  */
 
+ // @cond
 package models
 
 import (
@@ -35,6 +36,8 @@ type Token struct {
 	EmailPassword       string   `json:"email_password"`
 	GithubToken         string   `json:"github_token"`
 }
+
+// @endcond
 
 /** @brief Creates a new token user
  * @param newToken *Token
@@ -136,7 +139,6 @@ func SetDiscordWebhook(userId uint, jobId uint, newWebhookId string, newWebhookT
 	newDiscordWebhook.WebhookToken = newWebhookToken
 	newDiscordWebhook.JobId = jobId
 	db.Create(&newDiscordWebhook)
-	// db.Model(&Token{}).Where("user_id = ?", userId).Update("webhook_id", newWebhook)
 }
 
 func UpdateDiscordWebhook(userId uint, newWebhookID string, newWebhookToken string) {

@@ -16,11 +16,9 @@ import (
 	"github.com/gorilla/mux"
 	_ "github.com/jinzhu/gorm/dialects/mysql"
 	"github.com/go-co-op/gocron"
-	// "github.com/gofiber/fiber/middleware/cors"
 
 	"AREA/pkg/routes"
 	"AREA/pkg/jobs"
-	// "AREA/pkg/models"
 )
 
 // @endcond

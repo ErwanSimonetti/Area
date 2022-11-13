@@ -15,6 +15,7 @@ import (
 	"net/http"
 	"strings"
 	"time"
+	"os"
 
 	"github.com/tidwall/gjson"
 
@@ -57,13 +58,9 @@ func AuthGithub(w http.ResponseWriter, r *http.Request) {
 	req.Header.Add("Accept", "application/json")
 
 	response, _ := client.Do(req)
-
 	body, _ := ioutil.ReadAll(response.Body)
-
-	requestUser, _ := GetUser(w, r)
-
 	accessToken := gjson.GetBytes(body, "access_token")
-
+	requestUser, _ := GetUser(w, r)
 	models.SetUserToken(requestUser.ID, "github_token", accessToken.String())
 	http.Redirect(w, r, "http://localhost:8081/user/services", http.StatusSeeOther)
 }
@@ -81,8 +78,7 @@ func CreateWebhook(userID uint, action string, params string) {
 		return
 	}
 	if models.CheckExistingGitAction(userID, action) {
-		// fmt.Println("webhook already exist")
-		fmt.Println("webhook already exist")
+		fmt.Fprintln(os.Stderr, "webhook already exist")
 		return
 	}
 
@@ -97,7 +93,8 @@ func CreateWebhook(userID uint, action string, params string) {
 
 	req, err := http.NewRequest("POST", url, bytes.NewReader(body))
 	if err != nil {
-		fmt.Println("erreur when trying to create webhook")
+		fmt.Fprintln(os.Stderr, "erreur when trying to create webhook")
+		return
 	}
 	req.Header.Add("Authorization", "token "+userToken.GithubToken)
 	req.Header.Add("Accept", "application/vnd.github+json")
@@ -106,12 +103,12 @@ func CreateWebhook(userID uint, action string, params string) {
 	newbody, _ := ioutil.ReadAll(response.Body)
 
 	if (gjson.GetBytes(newbody, "message")).String() == "Bad credentials" {
-		fmt.Println("please re log to github")
+		fmt.Fprintln(os.Stderr, "please re log to github")
 		return
 	}
 
 	if (gjson.GetBytes(newbody, "message")).String() == "Validation Failed" {
-		fmt.Println("webhook already exist")
+		fmt.Fprintln(os.Stderr, "webhook already exist")
 		return
 	}
 

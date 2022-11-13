@@ -17,6 +17,8 @@ import (
 	"strings"
 	"time"
 	"encoding/json"
+
+	"github.com/tidwall/gjson"
 	
 	"AREA/pkg/utils"
 	"AREA/pkg/models"
@@ -52,29 +54,26 @@ func AuthDiscord(w http.ResponseWriter, r *http.Request){
 	}
 	req.Header.Add("Content-Type", "application/x-www-form-urlencoded")
 	req.Header.Add("Content-Length", strconv.Itoa(len(data.Encode())))
+
 	response, _ := client.Do(req)
-
 	body, _ := ioutil.ReadAll(response.Body)
+	// jsonWebhook := make(map[string]interface{})
+	// errorUnmarshal := json.Unmarshal(body, &jsonWebhook)
+	// if errorUnmarshal != nil {
+	// 	fmt.Fprintln(os.Stderr, errorUnmarshal)
+	// 	return
+	// }
 
-	fmt.Println(string(body))
-	jsonWebhook := make(map[string]interface{})
-	errorUnmarshal := json.Unmarshal(body, &jsonWebhook)
-	if errorUnmarshal != nil {
-	    fmt.Println(errorUnmarshal)
-	}
+	message := gjson.GetBytes(body, "message")
 
-	requestUser, _ := GetUser(w, r)
-
-	if (jsonWebhook["message"] == "Maximum number of webhooks reached (10)") {
-		w.WriteHeader(http.StatusBadRequest)
+	if (message.String() == "Maximum number of webhooks reached (10)") {
+		http.Redirect(w, r, "http://localhost:8081/user/services", http.StatusSeeOther)
 		return
 	}
 
-	address := jsonWebhook["webhook"].(map[string]interface{})
-
-	webhookId := fmt.Sprintf("%s", address["id"])
-	webhookToken := fmt.Sprintf("%s", address["token"])
-
+	webhookId := gjson.GetBytes(body, "webhook.id").String()
+	webhookToken := gjson.GetBytes(body, "webhook.token").String()
+	requestUser, _ := GetUser(w, r)
 	models.UpdateDiscordWebhook(requestUser.ID, webhookId, webhookToken)
 
 	http.Redirect(w, r, "http://localhost:8081/user/services", http.StatusSeeOther)

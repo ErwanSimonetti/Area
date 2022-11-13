@@ -33,6 +33,10 @@ func ArrayContainsString(s []string, str string) bool {
 	return false
 }
 
+/** @brief Returns the array of string that corresponds to the Keys of the given map
+ * @param s theMap map[string]string
+ * @return []string
+ */
 func GetKeyFromMap(theMap map[string]string) []string {
 	keys := make([]string, len(theMap))
 
