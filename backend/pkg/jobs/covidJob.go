@@ -1,14 +1,29 @@
-package controllers
+/** @file covidJob.go
+ * @brief This file contain all the functions to handle the actions and reactions of the Covid API
+ * @author Juliette Destang
+ * @version
+ */
+
+package jobs
+
+// @cond
 
 import (
 	"fmt"
 	"net/http"
 	"io/ioutil"
 	"errors"
-	"github.com/tidwall/gjson"
 	"strconv"
+	"os"
+
+	"github.com/tidwall/gjson"
 )
 
+// @endcond
+
+/** @brief Retrieves all the data concerning covid cases from the covid API
+ * @param [] byte, error
+ */
 func GetCovidData() ([] byte, error) {
 
 	url := "https://covid-193.p.rapidapi.com/statistics?country=france"
@@ -27,38 +42,44 @@ func GetCovidData() ([] byte, error) {
 	defer res.Body.Close()
 	body, _ := ioutil.ReadAll(res.Body)
 
-	fmt.Println(res)
-	fmt.Println(string(body))
-
 	return body, nil 
 }
 
-func CovidCaseIsOver700000() (bool){
+/** @brief Returns true if the covid cases are over than the params passed as argument
+ * @param params string
+ * @return bool
+ */
+func CovidCaseIsOverN(params string) (bool) {
+
 	covidData, Err := GetCovidData()
 	if (Err != nil) {
-		fmt.Println(Err)
+		fmt.Fprintln(os.Stderr, Err)
 		return false
 	}
 	data := gjson.GetBytes(covidData, "response.0.cases.active")
 	floatCase, _ := strconv.ParseFloat(data.String(), 64)
-	fmt.Println(floatCase)
-	if (floatCase > 700000) {
+	compareCaseNb, _ := strconv.ParseFloat(params, 64)
+	if (floatCase > compareCaseNb) {
 		return true
 	} else {
 		return false
 	}
 }
 
-func CovidCriticalCaseIsOver1000() (bool){
+/** @brief Returns true if the covid critical cases are over than the params passed as argument
+ * @param params string
+ * @return bool
+ */
+func CovidCriticalCaseIsOverN(params string) (bool) {
 	covidData, Err := GetCovidData()
 	if (Err != nil) {
-		fmt.Println(Err)
+		fmt.Fprintln(os.Stderr, Err)
 		return false
 	}
 	data := gjson.GetBytes(covidData, "response.0.cases.critical")
 	floatCase, _ := strconv.ParseFloat(data.String(), 64)
-	fmt.Println(floatCase)
-	if (floatCase > 1000) {
+	compareCaseNb, _ := strconv.ParseFloat(params, 64)
+	if (floatCase > compareCaseNb) {
 		return true
 	} else {
 		return false

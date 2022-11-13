@@ -25,8 +25,6 @@ export default function SignIn () {
 
   const handleSubmit = (event) => {
     event.preventDefault()
-    console.log(event)
-    const headers = { 'Content-Type': 'application/x-www-form-urlencoded'}
     const data = new FormData(event.currentTarget)
 
     const [email, password] = [data.get('email'), data.get('password')]
@@ -35,7 +33,6 @@ export default function SignIn () {
       password,
     }, {headers: {'Content-Type': 'text/plain'}, withCredentials: true} ) 
     .then(function (response) {
-      console.log(response)
       localStorage.setItem('loggedIn', true)
       location.href = '/wallet'
 
@@ -46,7 +43,19 @@ export default function SignIn () {
   }
 
   const googleResponse = (e) => {
-    console.log('LOGIN SUCCESS! Current user :', e.profileObj)
+    const [email, password] = [e.profileObj.email, e.profileObj.googleId]
+    axios.post('http://localhost:8080/login/', {
+      email,
+      password,
+    }, {headers: {'Content-Type': 'text/plain'}, withCredentials: true} ) 
+    .then(function (response) {
+      localStorage.setItem('loggedIn', true)
+      location.href = '/wallet'
+
+    })
+    .catch(function (error) {
+      console.log(error)
+    })
   }
 
   return (

@@ -1,52 +1,147 @@
+/** @file tokenModels.go
+ * @brief This file contains all the functions to handle the tokens in the database
+ * @author Juliette Destang
+ * @version
+ */
+
+ // @cond
 package models
 
 import (
-	"fmt"
 	"github.com/jinzhu/gorm"
 )
 
-type Token struct {
+type GithubWebhook struct {
 	gorm.Model
-	UserId uint `json:"userId"`
-	DiscordId string `json:"discordId"`
-	DiscordToken string `json:"discordToken"`
-	SpotifyToken string `json:"spotifyToken"`
-	SpotifyRefreshToken string `json:"spotifyRefreshToken"`
-	Email string `json:"email"`
-	EmailPassword string `json:"emailPassword"`
-	GithubToken string `json:"githubToken"`
-	WebhookID []string `json:"webhookId"`
+	UserId              uint     `json:"user_id"`
+	WebhookID     		string   `json:"webhook_id"`
 }
 
-func (newToken *Token) CreateTokenUser() *Token{
+type DiscordWebhook struct {
+	gorm.Model
+	UserId              uint     `json:"user_id"`
+	JobId               uint     `json:"job_id"`
+	WebhookID     		string   `json:"webhook_id"`
+	WebhookToken     	string   `json:"webhook_token"`
+}
+
+type Token struct {
+	gorm.Model
+	UserId              uint     `json:"user_id"`
+	CurrentDiscordWebhookId		string   `json:"current_discord_webhook_id"`
+	CurrentDiscordWebhookToken	string   `json:"current_discord_webhook_token"`
+	SpotifyToken        string   `json:"spotify_token"`
+	SpotifyRefreshToken string   `json:"spotify_refresh_token"`
+	Email               string   `json:"email"`
+	EmailPassword       string   `json:"email_password"`
+	GithubToken         string   `json:"github_token"`
+}
+
+// @endcond
+
+/** @brief Creates a new token user
+ * @param newToken *Token
+ * @return *Token
+ */
+func (newToken *Token) CreateTokenUser() *Token {
 	db.NewRecord(newToken)
 	db.Create(&newToken)
 	return newToken
 }
 
+/** @brief Find the user token by user ID
+ * @param id uint
+ * @return *Token
+ */
 func FindUserToken(id uint) *Token {
 	var getToken Token
 	db.Where("user_id = ?", id).Find(&getToken)
 	return &getToken
 }
 
-func SetUserToken(cookie string, column string, token string) {
-	fmt.Println(cookie, column, token)
-	db.Model(&Token{}).Where("user_id = ?", cookie).Update(column, token)
+/** @brief Find the user discord webhook token by user ID
+ * @param id uint
+ * @return *DiscordWebhook
+ */
+func FindUserByDiscordWebhook(id string) *DiscordWebhook {
+	var getToken DiscordWebhook
+	db.Where("job_id = ?", id).Find(&getToken)
+	return &getToken
 }
 
-func FindUserByWebhookToken(token string) *Token {
-	var getToken Token
+/** @brief This function check if the user is connected to a given service
+ * @param token Token, service string
+ * @return bool
+ */ 
+func CheckIfConnectedToService(token Token, service string) bool {
+	returnValue := false
+	switch service {
+	case "email":
+		if token.Email != "" {
+			returnValue = true
+			break
+		}
+	case "discord":
+		if token.CurrentDiscordWebhookToken != "" {
+			returnValue = true
+			break
+		}
+	case "spotify":
+		if token.SpotifyToken != "" {
+			returnValue = true
+			break
+		}
+	case "github":
+		if token.GithubToken != "" {
+			returnValue = true
+			break
+		}
+	}
+	return returnValue
+}
+
+/** @brief This function set a given token to a user in the database
+ * @param cookie string, column string, token string
+ */ 
+func SetUserToken(userId uint, column string, token string) {
+	db.Model(&Token{}).Where("user_id = ?", userId).Update(column, token)
+}
+
+/** @brief This function find a user thanks to a given github webhook token
+ * @param token string
+ * @return *GithubWebhook
+ */ 
+func FindUserByWebhookToken(token string) *GithubWebhook {
+	var getToken GithubWebhook
 	db.Where("webhook_id = ?", token).Find(&getToken)
 	return &getToken
 }
 
-func GetWebhookArray(id uint) []string {
-	var webhookArray []string 
-	db.Where("user_id = ?", id).Find(&webhookArray)
-	return webhookArray
+/** @brief This function find a user thanks to a given github webhook token
+ * @param token string
+ * @return *GithubWebhook
+ */ 
+func SetGithubWebhook(userId uint, newWebhook string) {
+	var newGithubWebhook GithubWebhook
+	newGithubWebhook.UserId = userId
+	newGithubWebhook.WebhookID = newWebhook
+	db.Create(&newGithubWebhook)
+	// db.Model(&Token{}).Where("user_id = ?", userId).Update("webhook_id", newWebhook)
 }
 
-func UpdateWebhookArray(id uint , newArray []string) {
-	db.Where("user_id = ?", id).Update("webhook_id", newArray)
+/** @brief This function create a new raw with a user ID and a new webhook ID and webhook token
+ * @param userId uint, newWebhookID string, newWebhookToken string
+ */ 
+func SetDiscordWebhook(userId uint, jobId uint, newWebhookId string, newWebhookToken string) {
+	var newDiscordWebhook DiscordWebhook
+	newDiscordWebhook.UserId = userId
+	newDiscordWebhook.WebhookID = newWebhookId
+	newDiscordWebhook.WebhookToken = newWebhookToken
+	newDiscordWebhook.JobId = jobId
+	db.Create(&newDiscordWebhook)
+}
+
+func UpdateDiscordWebhook(userId uint, newWebhookID string, newWebhookToken string) {
+	SetUserToken(userId, "current_discord_webhook_id", newWebhookID)
+	SetUserToken(userId, "current_discord_webhook_token", newWebhookToken)
 }

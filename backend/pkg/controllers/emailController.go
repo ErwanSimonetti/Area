@@ -1,42 +1,32 @@
+/** @file emailController.go
+ * @brief This file contain a functions for the email API
+ * @author Juliette Destang
+ * @version
+ */
+
+// @cond
+
 package controllers
 
 import (
-  "fmt"
-  "net/smtp"
-  "AREA/pkg/models"
-  "net/http"
-  "strconv"
+	"net/http"
+	"io"
+
+	"AREA/pkg/models"
+	"github.com/tidwall/gjson"
 )
 
+// @endcond
+
+/** @brief on a request, store the given email and password to the database.
+ * @param w http.ResponseWriter, r *http.Request
+ */
 func AuthEmail(w http.ResponseWriter, r *http.Request) {
-
-	email := r.URL.Query().Get("email")
-	password := r.URL.Query().Get("password")
-	requestUser, _ := GetUser(w,r)
-	models.SetUserToken(strconv.FormatUint(uint64(requestUser.ID), 10), "email", email)
-	models.SetUserToken(strconv.FormatUint(uint64(requestUser.ID), 10), "email_password", password)
-}
-
-func SendEmail(userID uint, receiver string, message string) {
-
-  requestUser := *models.FindUserToken(userID)
-  from := requestUser.Email
-  password := requestUser.EmailPassword
-
-  to := []string{
-    receiver,
-  }
-
-  smtpHost := "smtp.gmail.com"
-  smtpPort := "587"
-
-  messagePayload := []byte(message)
-
-  auth := smtp.PlainAuth("", from, password, smtpHost)
-  
-  err := smtp.SendMail(smtpHost+":"+smtpPort, auth, from, to, messagePayload)
-  if err != nil {
-    fmt.Println(err)
-    return
-  }
+	b, _ := io.ReadAll(r.Body)
+    email := gjson.GetBytes(b, "email")
+    password := gjson.GetBytes(b, "password")
+	requestUser, _ := GetUser(w, r)
+	models.SetUserToken(requestUser.ID, "email", email.String())
+	models.SetUserToken(requestUser.ID, "email_password", password.String())
+	w.WriteHeader(http.StatusOK)
 }

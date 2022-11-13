@@ -1,3 +1,10 @@
+/** @file controllers.go
+ * @brief This file contain all the functions that log, log out or modify a User
+ * @author Juliette Destang
+ */
+
+// @cond
+
 package controllers
 
 import (
@@ -6,6 +13,7 @@ import (
 	"net/http"
 	"strconv"
 	"time"
+	"os"
 
 	"github.com/dgrijalva/jwt-go"
 	"github.com/gorilla/mux"
@@ -17,11 +25,14 @@ import (
 	"AREA/pkg/utils"
 )
 
-// var db * gorm.DB
-// var NewUser models.User
+//@endcond
+
 
 var SecretKey = utils.GetEnv("RAPID_API_KEY")
 
+/** @brief Gets all the users from the database
+ * @param w http.ResponseWriter, r *http.Request
+ */
 func GetAllUsers(w http.ResponseWriter, r *http.Request){
 	newUsers:=models.GetAllUsers()
 	res, _ :=json.Marshal(newUsers)
@@ -31,12 +42,15 @@ func GetAllUsers(w http.ResponseWriter, r *http.Request){
 	w.Write(res)
 }
 
+/** @brief on a request, get the users by id from the database with the vars "userID"
+ * @param w http.ResponseWriter, r *http.Request
+ */
 func GetUserById(w http.ResponseWriter, r *http.Request){
 	vars := mux.Vars(r)
 	userId := vars["userID"]
 	ID, err:= strconv.ParseInt(userId,0,0)
 	if err != nil {
-		fmt.Println("error while parsing")
+		fmt.Fprintln(os.Stderr, "error while parsing", err)
 	}
 	userDetails, _:= models.GetUserById(ID)
 	res, _ := json.Marshal(userDetails)
@@ -46,9 +60,19 @@ func GetUserById(w http.ResponseWriter, r *http.Request){
 	w.Write(res)
 }
 
+/** @brief on a request, create new user in the database with an encrypted password
+ * @param w http.ResponseWriter, r *http.Request
+ */
 func CreateUser(w http.ResponseWriter, r *http.Request) {
 	NewUser := &models.User{}
 	utils.ParseBody(r, NewUser)
+
+	sameUser := models.FindUser(NewUser.Email)
+	if (sameUser.Email != "") {
+		w.WriteHeader(http.StatusBadRequest)
+		return
+	}
+
 	password, _ := bcrypt.GenerateFromPassword([]byte(NewUser.Password), 14)
 
 	NewUser.Password = password
@@ -61,10 +85,16 @@ func CreateUser(w http.ResponseWriter, r *http.Request) {
 	w.Write(res)
 }
 
+/** @brief on a request, log the user retrieved in the request.
+ * this function check if the password match the password of the user in the database,
+ * then create a new json web token to identify the user trought his use of AREA.
+ * A cookie is set with the json web token
+ * @param w http.ResponseWriter, r *http.Request
+ */
 func LoginUser(w http.ResponseWriter, r *http.Request) {
 	LoginUser := &models.User{}
 	utils.ParseBody(r, LoginUser)
-	
+
 	user := *models.FindUser(LoginUser.Email)
 
 	if (user.Email == "") {
@@ -91,7 +121,7 @@ func LoginUser(w http.ResponseWriter, r *http.Request) {
 	token, err := claims.SignedString([]byte(SecretKey))
 
 	if err != nil {
-		fmt.Println("jwt")
+		fmt.Fprintln(os.Stderr, err)
 		w.WriteHeader(http.StatusBadRequest)
 		return
 	}
@@ -111,6 +141,9 @@ func LoginUser(w http.ResponseWriter, r *http.Request) {
 	w.Write(res)
 }
 
+/** @brief delete a user in the database with a given ID
+ * @param w http.ResponseWriter, r *http.Request
+ */
 func DeleteUser(w http.ResponseWriter, r *http.Request){
 	vars := mux.Vars(r)
 	userId := vars["userId"]
@@ -126,6 +159,9 @@ func DeleteUser(w http.ResponseWriter, r *http.Request){
 	w.Write(res)
 }
 
+/** @brief update the user with a given ID. This fuction can change the firstname, lastname and email of the user
+ * @param w http.ResponseWriter, r *http.Request
+ */
 func UpdateUser(w http.ResponseWriter, r *http.Request){
 	var updateUser = &models.User{}
 	utils.ParseBody(r, updateUser)
@@ -133,7 +169,8 @@ func UpdateUser(w http.ResponseWriter, r *http.Request){
 	userId := vars["userId"]
 	ID, err := strconv.ParseInt(userId, 0,0)
 	if err != nil {
-		fmt.Println("error while parsing")
+		fmt.Fprintln(os.Stderr, "error while parsing")
+		return
 	}
 	userDetails, db:=models.GetUserById(ID)
 	if updateUser.Firstname != ""{
@@ -153,6 +190,9 @@ func UpdateUser(w http.ResponseWriter, r *http.Request){
 	w.Write(res)
 }
 
+/** @brief log out a user with a given ID. The jwt token set in the cookie is removed.
+ * @param w http.ResponseWriter, r *http.Request
+ */
 func Logout(w http.ResponseWriter, r *http.Request) {
 	cookie := &http.Cookie{
 		Name:     "jwt",
@@ -163,13 +203,16 @@ func Logout(w http.ResponseWriter, r *http.Request) {
 	}
 	requestUser, _ := GetUser(w, r)
 	http.SetCookie(w , cookie)
-	fmt.Println(requestUser.ID, requestUser.Firstname)
 	jobs.SuprUserJobsOnLogout(requestUser.ID)
 	res, _ := json.Marshal("sucess")
 	w.WriteHeader(http.StatusOK)
 	w.Write(res)
 }
 
+/** @brief get the user data from the jwt cookie. This function parse the jwt of the user and retrieve 
+ * a model of this user.
+ * @param w http.ResponseWriter, r *http.Request
+ */
 func GetUser(w http.ResponseWriter, r *http.Request) (models.User, error) {
 	cookie, cookieErr := r.Cookie("jwt")
 	var user models.User
@@ -181,35 +224,23 @@ func GetUser(w http.ResponseWriter, r *http.Request) (models.User, error) {
 		return []byte(SecretKey), nil
 	})
 	if err != nil {
-		fmt.Println("ici ?")
 		w.WriteHeader(http.StatusBadRequest)
 		return user, err
 	}
 
 	claims := token.Claims.(*jwt.StandardClaims)
-
-
 	config.GetDb().Where("id = ?", claims.Issuer).First(&user)
 	return user, nil
 }
 
-
-func DoEvery(d time.Duration, f func(time.Time)) {
-	for x := range time.Tick(d) {
-		f(x)
-	}
-}
-
-func Helloworld(t time.Time) {
-	fmt.Printf("%v: Hello, World!\n", t)
-}
-
+/** @brief Sets the CORS for the front
+ * @param next http.HandlerFunc
+ * @return http.HandlerFunc
+ */
 func CORS(next http.HandlerFunc) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 	  w.Header().Add("Access-Control-Allow-Origin", "http://localhost:8081")
 	  w.Header().Add("Access-Control-Allow-Credentials", "true")
-	  w.Header().Add("Content-Type", "application/json")
-  
 	  next(w, r)
 	}
-  }
+}

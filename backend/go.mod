@@ -12,6 +12,7 @@ require (
 	github.com/joho/godotenv v1.4.0
 	github.com/tidwall/gjson v1.14.3
 	github.com/tidwall/pretty v1.2.1 // indirect
-	golang.org/x/crypto v0.0.0-20210921155107-089bfa567519
+	golang.org/x/crypto v0.0.0-20220214200702-86341886e292
 	golang.org/x/sync v0.0.0-20220722155255-886fb9371eb4 // indirect
+	gorm.io/datatypes v1.0.7 // indirect
 )

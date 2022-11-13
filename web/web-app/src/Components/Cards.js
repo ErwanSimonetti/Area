@@ -30,38 +30,35 @@ const parentCard = {
 
 export function AREACard ({ cards }) {
     function handleDeletion (card) {
-        console.log(card.ID)
         axios.get('http://localhost:8080/area/delete/' + card.ID)
         .then(function (response) {
-            console.log(response)
             window.location.reload(true)
         }).catch(function (error) {
             console.log(error)
         })
     }
-
     return (
         <Grid container spacing={4} sx={{ padding: '0 10%', width: '100%', marginLeft: '0px', marginTop: '10px' }}>
             {cards.map((card, index) => (
                 < Grid item key={index} xs={12} sm={4} lg={3} style={{ paddingRight: '32px' }}>
                     <Card sx={{ ...parentCard }}>
-                        <Card sx={{ ...topCard }}>
-                            <Typography gutterBottom variant="h5">
-                                {card.action}
-                            </Typography>
+                    <Card sx={{ ...topCard }}>
+                        <Typography gutterBottom variant="h5">
+                            {card.action}
+                        </Typography>
+                    </Card>
+                    <Card sx={{ ...btmCard }}>
+                        <Typography gutterBottom variant="h5" color={'white'}>
+                            {card.reaction}
+                        </Typography>
+                    </Card>
+                    <Box display='flex' justifyContent='center'>
+                        <Card sx={{ ...topCard, display: 'flex' }}>
+                            <IconButton aria-label="delete" size="large" onClick={ () => { handleDeletion(card) } }>
+                                <DeleteIcon fontSize="inherit" />
+                            </IconButton>
                         </Card>
-                        <Card sx={{ ...btmCard }}>
-                            <Typography gutterBottom variant="h5" color={'white'}>
-                                {card.reaction}
-                            </Typography>
-                        </Card>
-                            <Box display='flex' justifyContent='center'>
-                                <Card sx={{ ...topCard, display: 'flex' }}>
-                                    <IconButton aria-label="delete" size="large" onClick={ () => { handleDeletion(card) } }>
-                                        <DeleteIcon fontSize="inherit" />
-                                    </IconButton>
-                                </Card>
-                            </Box>
+                    </Box>
                     </Card>
                 </Grid>
             ))}

@@ -1,12 +1,22 @@
-import { Typography, Box, Button, Card, CardContent, CardMedia, Grid, ButtonBase } from '@mui/material'
+/*eslint-disable*/
+import { Box, Button, Card, CardContent, CardMedia, Grid, ButtonBase, Dialog } from '@mui/material'
 import * as React from 'react'
 import axios from 'axios'
 import githubImg from '../resources/github.png'
 import spotifyImg from '../resources/spotify.png'
 import discordImg from '../resources/discord.svg'
+import gmailImg from '../resources/gmail.png'
+import { DialogTitle, TextField } from '@material-ui/core'
+import { createTheme, ThemeProvider, Typography } from '@material-ui/core'
 
 export default function Services () {
-    const services = [{ name: 'Spotify', token: null, img: spotifyImg }, { name: 'Github', token: null, img: githubImg }, { name: 'Discord', token: null, img: discordImg }]
+
+    const theme = createTheme({
+        typography: {
+          fontFamily: ['Titan One', 'cursive'].join(',')
+        }
+    })
+    const services = [{ name: 'Spotify', token: null, img: spotifyImg }, { name: 'Github', token: null, img: githubImg }, { name: 'Discord', token: null, img: discordImg }, { name: 'Gmail', token: null, img: gmailImg }]
     return (
         <React.Fragment>
             <Box sx={{
@@ -15,7 +25,9 @@ export default function Services () {
                 flexDirection: 'column',
                 alignItems: 'center'
             }}>
+            <ThemeProvider theme={theme}>
                 <Typography variant='h2' gutterBottom>Services</Typography>
+            </ThemeProvider>
             </Box>
             <ServicesCard services={ services }/>
         </React.Fragment >
@@ -25,12 +37,18 @@ export default function Services () {
 function ServicesCard ({ services }) {
     const [service, setService] = React.useState(null)
     const [serviceToken, setServiceToken] = React.useState(null)
+    const [showInputs, setShowInputs] = React.useState(false)
+    const [validemail, setValidEmail] = React.useState(false)
+    const [password, setPassword] = React.useState("")
+    const [email, setEmail] = React.useState("")
+    const [emailError, setEmailError] = React.useState(true)
+    const [passwordError, setPasswordError] = React.useState(true)
+    const [isButtonDisabled, setIsButtonDisabled] = React.useState(true)
 
     const getDiscordToken = () => {
         const headers = { 'Content-Type': 'text/plain' }
         axios.get('http://localhost:8080/discord/auth/url', { headers })
         .then(function (response) {
-            console.log(response.data)
             location.href = response.data
         }).catch(function (error) {
             console.log(error)
@@ -41,7 +59,6 @@ function ServicesCard ({ services }) {
         const headers = { 'Content-Type': 'text/plain' }
         axios.get('http://localhost:8080/spotify/auth/url', { headers })
         .then(function (response) {
-            console.log(response.data)
             location.href = response.data
         }).catch(function (error) {
             console.log(error)
@@ -52,15 +69,30 @@ function ServicesCard ({ services }) {
         const headers = { 'Content-Type': 'text/plain' }
         axios.get('http://localhost:8080/github/auth/url', { headers })
         .then(function (response) {
-            console.log(response.data)
             location.href = response.data
         }).catch(function (error) {
             console.log(error)
         })
     }
 
+    const submitGmail = () => {
+        axios.post('http://localhost:8080/email/login', {
+            email: email,
+            password: password,
+        }, { headers: { 'Content-Type': 'text/plain' }, withCredentials: true })
+        .then(function (response) {
+            // location.href = response.data
+        }).catch(function (error) {
+                console.log(error)
+        })
+        setShowInputs(false)
+    }
+
+    const getGmailToken = () => {
+        setShowInputs(true)
+    }
+
     const handleClick = (service) => {
-        console.log('clicked ' + service.name)
         setService(service.name)
         switch (service.name) {
             case 'Spotify':
@@ -72,10 +104,42 @@ function ServicesCard ({ services }) {
             case 'Github':
                 getGithubToken()
                 break
+            case 'Gmail':
+                getGmailToken()
+                break
             default:
                 break
         }
     }
+       
+    function handleError () {
+        if (!emailError && !passwordError) {
+            setIsButtonDisabled(false)
+        } else {
+            setIsButtonDisabled(true)
+        }
+    }
+
+    const handleEmailChange = e => {
+        setEmail(e.currentTarget.value)
+        if (/\S+@\S+\.\S+/.test(e.currentTarget.value)) {
+            setEmailError(false)
+        } else {
+            setEmailError(true)
+        }
+        handleError()
+    }
+
+    const handlePasswordChange = e => {
+        setPassword(e.currentTarget.value)
+        if (e.currentTarget.value.length <= 4) {
+            setPasswordError(true)
+        } else {
+            setPasswordError(false)
+        }
+        handleError()
+    }
+
     return (
         <Grid container spacing={4} sx={{ padding: '0 10%', width: '100%', marginLeft: '0px' }}>
             {services.map((service, index) => (
@@ -92,16 +156,57 @@ function ServicesCard ({ services }) {
                                 {service.name}
                             </Typography>
                         </CardContent>
-                            <CardMedia
-                                component="img"
-                                image={ service.img }
-                                alt="serviceImg"
-                            />
+                        <CardMedia
+                            component="img"
+                            image={ service.img }
+                            alt="serviceImg"
+                        />
                     </Card>
                         </ButtonBase>
+                        
                 </Grid>
             ))
             }
+            {showInputs &&
+            <Dialog open={showInputs} >
+                <DialogTitle>Log in with Gmail</DialogTitle>
+                <Box component="form" noValidate sx={{ mt: 3 }}>
+                    <Grid container spacing={2}>
+                        <Grid item xs={12}>
+                            <TextField
+                                required
+                                fullWidth
+                                id="email"
+                                label="Email Address"
+                                name="email"
+                                onChange={ handleEmailChange }
+                                autoComplete="email"
+                            />
+                        </Grid>
+                        <Grid item xs={12}>
+                            <TextField
+                                required
+                                fullWidth
+                                name="password"
+                                label="Password"
+                                type="password"
+                                id="password"
+                                onChange={ handlePasswordChange }
+                                autoComplete="new-password"
+                            />
+                        </Grid>
+                    </Grid>
+                        <Button
+                            onClick={ submitGmail }
+                            disabled={isButtonDisabled}
+                            fullWidth
+                            variant="contained"
+                            sx={{ mt: 3, mb: 2 }}
+                        >
+                            Sign In
+                        </Button>
+                </Box>
+            </Dialog>}
         </Grid >
     )
 }
