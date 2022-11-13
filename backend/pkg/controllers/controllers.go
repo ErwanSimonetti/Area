@@ -26,7 +26,7 @@ import (
 )
 
 var db * gorm.DB
-var NewUser models.User
+// var NewUser models.User
 const SecretKey = "secret"
 
 // @endcond
@@ -71,15 +71,16 @@ func GetUserById(w http.ResponseWriter, r *http.Request){
 	w.Write(res)
 }
 
-
 func CreateUser(w http.ResponseWriter, r *http.Request){
 	NewUser := &models.User{}
 	utils.ParseBody(r, NewUser)
-	fmt.Println(NewUser.Password)
 	password, _ := bcrypt.GenerateFromPassword([]byte(NewUser.Password), 14)
 
 	NewUser.Password = password
 	b := NewUser.CreateUser()
+	NewUserToken := &models.Token{}
+	NewUserToken.UserId = b.ID
+	NewUserToken.CreateTokenUser()
 	res, _ := json.Marshal(b)
 	w.WriteHeader(http.StatusOK)
 	utils.EnableCors(&w)
@@ -93,8 +94,8 @@ func LoginUser(w http.ResponseWriter, r *http.Request) {
 
 	var user models.User
 	user = *models.FindUser(LoginUser.Email)
-
-
+	userID := *models.FindUserID(LoginUser.Email)
+	fmt.Println(userID)
 	if (user.Email == "") {
 		res, _ := json.Marshal("bad email")
 		w.WriteHeader(http.StatusBadRequest)
@@ -111,7 +112,7 @@ func LoginUser(w http.ResponseWriter, r *http.Request) {
 	}
 
 	claims := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.StandardClaims{
-		Issuer:    strconv.Itoa(int(user.Id)),
+		Issuer:    strconv.Itoa(int(user.ID)),
 		ExpiresAt: time.Now().Add(time.Hour * 24).Unix(), //1 day
 	})
 
@@ -129,13 +130,11 @@ func LoginUser(w http.ResponseWriter, r *http.Request) {
 		HttpOnly: true,
 	}
 
-	http.SetCookie(w, cookie)
-	res, _ := json.Marshal("success")
-	utils.EnableCors(&w)
 	w.Header().Set("Content-Type","pkglication/json")
+	http.SetCookie(w, cookie)
+	res, _ := json.Marshal(userID)
 	w.WriteHeader(http.StatusOK)
 	w.Write(res)
-
 }
 
 func DeleteUser(w http.ResponseWriter, r *http.Request){

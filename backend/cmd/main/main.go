@@ -15,6 +15,7 @@ import(
 	_ "github.com/jinzhu/gorm/dialects/mysql"
 	// "github.com/gofiber/fiber/middleware/cors"
 	"AREA/pkg/routes"
+	// "AREA/pkg/controllers"
 )
 
 // @endcond
@@ -29,9 +30,11 @@ func main()  {
 	routes.AreaRouter(r)
 	http.Handle("/", r)
 
-	// app.Use(cors.New(cors.Config{
-	// 	AllowCredentials: true,
-	// }))
 	log.Fatal(http.ListenAndServe("0.0.0.0:8080", r))
 
 }
+
+// func main()  {
+// 	controllers.TriggerEachSecondes()
+// }
+

@@ -14,29 +14,30 @@ import axios from 'axios'
 const theme = createTheme()
 
 export default function Register () {
-  const [wrongPassword, setWrongPassword] = React.useState(false)
+    const [wrongPassword, setWrongPassword] = React.useState(false)
+    const emailReg = new RegExp("^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$")
 
-  const handleSubmit = (event) => {
-    event.preventDefault()
-    const headers = {
-        'Content-Type': 'text/plain'
+    function handleValidInputs (firstname, lastname, email, password, confPassword) {
+        return (!emailReg.test(email) || password.length < 3 || firstname.length < 3 || lastname.length < 3 || confPassword !== password)
     }
-
-    const data = new FormData(event.currentTarget)
-    const [firstname, lastname, email, password] = [data.get('firstName'), data.get('lastName'), data.get('email'), data.get('password')]
-    axios.post('http://localhost:8080/register/', {
-        firstname,
-        lastname,
-        email,
-        password
-    }, { headers })
-    .then(function (response) {
-        console.log(response)
-    })
-    .catch(function (error) {
-        console.log(error)
-    })
-  }
+    const handleSubmit = (e) => {
+        e.preventDefault()
+        const headers = { 'Content-Type': 'text/plain' }
+        const data = new FormData(e.currentTarget)
+        const [firstname, lastname, email, password] = [data.get('firstName'), data.get('lastName'), data.get('email'), data.get('password')]
+        if (!handleValidInputs(firstname, lastname, email, password, data.get('passwordconf'))) {
+            alert('Les informations saisies sont invalides.')
+        } else {
+            axios.post('http://localhost:8080/register/', {
+                firstname,
+                lastname,
+                email,
+                password
+            }, { headers })
+            .then(function (response) { console.log(response) })
+            .catch(function (error) { console.log(error) })
+        }
+    }
 
   return (
         <React.Fragment>

@@ -15,8 +15,8 @@ services:
       - my-db:/var/lib/mysql
     command: --default-authentication-plugin=mysql_native_password
 
-  go:
-    container_name: go
+  server:
+    container_name: server
     build: # Use the Dockerfile from the current directory to build container.
       context: ./backend
     restart: on-failure
@@ -25,17 +25,28 @@ services:
     depends_on: 
       - "db"
 
-  web:
-    container_name: web
+  # client_mobile:
+  #   container_name: client_mobile
+  #   volumes:
+  #     - common:/apk
+  #   depends_on:
+  #     - "server"
+
+  client_web:
+    container_name: client_web
     build: # Use the Dockerfile from the current directory to build container.
       context: ./web/web-app
     ports: 
       - "3000:3000"
+    volumes:
+      - common:/apk
     depends_on: 
-      - "go"
+      - "server"
+      # - "client_mobile"
 
   client_mobile:
     build: './mobile'
 
 volumes: # add volume to persist data.
   my-db:
+  common:
