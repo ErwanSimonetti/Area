@@ -1,7 +1,7 @@
 /** @file discordController.go
  * @brief This file contain all the functions to communicate with the discord API
  * @author Juliette Destang
- * @version
+ * 
  */
 
 // @cond

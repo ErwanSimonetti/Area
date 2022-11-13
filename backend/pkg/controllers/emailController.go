@@ -1,7 +1,6 @@
 /** @file emailController.go
  * @brief This file contain a functions for the email API
  * @author Juliette Destang
- * @version
  */
 
 // @cond

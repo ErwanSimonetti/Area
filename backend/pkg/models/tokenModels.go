@@ -1,7 +1,7 @@
 /** @file tokenModels.go
  * @brief This file contains all the functions to handle the tokens in the database
  * @author Juliette Destang
- * @version
+ * 
  */
 
  // @cond
