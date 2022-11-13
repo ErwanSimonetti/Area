@@ -20,10 +20,12 @@ const btmCard = {
     padding: '10%',
     borderRadius: '30px'
 }
+
 const parentCard = {
     bgcolor: '#262626',
     borderRadius: '20px',
-    boxShadow: 3
+    boxShadow: 3,
+    paddingBottom: '10px'
 }
 
 export function AREACard ({ cards }) {
