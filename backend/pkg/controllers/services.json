@@ -29,6 +29,18 @@
         ]
     },
     {
+        "name": "deezer",
+        "actions": [
+        ],
+        "reactions": [
+            {
+                "name": "add_song_to_playlist",
+                "description": "Adds a given song to the given playlist",
+                "field_names": ["Song tittle", "Playlist name"]
+            }
+        ]
+    },
+    {
         "name": "league",
         "actions": [
             {

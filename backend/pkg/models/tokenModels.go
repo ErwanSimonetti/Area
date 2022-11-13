@@ -31,6 +31,7 @@ type Token struct {
 	CurrentDiscordWebhookId		string   `json:"current_discord_webhook_id"`
 	CurrentDiscordWebhookToken	string   `json:"current_discord_webhook_token"`
 	SpotifyToken        string   `json:"spotify_token"`
+	DeezerToken        	string   `json:"deezer_token"`
 	SpotifyRefreshToken string   `json:"spotify_refresh_token"`
 	Email               string   `json:"email"`
 	EmailPassword       string   `json:"email_password"`
@@ -93,6 +94,11 @@ func CheckIfConnectedToService(token Token, service string) bool {
 		}
 	case "github":
 		if token.GithubToken != "" {
+			returnValue = true
+			break
+		}
+	case "deezer":
+		if token.DeezerToken != "" {
 			returnValue = true
 			break
 		}

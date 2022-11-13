@@ -4,6 +4,7 @@ import * as React from 'react'
 import axios from 'axios'
 import githubImg from '../resources/github.png'
 import spotifyImg from '../resources/spotify.png'
+import deezerImg from '../resources/deezer.png'
 import discordImg from '../resources/discord.svg'
 import gmailImg from '../resources/gmail.png'
 import { DialogTitle, TextField } from '@material-ui/core'
@@ -16,7 +17,7 @@ export default function Services () {
           fontFamily: ['Titan One', 'cursive'].join(',')
         }
     })
-    const services = [{ name: 'Spotify', token: null, img: spotifyImg }, { name: 'Github', token: null, img: githubImg }, { name: 'Discord', token: null, img: discordImg }, { name: 'Gmail', token: null, img: gmailImg }]
+    const services = [{ name: 'Spotify', token: null, img: spotifyImg }, { name: 'Deezer', token: null, img: deezerImg }, { name: 'Github', token: null, img: githubImg }, { name: 'Discord', token: null, img: discordImg }, { name: 'Gmail', token: null, img: gmailImg }]
     return (
         <React.Fragment>
             <Box sx={{
@@ -65,6 +66,16 @@ function ServicesCard ({ services }) {
         })
     }
 
+    const getDeezerToken = () => {
+        const headers = { 'Content-Type': 'text/plain' }
+        axios.get('http://localhost:8080/deezer/auth/url', { headers })
+        .then(function (response) {
+            location.href = response.data
+        }).catch(function (error) {
+            console.log(error)
+        })
+    }
+
     const getGithubToken = () => {
         const headers = { 'Content-Type': 'text/plain' }
         axios.get('http://localhost:8080/github/auth/url', { headers })
@@ -97,6 +108,9 @@ function ServicesCard ({ services }) {
         switch (service.name) {
             case 'Spotify':
                 getSpotifyToken()
+                break
+            case 'Deezer':
+                getDeezerToken()
                 break
             case 'Discord':
                 getDiscordToken()

@@ -69,7 +69,7 @@ func GetSongByName(userID uint, songName string) string {
 
 	userToken := *models.FindUserToken(userID)
 
-	url := fmt.Sprintf("https://api.spotify.com/v1/search?q=%s&type=track", songName)
+	url := fmt.Sprintf("https://api.spotify.com/v1/search?q=%s&type=track", url.QueryEscape(songName))
 
 	client := &http.Client{
 		Timeout: time.Second * 10,
