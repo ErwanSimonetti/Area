@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import './drop_down_button.dart';
 import './menu_list_auth_plateform.dart';
 import './create_area_menu.dart';
+import './wallet.dart';
 
 class HomePage extends StatefulWidget {
   HomePage({Key? key, this.title = ""}) : super(key: key);
@@ -30,7 +31,7 @@ class _HomePageState extends State<HomePage> {
       body: PageView(
         children: <Widget>[
           Container(
-            child: Center(child: Text("People")),
+            child: new WalletPage(),
           ),
           Container(
             child: new CreationAreaMenu(),

@@ -12,49 +12,7 @@ import 'package:flutter/foundation.dart';
 import 'dart:convert';
 import 'dart:io';
 import 'actions.dart';
-
-// class MyDropDownMenu extends StatefulWidget {
-//   MyDropDownMenu(this._content, this._element);
-
-//   List<String> _content;
-//   String _element;
-//   List<String> _checked = [];
-
-//   List<String> get content {
-//     return _content;
-//   }
-
-//   void set content(List<String> newContent) {
-//     _content = newContent;
-//   }
-
-//   String get element {
-//     return _element;
-//   }
-
-//   void set element(String newElement) {
-//     _element = newElement;
-//   }
-
-//   // DropdownButton get button {
-//   //   return _button!;
-//   // }
-
-//   @override
-//   Widget build(context) {
-//     print(_content);
-//     print(_element);
-//     return CheckboxGroup(
-//       labels: content,
-//       disabled: [],
-//       checked: _checked,
-//       onChange: (bool isChecked, String label, int index) =>
-//           print("isChecked: $isChecked   label: $label  index: $index"),
-//       onSelected: (List<String> checked) =>
-//           print("checked: ${checked.toString()}"),
-//     );
-//   }
-// }
+import './send_area.dart';
 
 class CreationAreaMenu extends StatefulWidget {
   const CreationAreaMenu();
@@ -64,8 +22,10 @@ class CreationAreaMenu extends StatefulWidget {
 }
 
 class _CreationAreaMenuState extends State<CreationAreaMenu> {
-  String actionPlateforme = "weather";
-  String reactionPlateforme = "weather";
+  String actionPlateforme = "";
+  String reactionPlateforme = "";
+  String actionChoosen = "";
+  String reactionChoosen = "";
   // String selectedAction = "temperature_over_N_degrees";
   int currentStep = 1;
   List<Parser> listElement = [];
@@ -78,13 +38,14 @@ class _CreationAreaMenuState extends State<CreationAreaMenu> {
 
   @protected
   @mustCallSuper
-  void initState() {}
-
-  @override
-  Widget build(context) {
+  void initState() {
     if (listElement.isEmpty) {
       fetchAreaction();
     }
+  }
+
+  @override
+  Widget build(context) {
     return Padding(
         padding: const EdgeInsets.all(0),
         child: ListView(
@@ -113,7 +74,7 @@ class _CreationAreaMenuState extends State<CreationAreaMenu> {
               minWidth: double.infinity,
               height: 60,
               onPressed: () {
-                postArea();
+                createArgArea();
               },
               color: Colors.redAccent,
               shape: RoundedRectangleBorder(
@@ -130,17 +91,56 @@ class _CreationAreaMenuState extends State<CreationAreaMenu> {
         ));
   }
 
-  void callListAction(String label) {
+  Parser? getAction() {
+    for (var element in listElement) {
+      if (element.plateforme == actionPlateforme) {
+        for (var value in element.action) {
+          if (value.description == actionChoosen) {
+            return element;
+          }
+        }
+      }
+    }
+    return null;
+  }
+
+  Parser? getReaction() {
+    for (var element in listElement) {
+      if (element.plateforme == reactionPlateforme) {
+        for (var value in element.reaction) {
+          if (value.description == reactionChoosen) {
+            return element;
+          }
+        }
+      }
+    }
+    return null;
+  }
+
+  void createArgArea() {
+    Parser tempAction = getAction()!;
+    Parser tempReaction = getReaction()!;
+
+    print(tempAction.plateforme);
+    print(tempAction.action);
+    print(tempReaction.plateforme);
+    print(tempReaction.reaction);
+
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => CreationAreaForm(tempAction, actionChoosen, tempReaction, reactionChoosen)),
+    );
+  }
+
+  void callListActionChanged(String label) {
     setState(() {
-      print("set state");
       actionPlateforme = label;
       plateformesActions = setPlateformesActions();
     });
   }
 
-  void callListReaction(String label) {
+  void callListReactionChanged(String label) {
     setState(() {
-      print("call list reaction");
       reactionPlateforme = label;
       plateformesreactions = setPlateformesReactions();
     });
@@ -148,29 +148,29 @@ class _CreationAreaMenuState extends State<CreationAreaMenu> {
 
   CheckboxGroup setPlateformesListAction() {
     return CheckboxGroup(
-      labels: getPlateforme(),
+      labels: getPlateformeAction(),
       disabled: [],
       checked: [],
       onChange: (bool isChecked, String label, int index) {
-        print("isChecked: $isChecked   label: $label  index: $index");
-        callListAction(label);
+        callListActionChanged(label);
       },
-      onSelected: (List<String> checked) =>
-          print("checked: ${checked.toString()}"),
+      onSelected: (List<String> checked) {
+
+      },
     );
   }
 
   CheckboxGroup setPlateformesListReaction() {
     return CheckboxGroup(
-      labels: getPlateforme(),
+      labels: getPlateformeReaction(),
       disabled: [],
       checked: [],
       onChange: (bool isChecked, String label, int index) {
-        print("isChecked: $isChecked   label: $label  index: $index");
-        callListReaction(label);
+        callListReactionChanged(label);
       },
-      onSelected: (List<String> checked) =>
-          print("checked: ${checked.toString()}"),
+      onSelected: (List<String> checked) {
+
+      },
     );
   }
 
@@ -179,10 +179,12 @@ class _CreationAreaMenuState extends State<CreationAreaMenu> {
       labels: getActionWithPlateforme(actionPlateforme),
       disabled: [],
       checked: [],
-      onChange: (bool isChecked, String label, int index) =>
-          print("isChecked: $isChecked   label: $label  index: $index"),
-      onSelected: (List<String> checked) =>
-          print("checked: ${checked.toString()}"),
+      onChange: (bool isChecked, String label, int index) {
+        actionChoosen = label;
+      },
+      onSelected: (List<String> checked) {
+
+      },
     );
   }
 
@@ -192,10 +194,12 @@ class _CreationAreaMenuState extends State<CreationAreaMenu> {
       labels: getReactionWithPlateforme(reactionPlateforme),
       disabled: [],
       checked: [],
-      onChange: (bool isChecked, String label, int index) =>
-          print("isChecked: $isChecked   label: $label  index: $index"),
-      onSelected: (List<String> checked) =>
-          print("checked: ${checked.toString()}"),
+      onChange: (bool isChecked, String label, int index) {
+        reactionChoosen = label;
+      },
+      onSelected: (List<String> checked) {
+
+      },
     );
   }
 
@@ -204,28 +208,6 @@ class _CreationAreaMenuState extends State<CreationAreaMenu> {
   //     box. = list;
   //   });
   // }
-
-  Future<void> postArea() async {
-    var response =
-        await http.post(Uri.parse("http://10.0.2.2:8080/area/create"),
-            headers: {},
-            body: json.encode({
-              'action_service': '',
-              'action_func': '',
-              'action_func_params': '',
-              'reaction_service': '',
-              'reaction_func': '',
-              'reaction_func_params': '',
-            }));
-
-    if (response.statusCode == 200) {
-      Fluttertoast.showToast(msg: 'Area successfuly created');
-    } else {
-      Fluttertoast.showToast(msg: 'Error cannot created');
-    }
-
-    ///area/create
-  }
 
   void iterateJson(String jsonStr) {
     var myMap = jsonDecode(jsonStr);
@@ -270,12 +252,23 @@ class _CreationAreaMenuState extends State<CreationAreaMenu> {
     }
   }
 
-  List<String> getPlateforme() {
+  List<String> getPlateformeAction() {
     List<String> listPlateforme = [];
     listElement.forEach((element) {
-      listPlateforme.add(element.plateforme);
+      if (element.action.length != 0) {
+        listPlateforme.add(element.plateforme);
+      }
     });
-    print(listPlateforme.length);
+    return listPlateforme;
+  }
+
+  List<String> getPlateformeReaction() {
+    List<String> listPlateforme = [];
+    listElement.forEach((element) {
+      if (element.reaction.length != 0) {
+        listPlateforme.add(element.plateforme);
+      }
+    });
     return listPlateforme;
   }
 
@@ -300,9 +293,7 @@ class _CreationAreaMenuState extends State<CreationAreaMenu> {
     print(str);
     listElement.forEach((element) {
       if (element.plateforme == str) {
-        print("oui");
         element.reaction.forEach((value) {
-          print(value.description);
           listPlateforme.add(value.description.toString());
         });
       }

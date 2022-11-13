@@ -14,7 +14,12 @@ class ListPlateform extends StatefulWidget {
 }
 
 class _ListPlateformState extends State<ListPlateform> {
+  TextEditingController mailController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
+
   Widget build(BuildContext context) {
+    mailController.text = "";
+    passwordController.text = "";
     return new Scaffold(
       body: ListView(
         scrollDirection: Axis.vertical,
@@ -36,13 +41,84 @@ class _ListPlateformState extends State<ListPlateform> {
               ),
             ),
           ),
+          makeInput(mailController, label: "Email"),
+          makeInput(passwordController, label: "Password", obsureText: true),
+          MaterialButton(
+            minWidth: double.infinity,
+            height: 60,
+            onPressed: () {
+              loginEmail();
+            },
+            color: Colors.redAccent,
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(40)),
+            child: const Text(
+              "Submit",
+              style: TextStyle(
+                fontWeight: FontWeight.w600,
+                fontSize: 16,
+              ),
+            ),
+          ),
         ],
       ),
     );
   }
 
+  Future<void> loginEmail() async {
+    print(mailController.text);
+    print(passwordController.text);
+    var response = await http.post(
+        Uri.parse("http://10.0.2.2:8080/email/login"),
+        headers: {'Content-Type': 'text/plain', 'cookie': globals.tokenUser},
+        body: json.encode({
+          'email': mailController.text,
+          'password': passwordController.text,
+        }));
+    print(response.statusCode);
+    print(response.headers);
+    if (response.statusCode == 200) {
+      print("sucess");
+    } else {
+      print("Ratio");
+    }
+  }
+
   launchURL(String url) async {
     await launchURL(url);
+  }
+
+  Widget makeInput(TextEditingController text, {label, obsureText = false}) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          label,
+          style: TextStyle(
+              fontSize: 10, fontWeight: FontWeight.w400, color: Colors.black87),
+        ),
+        SizedBox(
+          height: 5,
+        ),
+        TextField(
+          obscureText: obsureText,
+          controller: text,
+          decoration: InputDecoration(
+            contentPadding: EdgeInsets.symmetric(vertical: 0, horizontal: 4),
+            enabledBorder: OutlineInputBorder(
+              borderSide: BorderSide(
+                color: Colors.grey.shade400,
+              ),
+            ),
+            border: OutlineInputBorder(
+                borderSide: BorderSide(color: Colors.grey.shade400)),
+          ),
+        ),
+        SizedBox(
+          height: 30,
+        )
+      ],
+    );
   }
 
   void authenticate() async {
