@@ -26,8 +26,8 @@ class _ListPlateformState extends State<ListPlateform> {
               authenticate();
             },
             color: Colors.redAccent,
-            shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(40)),
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(40)),
             child: const Text(
               "Discord",
               style: TextStyle(
@@ -35,17 +35,17 @@ class _ListPlateformState extends State<ListPlateform> {
                 fontSize: 16,
               ),
             ),
-          ),        
+          ),
         ],
       ),
     );
   }
 
-launchURL(String url) async {
+  launchURL(String url) async {
     await launchURL(url);
-}
+  }
 
-void authenticate() async {
+  void authenticate() async {
     var response = await http.get(
       Uri.parse("http://10.0.2.2:8080/discord/auth/url"),
       headers: {
@@ -56,7 +56,7 @@ void authenticate() async {
     print(response.statusCode);
     if (response.statusCode == 200) {
       launchURL(jsonDecode(utf8.decode(response.bodyBytes)));
-
+      print("sau6");
 
       // final currentUrl = Uri.base;
       // if (!currentUrl.fragment.contains('access_token=')) {
@@ -72,15 +72,13 @@ void authenticate() async {
       //   _token = fragments
       //       .firstWhere((e) => e.startsWith('access_token='))
       //       .substring('access_token='.length);
-      }
+    }
   }
 
+  // final result = await FlutterWebAuth.authenticate(
+  //   url: jsonDecode(utf8.decode(response.bodyBytes)),
+  //   callbackUrlScheme: 'http://localhost:8080/discord/auth',
+  // );
 
-      // final result = await FlutterWebAuth.authenticate(
-      //   url: jsonDecode(utf8.decode(response.bodyBytes)),
-      //   callbackUrlScheme: 'http://localhost:8080/discord/auth',
-      // );
-
-    // Extract token from resulting url
+  // Extract token from resulting url
 }
-
