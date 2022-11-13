@@ -36,7 +36,7 @@ class _HomePageState extends State<HomePage> {
             child: new CreationAreaMenu(),
           ),
           Container(
-            // child: new ListPlateform(),
+            child: new ListPlateform(),
           ),
         ],
         controller: _pageController,
