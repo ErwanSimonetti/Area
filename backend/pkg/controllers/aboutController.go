@@ -1,7 +1,6 @@
 /** @file aboutController.go
  * @brief This file contains all the functions for the about.json feature.
  * @author Timothee de Boynes
- * @version
  */
 
 // @cond
@@ -18,8 +17,6 @@ import (
 	"strings"
 	"time"
 )
-
-// @endcond
 
 type Service struct {
 	Name    string `json:"name"`
@@ -47,8 +44,12 @@ type AboutJson struct {
 
 var Services []Service
 
+// @endcond
+
 /** @brief Gets the client IP adress from the request and returns it
+ *
  * @param r *http.Request
+ *
  * @return string, error
  */
 func getIP(r *http.Request) (string, error) {
@@ -80,6 +81,7 @@ func getIP(r *http.Request) (string, error) {
 }
 
 /** @brief Fills the global Servives if it is empty
+ *
  */
 func FillServices() {
 	if Services != nil {
@@ -97,6 +99,7 @@ func FillServices() {
 }
 
 /** @brief Writes all the information needed for the about.json in the response 
+ *
  * @param w http.ResponseWriter, r *http.Request
  */
 func GetAboutJson(w http.ResponseWriter, r *http.Request) {
@@ -117,6 +120,7 @@ func GetAboutJson(w http.ResponseWriter, r *http.Request) {
 }
 
 /** @brief Returns all the services
+ *
  * @param w http.ResponseWriter, r *http.Request
  */
 func GetServices(w http.ResponseWriter, r *http.Request) {

@@ -1,7 +1,7 @@
 /** @file routes.go
  * @brief This file contains the AreaRouter, used to handle all our API endpoints
  * @author Juliette Destang
- * @version
+ * 
  */
 
  // @cond

@@ -1,7 +1,7 @@
 /** @file models.go
  * @brief This file contain all the functions to handle the user model in the database
  * @author Juliette Destang
- * @version
+ * 
  */
 
 // @cond

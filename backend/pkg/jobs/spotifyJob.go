@@ -1,12 +1,12 @@
 /** @file spotifyJob.go
  * @brief This file contain all the functions to handle the actions and reactions of the Spotify API
  * @author Timothee de Boynes
- * @version
+ * 
  */
 
 package jobs
 
-// @conv
+// @cond
 import (
 	"encoding/base64"
 	"encoding/json"
@@ -24,7 +24,7 @@ import (
 	"AREA/pkg/utils"
 )
 
-// @endconv
+// @endcond
 
 /** @brief Refresh spotify token in our DB if it is outdated
  * @param userID uint

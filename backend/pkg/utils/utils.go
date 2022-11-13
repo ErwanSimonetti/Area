@@ -1,7 +1,7 @@
 /** @file utils.go
  * @brief This file contains all the functions to handle mondain actions
  * @author Juliette Destang
- * @version
+ * 
  */
 
 //cond

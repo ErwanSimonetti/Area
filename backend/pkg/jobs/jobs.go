@@ -1,18 +1,16 @@
 /** @file jobs.go
  * @brief This file contain all the functions to handle the actions and reactions of the Email API
  * @author Juliette Destang
- * @version
+ * 
  */
 
-// @conv
+// @cond
 
 package jobs
 
 import (
 	"AREA/pkg/models"
 )
-
-// @endconv
 
 var currentJobs []models.Job
 
@@ -70,6 +68,8 @@ var ReactionMap = map[string]func(uint, string) {
 	"Sends a webhook message on selected channel": SendMessage,
 	"Adds a given song to the given playlist": AddSongToPlaylist,
 }
+
+// @endcond
 
 /** @brief This function take a user id and activate his job on login
  * @param userID uint

@@ -1,7 +1,7 @@
 /** @file weatherJob.go
  * @brief This file contain all the functions to handle the actions and reactions of the Weather API
  * @author Juliette Destang
- * @version
+ * 
  */
 
 // @cond

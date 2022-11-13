@@ -1,7 +1,6 @@
 /** @file jobController.go
  * @brief This file contain all the functions to handle the job
  * @author Timothee de Boynes
- * @version
  */
 
 // @cond
