@@ -1,6 +1,6 @@
 /** @file App.js
  * @brief main file
- * 
+ *
  * more detailed version here
  */
 
