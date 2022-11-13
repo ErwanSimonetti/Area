@@ -68,6 +68,35 @@
         ]
     },
     {
+        "name": "Heads or Tails",
+        "actions": [
+            {
+                "name": "heads_or_tails",
+                "description": "Play heads or tails",
+                "field_names": ["Heads or Tails ?"]
+            }
+        ],
+        "reactions": [
+        ]
+    },
+    {
+        "name": "Crypto",
+        "actions": [
+            {
+                "name": "crypto_is_over_n",
+                "description": "A choosen crypto is over a given number",
+                "field_names": ["target (eur, usd, jpy...)", "base (btc, bnb, ltc...)", "value"]
+            },
+            {
+                "name": "crypto_is_under_n",
+                "description": "A choosen crypto is under a given number",
+                "field_names": ["target (eur, usd, jpy...)", "base (btc, bnb, ltc...)", "value"]
+            }
+        ],
+        "reactions": [
+        ]
+    },
+    {
         "name": "email",
         "actions": [
         ],

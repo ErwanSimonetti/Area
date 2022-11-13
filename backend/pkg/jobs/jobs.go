@@ -62,6 +62,9 @@ var ActionMap = map[string]func(string) bool {
 	"The player KDA is over a given value": KDAIsOverN,
 	"The covid cases are over a given number": CovidCaseIsOverN,
 	"The covid critical cases are over a given number": CovidCriticalCaseIsOverN,
+	"Play heads or tails": HeadsOrTails,
+	"A choosen crypto is over a given number": CryptoIsOverN,
+	"A choosen crypto is under a given number": CryptoIsUnderN,
 }
 
 var ReactionMap = map[string]func(uint, string) {
