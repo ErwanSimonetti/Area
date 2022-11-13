@@ -10,7 +10,7 @@ package jobs
 
 import (
 	"fmt"
-
+	"os"
 	"github.com/DisgoOrg/disgohook"
 
 	"AREA/pkg/models"
@@ -24,6 +24,10 @@ import (
  */
 func SendMessage(userID uint, params string) {
 	paramsArr := utils.GetParams(params)
+	if (len(paramsArr) != 2) {
+		fmt.Fprintln(os.Stderr, "params passed are not correct")
+		return
+	}
 
 	userToken := *models.FindUserByDiscordWebhook(paramsArr[1])
 
@@ -32,5 +36,4 @@ func SendMessage(userID uint, params string) {
     webhook, _ := disgohook.NewWebhookClientByToken(nil, nil, messageUrl)
 
     webhook.SendContent(paramsArr[0])
-	// Imessage = Imessage
 }

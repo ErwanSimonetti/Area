@@ -7,8 +7,6 @@
 package models
 
 import (
-	// "log"
-	
 	"github.com/jinzhu/gorm"
 )
 
@@ -29,8 +27,8 @@ type DiscordWebhook struct {
 type Token struct {
 	gorm.Model
 	UserId              uint     `json:"user_id"`
-	CurrentDiscordWebhookId           string   `json:"current_discordwh_id"`
-	CurrentDiscordWebhookToken        string   `json:"current_discordwh_token"`
+	CurrentDiscordWebhookId		string   `json:"current_discord_webhook_id"`
+	CurrentDiscordWebhookToken	string   `json:"current_discord_webhook_token"`
 	SpotifyToken        string   `json:"spotify_token"`
 	SpotifyRefreshToken string   `json:"spotify_refresh_token"`
 	Email               string   `json:"email"`
@@ -80,12 +78,17 @@ func CheckIfConnectedToService(token Token, service string) bool {
 			returnValue = true
 			break
 		}
+	case "discord":
+		if token.CurrentDiscordWebhookToken != "" {
+			returnValue = true
+			break
+		}
 	case "spotify":
 		if token.SpotifyToken != "" {
 			returnValue = true
 			break
 		}
-	case "gitHub":
+	case "github":
 		if token.GithubToken != "" {
 			returnValue = true
 			break
@@ -136,7 +139,7 @@ func SetDiscordWebhook(userId uint, jobId uint, newWebhookId string, newWebhookT
 	// db.Model(&Token{}).Where("user_id = ?", userId).Update("webhook_id", newWebhook)
 }
 
-func UpdateDiscordWebhook(userId uint,newWebhookID string, newWebhookToken string) {
-	SetUserToken(userId, "current_discordwh_id", newWebhookID)
-	SetUserToken(userId, "current_discordwh_token", newWebhookToken)
+func UpdateDiscordWebhook(userId uint, newWebhookID string, newWebhookToken string) {
+	SetUserToken(userId, "current_discord_webhook_id", newWebhookID)
+	SetUserToken(userId, "current_discord_webhook_token", newWebhookToken)
 }

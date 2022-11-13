@@ -34,6 +34,7 @@ func init() {
 	db.AutoMigrate(&Token{})
 	db.AutoMigrate(&Job{})
 	db.AutoMigrate(&GithubWebhook{})
+	db.AutoMigrate(&DiscordWebhook{})
 }
 
 /** @brief Create a new raw with a new user in the database

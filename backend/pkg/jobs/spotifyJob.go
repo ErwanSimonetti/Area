@@ -8,19 +8,19 @@ package jobs
 
 // @conv
 import (
-	"net/http"
+	"encoding/base64"
 	"encoding/json"
 	"fmt"
+	"io/ioutil"
+	"net/http"
 	"net/url"
 	"strings"
-	"io/ioutil"
-	"log"
 	"time"
-	"github.com/tidwall/gjson"
-	"encoding/base64"
 
-	"AREA/pkg/utils"
+	"github.com/tidwall/gjson"
+
 	"AREA/pkg/models"
+	"AREA/pkg/utils"
 )
 
 // @endconv
@@ -35,44 +35,43 @@ func RefreshSpotifyToken(userID uint) {
 		Timeout: time.Second * 10,
 	}
 
-		refreshurl := "https://accounts.spotify.com/api/token"
-		
-		
-		refreshData := url.Values{}
-		refreshData.Set("refresh_token", userToken.SpotifyRefreshToken)
-		refreshData.Set("grant_type", "refresh_token")
-		refreshData.Set("client_id", utils.GetEnv("SPOTIFY_ID"))
-		refreshEncodedData := refreshData.Encode()
+	refreshurl := "https://accounts.spotify.com/api/token"
 
-		refreshreq, _ := http.NewRequest("POST", refreshurl, strings.NewReader(refreshEncodedData))
-		// if err != nil {
-			// w.WriteHeader(http.StatusBadRequest)
-			// res, _ := json.Marshal("bad request")
-			// w.Write(res)
-		// }
-		refreshreq.Header.Add("Content-Type", "application/x-www-form-urlencoded")
-		refreshreq.Header.Add("Authorization", "Basic " + base64.StdEncoding.EncodeToString([]byte((utils.GetEnv("SPOTIFY_ID") + ":" +utils.GetEnv("SPOTIFY_SECRET")))))
+	refreshData := url.Values{}
+	refreshData.Set("refresh_token", userToken.SpotifyRefreshToken)
+	refreshData.Set("grant_type", "refresh_token")
+	refreshData.Set("client_id", utils.GetEnv("SPOTIFY_ID"))
+	refreshEncodedData := refreshData.Encode()
 
-		refreshResponse, _ := client.Do(refreshreq)
+	refreshreq, _ := http.NewRequest("POST", refreshurl, strings.NewReader(refreshEncodedData))
+	// if err != nil {
+	// w.WriteHeader(http.StatusBadRequest)
+	// res, _ := json.Marshal("bad request")
+	// w.Write(res)
+	// }
+	refreshreq.Header.Add("Content-Type", "application/x-www-form-urlencoded")
+	refreshreq.Header.Add("Authorization", "Basic "+base64.StdEncoding.EncodeToString([]byte((utils.GetEnv("SPOTIFY_ID")+":"+utils.GetEnv("SPOTIFY_SECRET")))))
 
-		refreshBody, _ := ioutil.ReadAll(refreshResponse.Body)
+	refreshResponse, _ := client.Do(refreshreq)
 
-		spotifyRefreshResponse := make(map[string]interface{})
+	refreshBody, _ := ioutil.ReadAll(refreshResponse.Body)
 
-		refresherrorUnmarshal := json.Unmarshal(refreshBody, &spotifyRefreshResponse)
-		if refresherrorUnmarshal != nil {
-			log.Fatal(refresherrorUnmarshal)
-		}
-		accessToken := spotifyRefreshResponse["access_token"]
+	spotifyRefreshResponse := make(map[string]interface{})
 
-		models.SetUserToken(userID, "spotify_token", fmt.Sprintf("%s", accessToken))
+	refresherrorUnmarshal := json.Unmarshal(refreshBody, &spotifyRefreshResponse)
+	if refresherrorUnmarshal != nil {
+		fmt.Println(refresherrorUnmarshal)
+	}
+	accessToken := spotifyRefreshResponse["access_token"]
+
+	models.SetUserToken(userID, "spotify_token", fmt.Sprintf("%s", accessToken))
 }
 
 /** @brief Returns the ID of the song based on the name given in params
  * @param userID uint , songName string
  * @return string
  */
-func GetSongByName(userID uint , songName string) (string) {
+func GetSongByName(userID uint, songName string) string {
 
 	userToken := *models.FindUserToken(userID)
 
@@ -86,18 +85,20 @@ func GetSongByName(userID uint , songName string) (string) {
 	req, err := http.NewRequest("GET", url, nil)
 	if err != nil {
 		RefreshSpotifyToken(userID)
-		log.Fatal("can't get song name")
+		fmt.Println("can't get song name")
+		return ""
 	}
 	req.Header.Add("Accept", "application/json")
 	req.Header.Add("Content-Type", "application/json")
-	req.Header.Add("Authorization", "Bearer " + userToken.SpotifyToken)
+	req.Header.Add("Authorization", "Bearer "+userToken.SpotifyToken)
 
 	response, _ := client.Do(req)
 
 	body, _ := ioutil.ReadAll(response.Body)
 
-	choosenSongID := gjson.GetBytes(body, "tracks.items.0.uri")
+	fmt.Println((string(body)))
 
+	choosenSongID := gjson.GetBytes(body, "tracks.items.0.uri")
 
 	return choosenSongID.String()
 }
@@ -116,11 +117,15 @@ func AddSongToQueue(userID uint, params string) {
 	}
 	req, err := http.NewRequest("POST", url, nil)
 	if err != nil {
-		log.Fatal("can't get song name")
+		fmt.Println("can't get song name")
+		return
 	}
-	req.Header.Add("Authorization", "Bearer " + userToken.SpotifyToken)
+	req.Header.Add("Authorization", "Bearer "+userToken.SpotifyToken)
 
-	client.Do(req)
+	response, _ := client.Do(req)
+
+	body, _ := ioutil.ReadAll(response.Body)
+
+	fmt.Println((string(body)))
 	// response = response
-
 }

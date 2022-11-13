@@ -11,6 +11,7 @@ import (
 	"fmt"
 	"net/http"
 	"io/ioutil"
+	"os"
 	// "encoding/json"
 	"strconv"
 	"github.com/tidwall/gjson"
@@ -71,15 +72,21 @@ func IsPlayingTeemo(params string) (bool) {
  * @return bool
  */
 func WinrateIsOverN(params string) (bool) {
-	leagueData, Err := GetLeagueStat(params)
+	paramsArr := utils.GetParams(params)
+	if (len(paramsArr) != 2) {
+		fmt.Fprintln(os.Stderr, "params passed are not correct")
+		return false
+	}
+	leagueData, Err := GetLeagueStat(paramsArr[0])
 	if (Err != nil) {
-		fmt.Println(Err)
+		fmt.Fprintln(os.Stderr, Err)
 		return false
 	}
 	winrate := gjson.GetBytes(leagueData, "mostPlayedChamps.0.winrate")
 	cleanWinrate := strings.TrimSuffix(winrate.String(), "%")
 	floatWinrate, _ := strconv.ParseFloat(cleanWinrate, 64)
-	if (floatWinrate > 50) {
+	pourcent, _ := strconv.ParseFloat(paramsArr[1], 64) 
+	if (floatWinrate > pourcent) {
 		return true
 	} else {
 		return false
@@ -91,14 +98,20 @@ func WinrateIsOverN(params string) (bool) {
  * @return bool
  */
 func KDAIsOverN(params string) (bool) {
-	leagueData, Err := GetLeagueStat(params)
+	paramsArr := utils.GetParams(params)
+	if (len(paramsArr) != 2) {
+		fmt.Fprintln(os.Stderr, "params passed are not correct")
+		return false
+	}
+	leagueData, Err := GetLeagueStat(paramsArr[0])
 	if (Err != nil) {
-		fmt.Println(Err)
+		fmt.Fprintln(os.Stderr, Err)
 		return false
 	}
 	KDA := gjson.GetBytes(leagueData, "mostPlayedChamps.0.kda")
 	floatKDA, _ := strconv.ParseFloat(KDA.String(), 64)
-	if (floatKDA > 3.0) {
+	pourcent, _ := strconv.ParseFloat(paramsArr[1], 64) 
+	if (floatKDA > pourcent) {
 		return true
 	} else {
 		return false

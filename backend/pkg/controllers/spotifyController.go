@@ -9,28 +9,27 @@
 package controllers
 
 import (
-	"net/http"
 	"encoding/json"
 	"fmt"
-	"net/url"
-	"strings"
-	"strconv"
 	"io/ioutil"
-	"log"
+	"net/http"
+	"net/url"
+	"strconv"
+	"strings"
 	"time"
 
-	"AREA/pkg/utils"
 	"AREA/pkg/models"
+	"AREA/pkg/utils"
 )
 
 // @endcond
 
-/** @brief on a request, retrieve the OAuth spotify url 
+/** @brief on a request, retrieve the OAuth spotify url
  * @param w http.ResponseWriter, r *http.Request
  */
 func GetSpotifyUrl(w http.ResponseWriter, r *http.Request) {
 	utils.EnableCors(&w)
-	spotifyID := utils.GetEnv("SPOTIFY_ID");
+	spotifyID := utils.GetEnv("SPOTIFY_ID")
 	res, _ := json.Marshal(fmt.Sprintf("https://accounts.spotify.com/authorize?client_id=%s&redirect_uri=http://localhost:8080/spotify/auth&response_type=code&s&scope=user-modify-playback-state user-read-private user-read-currently-playing user-library-modify&state=random", spotifyID))
 	w.WriteHeader(http.StatusOK)
 	w.Write(res)
@@ -44,7 +43,7 @@ func AuthSpotify(w http.ResponseWriter, r *http.Request) {
 	data := url.Values{}
 
 	client := &http.Client{
-	Timeout: time.Second * 10,
+		Timeout: time.Second * 10,
 	}
 	data.Set("client_id", utils.GetEnv("SPOTIFY_ID"))
 	data.Set("client_secret", utils.GetEnv("SPOTIFY_SECRET"))
@@ -52,8 +51,8 @@ func AuthSpotify(w http.ResponseWriter, r *http.Request) {
 	data.Set("redirect_uri", "http://localhost:8080/spotify/auth")
 	data.Set("code", r.FormValue("code"))
 	encodedData := data.Encode()
-	
-	const tokenurl = "https://accounts.spotify.com/api/token";
+
+	const tokenurl = "https://accounts.spotify.com/api/token"
 
 	req, err := http.NewRequest("POST", tokenurl, strings.NewReader(encodedData))
 	if err != nil {
@@ -70,8 +69,8 @@ func AuthSpotify(w http.ResponseWriter, r *http.Request) {
 
 	errorUnmarshal := json.Unmarshal(body, &spotifyResponse)
 	if errorUnmarshal != nil {
-	    log.Fatal(errorUnmarshal)
-	}	
+		fmt.Println(errorUnmarshal)
+	}
 
 	accessToken := spotifyResponse["access_token"]
 	refreshToken := spotifyResponse["refresh_token"]

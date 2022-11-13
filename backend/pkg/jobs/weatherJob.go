@@ -12,8 +12,8 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"os"
 	"io/ioutil"
-	"log"
 	"net/http"
 	"strconv"
 
@@ -26,7 +26,7 @@ import (
  * @param city string
  * @return float64 temperature
  */
-func GetWeather(city string) (float64 ,error){
+func GetWeather(city string) (float64, error) {
 
 	url := "https://weather-by-api-ninjas.p.rapidapi.com/v1/weather?city=" + city
 
@@ -47,11 +47,11 @@ func GetWeather(city string) (float64 ,error){
 	weatherData := make(map[string]interface{})
 	errorUnmarshal := json.Unmarshal(body, &weatherData)
 	if errorUnmarshal != nil {
-	    log.Fatal(errorUnmarshal)
+		fmt.Println(errorUnmarshal)
 	}
 
 	temperature := weatherData["temp"]
- 	// fmt.Println(string(body))
+	// fmt.Println(string(body))
 
 	// fmt.Println(weatherData)
 
@@ -62,21 +62,25 @@ func GetWeather(city string) (float64 ,error){
  * @param params string
  * @return bool
  */
-func TemperatureIsOverN(params string) (bool) {
+func TemperatureIsOverN(params string) bool {
 	paramsArr := utils.GetParams(params)
-	fmt.Println(paramsArr)
+	if (len(paramsArr) != 2) {
+		fmt.Fprintln(os.Stderr, "params passed are not correct")
+		return false
+	}
+
 	compareTemp, _ := strconv.ParseFloat(paramsArr[1], 64)
 	temperature, weatherErr := GetWeather(paramsArr[0])
 	fmt.Println(compareTemp)
 	fmt.Println(temperature)
-	if (weatherErr != nil) {
-		fmt.Println(weatherErr)
+	if weatherErr != nil {
+		fmt.Fprintln(os.Stderr, weatherErr)
 		return false
 	}
 
-	if (temperature > compareTemp && temperature != 0) {
+	if temperature > compareTemp && temperature != 0 {
 		return true
-	} else { 
+	} else {
 		return false
 	}
 }
@@ -85,18 +89,23 @@ func TemperatureIsOverN(params string) (bool) {
  * @param params string
  * @return bool
  */
-func TemperatureIsUnderrN(params string) (bool) {
+func TemperatureIsUnderrN(params string) bool {
 	paramsArr := utils.GetParams(params)
-	compareTemp, _ := strconv.ParseFloat(paramsArr[1], 64)
-	temperature, weatherErr := GetWeather(paramsArr[0])
-	if (weatherErr != nil) {
-		fmt.Println(weatherErr)
+	if (len(paramsArr) != 2) {
+		fmt.Fprintln(os.Stderr, "params passed are not correct")
 		return false
 	}
 
-	if (temperature < compareTemp && temperature != 0) {
+	compareTemp, _ := strconv.ParseFloat(paramsArr[1], 64)
+	temperature, weatherErr := GetWeather(paramsArr[0])
+	if weatherErr != nil {
+		fmt.Fprintln(os.Stderr, weatherErr)
+		return false
+	}
+
+	if temperature < compareTemp && temperature != 0 {
 		return true
-	} else { 
+	} else {
 		return false
 	}
 }

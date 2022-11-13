@@ -23,7 +23,6 @@ export default function Register () {
   const handleSubmit = (event) => {
     event.preventDefault()
 
-
     const data = new FormData(event.currentTarget)
     const [firstname, lastname, email, password] = [data.get('firstName'), data.get('lastName'), data.get('email'), data.get('password')]
     axios.post('http://localhost:8080/register/', {
@@ -34,6 +33,8 @@ export default function Register () {
     }, { headers: {'Content-Type': 'text/plain'} })
     .then(function (response) {
         console.log(response)
+        localStorage.setItem('loggedIn', true)
+        location.href = '/wallet'
     })
     .catch(function (error) {
         console.log(error)

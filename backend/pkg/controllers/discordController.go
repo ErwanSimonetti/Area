@@ -10,7 +10,6 @@ package controllers
 
 import (
 	"fmt"
-	"log"
 	"io/ioutil"
 	"net/http"
 	"net/url"
@@ -61,7 +60,7 @@ func AuthDiscord(w http.ResponseWriter, r *http.Request){
 	jsonWebhook := make(map[string]interface{})
 	errorUnmarshal := json.Unmarshal(body, &jsonWebhook)
 	if errorUnmarshal != nil {
-	    log.Fatal(errorUnmarshal)
+	    fmt.Println(errorUnmarshal)
 	}
 
 	requestUser, _ := GetUser(w, r)

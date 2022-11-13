@@ -10,6 +10,7 @@ package jobs
 
 import (
 	"fmt"
+	"os"
 	"net/smtp"
 
 	"AREA/pkg/models"
@@ -23,8 +24,12 @@ import (
  */
 func SendEmail(userID uint, params string) {
 	paramsArr := utils.GetParams(params)
-	receiver := paramsArr[0]
-	message := paramsArr[1]
+	if (len(paramsArr) != 2) {
+		fmt.Fprintln(os.Stderr, "params passed are not correct")
+		return
+	}
+	receiver := paramsArr[1]
+	message := paramsArr[0]
 
 	requestUser := *models.FindUserToken(userID)
 	from := requestUser.Email
@@ -42,7 +47,7 @@ func SendEmail(userID uint, params string) {
 
 	err := smtp.SendMail(smtpHost+":"+smtpPort, auth, from, to, messagePayload)
 	if err != nil {
-		fmt.Println(err)
+		fmt.Fprintln(os.Stderr, err)
 		return
 	}
 }

@@ -7,14 +7,15 @@
 //cond
 package utils
 
-import(
+import (
 	"encoding/json"
+	"fmt"
 	"io/ioutil"
 	"net/http"
-	"github.com/joho/godotenv"
 	"os"
 	"strings"
-	"log"
+
+	"github.com/joho/godotenv"
 )
 
 //endcond
@@ -32,6 +33,17 @@ func ArrayContainsString(s []string, str string) bool {
 	return false
 }
 
+func GetKeyFromMap(theMap map[string]string) []string {
+	keys := make([]string, len(theMap))
+
+	i := 0
+	for k := range theMap {
+    	keys[i] = k
+    	i++
+	}
+	return keys
+}
+
 /** @brief Splits a string by '@@@' and returns it
  * @param params string
  * @return []string
@@ -44,10 +56,10 @@ func GetParams(params string) []string {
 /** @brief Gets all the information contained in the body of the request
  * @param r *http.Request, x interface{}
  */
-func ParseBody(r *http.Request, x interface{}){
-	if body, err := ioutil.ReadAll(r.Body); err == nil{
-		if err := json.Unmarshal([]byte(body), x); err != nil{
-			return 
+func ParseBody(r *http.Request, x interface{}) {
+	if body, err := ioutil.ReadAll(r.Body); err == nil {
+		if err := json.Unmarshal([]byte(body), x); err != nil {
+			return
 		}
 	}
 }
@@ -65,10 +77,10 @@ func EnableCors(w *http.ResponseWriter) {
  */
 func GetEnv(key string) string {
 	err := godotenv.Load(".env")
-  
+
 	if err != nil {
-	  log.Fatal("Error loading .env file")
+		fmt.Println("Error loading .env file")
 	}
-  
+
 	return os.Getenv(key)
 }

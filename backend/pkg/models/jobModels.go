@@ -7,7 +7,9 @@
 // @cond
 package models
 
-import "github.com/jinzhu/gorm"
+import (
+	"github.com/jinzhu/gorm"
+)
 
 type Job struct {
 	gorm.Model
@@ -54,7 +56,7 @@ func GetJobsByUserId(userId uint) ([]Job){
 }
 
 func UpdateJobField(jobId uint, column string, value string) {
-	db.Model(&Token{}).Where("ID = ?", jobId).Update(column, value)
+	db.Model(&Job{}).Where("ID = ?", jobId).Update(column, value)
 }
 
 /** @brief Deletes a job based on its ID

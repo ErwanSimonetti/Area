@@ -26,6 +26,7 @@ export default function NavBar ({ setLoggedIn, loggedIn }) {
         axios.get('http://localhost:8080/logout/', { withCredentials: true })
         .then(function (response) {
             localStorage.setItem('loggedIn', false)
+            location.href = '/'
         }).catch(function (error) {
             console.log(error)
         })
