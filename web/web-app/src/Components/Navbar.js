@@ -13,9 +13,7 @@ const StyledAppBar = styled(AppBar)(({ theme }) => ({
 }))
 export default function NavBar ({ setLoggedIn, loggedIn }) {
     React.useEffect(() => {
-        console.log('je fais un truc')
         const cookie = document.cookie.indexOf('jwt')
-        console.log(cookie)
         if (cookie !== -1) {
             setLoggedIn(true)
         }

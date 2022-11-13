@@ -33,7 +33,6 @@ export default function SignIn () {
       password,
     }, {headers: {'Content-Type': 'text/plain'}, withCredentials: true} ) 
     .then(function (response) {
-      console.log(response)
       localStorage.setItem('loggedIn', true)
       location.href = '/wallet'
 
@@ -50,7 +49,6 @@ export default function SignIn () {
       password,
     }, {headers: {'Content-Type': 'text/plain'}, withCredentials: true} ) 
     .then(function (response) {
-      console.log(response)
       localStorage.setItem('loggedIn', true)
       location.href = '/wallet'
 

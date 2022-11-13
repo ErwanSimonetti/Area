@@ -32,7 +32,6 @@ export default function Register () {
         password
     }, { headers: {'Content-Type': 'text/plain'} })
     .then(function (response) {
-        console.log(response)
         localStorage.setItem('loggedIn', true)
         location.href = '/wallet'
     })
@@ -44,7 +43,6 @@ export default function Register () {
   
   const googleResponse = (e) => {
     const [firstname, lastname, email, password] = [e.profileObj.givenName, e.profileObj.familyName, e.profileObj.email, e.profileObj.googleId]
-    console.log(firstname, lastname, email, password)
     axios.post('http://localhost:8080/register/', {
         firstname,
         lastname,
@@ -52,7 +50,6 @@ export default function Register () {
         password
     }, { headers: {'Content-Type': 'text/plain'} })
     .then(function (response) {
-        console.log(response)
     })
     .catch(function (error) {
         console.log(error)

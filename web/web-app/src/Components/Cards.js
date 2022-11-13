@@ -28,10 +28,8 @@ const parentCard = {
 
 export function AREACard ({ cards }) {
     function handleDeletion (card) {
-        console.log(card.ID)
         axios.get('http://localhost:8080/area/delete/' + card.ID)
         .then(function (response) {
-            console.log(response)
             window.location.reload(true)
         }).catch(function (error) {
             console.log(error)

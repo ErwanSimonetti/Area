@@ -5,23 +5,16 @@ export default function TextInputsAParams ({ open, setOpen, newCard, setNewCard,
     const [actionsFields, setActionFields] = React.useState()
 
     const handleSubmit = React.useCallback(() => {
-        console.log('array: ', actionsFields)
         const temp = []
         actionsFields.forEach((action) => {
             temp.push(action)
         })
-        console.log(temp)
         setNewCard(newCard => ({ ...newCard, actionsFields: temp.join('@@@') }))
         setOpen(false)
     })
 
     React.useEffect(() => {
-        console.log(actionsFields)
-    }, [actionsFields])
-
-    React.useEffect(() => {
         let index = 0
-        console.log(fields)
         const temp = fields
         let args = { }
         const array = []
@@ -30,7 +23,6 @@ export default function TextInputsAParams ({ open, setOpen, newCard, setNewCard,
             array.push(args)
             args = {}
         }
-        console.log('prout', array)
         setActionFields(array)
     }, [])
 

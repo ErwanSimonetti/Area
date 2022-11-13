@@ -1,5 +1,5 @@
 /*eslint-disable*/
-import { Typography, Box, Button, Card, CardContent, CardMedia, Grid, ButtonBase, Dialog } from '@mui/material'
+import { Box, Button, Card, CardContent, CardMedia, Grid, ButtonBase, Dialog } from '@mui/material'
 import * as React from 'react'
 import axios from 'axios'
 import githubImg from '../resources/github.png'
@@ -7,8 +7,15 @@ import spotifyImg from '../resources/spotify.png'
 import discordImg from '../resources/discord.svg'
 import gmailImg from '../resources/gmail.png'
 import { DialogTitle, TextField } from '@material-ui/core'
+import { createTheme, ThemeProvider, Typography } from '@material-ui/core'
 
 export default function Services () {
+
+    const theme = createTheme({
+        typography: {
+          fontFamily: ['Titan One', 'cursive'].join(',')
+        }
+    })
     const services = [{ name: 'Spotify', token: null, img: spotifyImg }, { name: 'Github', token: null, img: githubImg }, { name: 'Discord', token: null, img: discordImg }, { name: 'Gmail', token: null, img: gmailImg }]
     return (
         <React.Fragment>
@@ -18,7 +25,9 @@ export default function Services () {
                 flexDirection: 'column',
                 alignItems: 'center'
             }}>
+            <ThemeProvider theme={theme}>
                 <Typography variant='h2' gutterBottom>Services</Typography>
+            </ThemeProvider>
             </Box>
             <ServicesCard services={ services }/>
         </React.Fragment >
@@ -40,7 +49,6 @@ function ServicesCard ({ services }) {
         const headers = { 'Content-Type': 'text/plain' }
         axios.get('http://localhost:8080/discord/auth/url', { headers })
         .then(function (response) {
-            console.log(response.data)
             location.href = response.data
         }).catch(function (error) {
             console.log(error)
@@ -51,7 +59,6 @@ function ServicesCard ({ services }) {
         const headers = { 'Content-Type': 'text/plain' }
         axios.get('http://localhost:8080/spotify/auth/url', { headers })
         .then(function (response) {
-            console.log(response.data)
             location.href = response.data
         }).catch(function (error) {
             console.log(error)
@@ -62,7 +69,6 @@ function ServicesCard ({ services }) {
         const headers = { 'Content-Type': 'text/plain' }
         axios.get('http://localhost:8080/github/auth/url', { headers })
         .then(function (response) {
-            console.log(response.data)
             location.href = response.data
         }).catch(function (error) {
             console.log(error)
@@ -75,7 +81,6 @@ function ServicesCard ({ services }) {
             password: password,
         }, { headers: { 'Content-Type': 'text/plain' }, withCredentials: true })
         .then(function (response) {
-            console.log(email, password)
             // location.href = response.data
         }).catch(function (error) {
                 console.log(error)
@@ -88,7 +93,6 @@ function ServicesCard ({ services }) {
     }
 
     const handleClick = (service) => {
-        console.log('clicked ' + service.name)
         setService(service.name)
         switch (service.name) {
             case 'Spotify':
