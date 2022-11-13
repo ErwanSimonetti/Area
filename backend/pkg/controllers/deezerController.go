@@ -19,7 +19,7 @@ import (
 	"strings"
 	"encoding/json"
 	"AREA/pkg/utils"
-	"AREA/pkg/models"
+	// "AREA/pkg/models"
 	"html"
 )
 
@@ -173,8 +173,8 @@ func AuthDeezer(w http.ResponseWriter, r *http.Request) {
 	}
 	access_token := strings.Split(string(body), "=")[1]
 	access_token = strings.Split(access_token, "&")[0]
-	app_id, _ := strconv.Atoi(utils.GetEnv("DEEZER_APP_ID"))
-	models.SetUserToken(strconv.FormatUint(uint64(app_id), 10), "deezer_token", access_token)
+	// app_id, _ := strconv.Atoi(utils.GetEnv("DEEZER_APP_ID"))
+	// models.SetUserToken(strconv.FormatUint(uint64(app_id), 10), "deezer_token", access_token)
 	userId := GetUserId(access_token)
 	trackId := GetQueryId("Thriller", "track", access_token)
 	playlistId := GetPlaylistIdByName(access_token, "API test")
