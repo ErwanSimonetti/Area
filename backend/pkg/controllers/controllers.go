@@ -25,10 +25,9 @@ import (
 	"AREA/pkg/utils"
 )
 
-//@endcond
-
-
 var SecretKey = utils.GetEnv("RAPID_API_KEY")
+
+//@endcond
 
 /** @brief Gets all the users from the database
  * @param w http.ResponseWriter, r *http.Request

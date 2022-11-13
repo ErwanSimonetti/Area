@@ -46,6 +46,9 @@ services:
       - "server"
       # - "client_mobile"
 
+  client_mobile:
+    build: './mobile'
+
 volumes: # add volume to persist data.
   my-db:
   common:
