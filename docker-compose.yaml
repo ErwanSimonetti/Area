@@ -25,12 +25,11 @@ services:
     depends_on: 
       - "db"
 
-  # client_mobile:
-  #   container_name: client_mobile
-  #   volumes:
-  #     - common:/apk
-  #   depends_on:
-  #     - "server"
+  client_mobile:
+    container_name: client_mobile
+    build: './mobile'
+    volumes:
+      - common:/clientWeb/res/
 
   client_web:
     container_name: client_web
@@ -41,15 +40,11 @@ services:
     expose:
         - 8081
     volumes:
-      - common:/backend/res/
+      - common:/clientWeb/res/
     depends_on: 
       - "server"
-      # - "client_mobile"
-
-  client_mobile:
-    build: './mobile'
-    voumes:
-      - common:/apk
+      - "client_mobile"
+  
 volumes: # add volume to persist data.
   my-db:
   common:
