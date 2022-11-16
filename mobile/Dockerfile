@@ -12,4 +12,8 @@ RUN flutter clean
 RUN flutter build apk  --split-per-abi --no-sound-null-safety
 
 RUN mkdir /mobile_app/
-RUN cp build/app/outputs/flutter-apk/app.apk /mobile_app/client.apk
+RUN cp build/app/outputs/flutter-apk/app.apk /apk/client.apk
+
+COPY entrypoint.sh .
+
+CMD ["./entrypoint.sh"]

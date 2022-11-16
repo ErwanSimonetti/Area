@@ -41,14 +41,16 @@ services:
     expose:
         - 8081
     volumes:
-      - common:/apk
+      - common:/backend/res/
     depends_on: 
       - "server"
       # - "client_mobile"
 
   client_mobile:
     build: './mobile'
-
+    voumes:
+      - common:/apk
 volumes: # add volume to persist data.
   my-db:
   common:
+  apk:
