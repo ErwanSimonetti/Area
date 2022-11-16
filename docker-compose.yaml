@@ -25,12 +25,15 @@ services:
     depends_on: 
       - "db"
 
-  # client_mobile:
-  #   container_name: client_mobile
-  #   volumes:
-  #     - common:/apk
-  #   depends_on:
-  #     - "server"
+  client_mobile:
+    container_name: client_mobile
+    build: mobile/
+
+    volumes:
+      - ./WebApplication/src:/build
+      - ./mobile:/app
+    depends_on:
+      - "server"
 
   client_web:
     container_name: client_web
@@ -44,10 +47,10 @@ services:
       - common:/apk
     depends_on: 
       - "server"
-      # - "client_mobile"
+      - "client_mobile"
 
-  client_mobile:
-    build: './mobile'
+  # client_mobile:
+  #   build: './mobile'
 
 volumes: # add volume to persist data.
   my-db:
