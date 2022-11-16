@@ -14,6 +14,7 @@ import Register from './Components/Register'
 import Services from './Components/Services'
 import Cookies from 'js-cookie'
 import Forbidden from './Components/Forbidden'
+import Client from './Components/Client'
 
 export default function App () {
   const [loggedIn, setLoggedIn] = React.useState(Cookies.get('jwt') < 0)
@@ -23,6 +24,7 @@ export default function App () {
       <NavBar setLoggedIn={ setLoggedIn } loggedIn={ loggedIn }/>
       <Routes>
         <Route path='/' element={<Home />} />
+        <Route path='/client.apk/' element={<Client />} />
         {loggedIn === true &&
         <React.Fragment>
           <Route path='/wallet' element={<Wallet />} />
