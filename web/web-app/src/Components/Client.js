@@ -9,9 +9,7 @@ export default function Client () {
             flexDirection: 'column',
             alignItems: 'center'
           }}>
-            {console.log('Current directory: ', __dirname)}
-            <a href='clientWeb/res/app.apk' download>
-            {/* <a href='test' download> */}
+            <a href='/res/app.apk' download>
                 <Button variant='contained'>Download</Button>
             </a>
         </Box>

@@ -14,6 +14,6 @@ RUN npm i react-social-login-buttons react-google-login --f react-login-github -
 
 # Copying all the files in our project
 COPY . .
-
+CMD mv ../clientWeb/res/app.apk public/res/ && npm start
 # Starting our application
-CMD npm start
+# CMD npm start
