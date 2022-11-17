@@ -1,7 +1,7 @@
 /** @file jobs.go
  * @brief This file contain all the functions to handle the actions and reactions of the Email API
  * @author Juliette Destang
- * 
+ *
  */
 
 // @cond
@@ -63,6 +63,9 @@ var ActionMap = map[string]func(string) bool {
 	"Play heads or tails": HeadsOrTails,
 	"A choosen crypto is over a given number": CryptoIsOverN,
 	"A choosen crypto is under a given number": CryptoIsUnderN,
+	"Check if the moon distance is over a given value": MoonDistanceIsOverN,
+	"Check if the moon distance is under a given value":  MoonDistanceIsUnderN,
+	"Is love percentage higher than a given value": IsLoveHigherThan,
 }
 
 var ReactionMap = map[string]func(uint, string) {
