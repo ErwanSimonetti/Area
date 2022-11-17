@@ -63,6 +63,23 @@
         ]
     },
     {
+        "name": "moon",
+        "actions": [
+            {
+                "name": "moon_distance_is_over_N",
+                "description": "Check if the moon distance is over a given value",
+                "field_names": ["distance"]
+            },
+            {
+                "name": "moon_distance_is_under_N",
+                "description": "Check if the moon distance is under a given value",
+                "field_names": ["distance"]
+            }
+        ],
+        "reactions": [
+        ]
+    },
+    {
         "name": "covid",
         "actions": [
             {
@@ -103,6 +120,17 @@
                 "name": "crypto_is_under_n",
                 "description": "A choosen crypto is under a given number",
                 "field_names": ["target (eur, usd, jpy...)", "base (btc, bnb, ltc...)", "value"]
+            }
+        ],
+        "reactions": [
+        ]
+    },{
+        "name": "Love",
+        "actions": [
+            {
+                "name": "love_higher_than",
+                "description": "Is love percentage higher than a given value",
+                "field_names": ["Name 1", "Name 2", "value"] 
             }
         ],
         "reactions": [
